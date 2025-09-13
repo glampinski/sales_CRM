@@ -1,40 +1,38 @@
 "use client"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { OnboardingFlow } from "@/components/onboarding-flow"
+import { useAuth } from '@/contexts/AuthContext'
+import { LoginForm } from '@/components/auth/LoginForm'
 
 export default function HomePage() {
-  const router = useRouter()
+  const { user, isLoading } = useAuth()
 
-  // For now, let's show both options
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center space-y-6">
-          <h1 className="text-4xl font-bold">MLM CRM System</h1>
-          <p className="text-lg text-muted-foreground">Choose your entry point:</p>
-          
-          <div className="flex justify-center space-x-4">
-            <button 
-              onClick={() => router.push('/dashboard')}
-              className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              Go to Dashboard
-            </button>
-            <button 
-              onClick={() => {/* Show onboarding below */}}
-              className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90 transition-colors"
-            >
-              Customer Onboarding
-            </button>
-          </div>
-        </div>
-        
-        <div className="mt-12">
-          <OnboardingFlow />
-        </div>
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
+    )
+  }
+
+  if (!user) {
+    return <LoginForm />
+  }
+
+  // Redirect based on user role
+  if (typeof window !== 'undefined') {
+    switch (user.role) {
+      case 'customer':
+        window.location.href = '/onboarding'
+        break
+      default:
+        window.location.href = '/dashboard'
+        break
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
     </div>
   )
 }

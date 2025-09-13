@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Users, Search, Plus, Filter, Download, Eye, Edit, Trash2, Phone, Mail, MapPin, Calendar, ShoppingCart, DollarSign } from "lucide-react"
+import { Users, Search, Plus, Filter, Download, Eye, Edit, Trash2, Phone, Mail, MapPin, Calendar, ShoppingCart, DollarSign, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,6 +34,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { CustomerPurchaseFlow } from "@/components/customer-purchase-flow"
+import type { OnboardingData } from "@/components/onboarding-flow"
 
 // Mock customer data
 const customers = [
@@ -126,6 +136,7 @@ export default function CustomersPage() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [tierFilter, setTierFilter] = useState("all")
   const [viewMode, setViewMode] = useState<"table" | "cards">("table")
+  const [purchaseFlowCustomer, setPurchaseFlowCustomer] = useState<typeof customers[0] | null>(null)
 
   const filteredCustomers = customers.filter(customer => {
     const matchesSearch = customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -135,6 +146,17 @@ export default function CustomersPage() {
     
     return matchesSearch && matchesStatus && matchesTier
   })
+
+  const handlePurchaseComplete = (orderData: OnboardingData & { customerId: string }) => {
+    console.log("Order completed:", orderData)
+    // Here you would typically save the order to your backend
+    setPurchaseFlowCustomer(null)
+    // Show success message or redirect
+  }
+
+  const handlePurchaseCancel = () => {
+    setPurchaseFlowCustomer(null)
+  }
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -233,24 +255,38 @@ export default function CustomersPage() {
           </span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                Actions
-              </Button>
+              <button 
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+              >
+                <span className="sr-only">Open menu</span>
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.625 7.5C3.625 8.12132 3.12132 8.625 2.5 8.625C1.87868 8.625 1.375 8.12132 1.375 7.5C1.375 6.87868 1.87868 6.375 2.5 6.375C3.12132 6.375 3.625 6.87868 3.625 7.5ZM8.625 7.5C8.625 8.12132 8.12132 8.625 7.5 8.625C6.87868 8.625 6.375 8.12132 6.375 7.5C6.375 6.87868 6.87868 6.375 7.5 6.375C8.12132 6.375 8.625 6.87868 8.625 7.5ZM13.625 7.5C13.625 8.12132 13.1213 8.625 12.5 8.625C11.8787 8.625 11.375 8.12132 11.375 7.5C11.375 6.87868 11.8787 6.375 12.5 6.375C13.1213 6.375 13.625 6.87868 13.625 7.5Z" fill="currentColor"/>
+                </svg>
+              </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
+            <DropdownMenuContent align="end" className="w-48 z-50">
+              <DropdownMenuItem 
+                className="cursor-pointer"
+                onSelect={() => {
+                  setPurchaseFlowCustomer(customer)
+                }}
+              >
+                <CreditCard className="h-4 w-4 mr-2" />
+                New Order
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <Eye className="h-4 w-4 mr-2" />
                 View Details
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <Edit className="h-4 w-4 mr-2" />
                 Edit Customer
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <Mail className="h-4 w-4 mr-2" />
                 Send Email
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem className="text-red-600 cursor-pointer">
                 <Trash2 className="h-4 w-4 mr-2" />
                 Delete
               </DropdownMenuItem>
@@ -408,24 +444,38 @@ export default function CustomersPage() {
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm">
-                              Actions
-                            </Button>
+                            <button 
+                              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+                            >
+                              <span className="sr-only">Open menu</span>
+                              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.625 7.5C3.625 8.12132 3.12132 8.625 2.5 8.625C1.87868 8.625 1.375 8.12132 1.375 7.5C1.375 6.87868 1.87868 6.375 2.5 6.375C3.12132 6.375 3.625 6.87868 3.625 7.5ZM8.625 7.5C8.625 8.12132 8.12132 8.625 7.5 8.625C6.87868 8.625 6.375 8.12132 6.375 7.5C6.375 6.87868 6.87868 6.375 7.5 6.375C8.12132 6.375 8.625 6.87868 8.625 7.5ZM13.625 7.5C13.625 8.12132 13.1213 8.625 12.5 8.625C11.8787 8.625 11.375 8.12132 11.375 7.5C11.375 6.87868 11.8787 6.375 12.5 6.375C13.1213 6.375 13.625 6.87868 13.625 7.5Z" fill="currentColor"/>
+                              </svg>
+                            </button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                          <DropdownMenuContent align="end" className="w-48 z-50">
+                            <DropdownMenuItem 
+                              className="cursor-pointer"
+                              onSelect={() => {
+                                setPurchaseFlowCustomer(customer)
+                              }}
+                            >
+                              <CreditCard className="h-4 w-4 mr-2" />
+                              New Order
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
                               <Edit className="h-4 w-4 mr-2" />
                               Edit Customer
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
                               <Mail className="h-4 w-4 mr-2" />
                               Send Email
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
+                            <DropdownMenuItem className="text-red-600 cursor-pointer">
                               <Trash2 className="h-4 w-4 mr-2" />
                               Delete
                             </DropdownMenuItem>
@@ -448,6 +498,19 @@ export default function CustomersPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Purchase Flow Dialog */}
+      {purchaseFlowCustomer && (
+        <Dialog open={!!purchaseFlowCustomer} onOpenChange={() => setPurchaseFlowCustomer(null)}>
+          <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto">
+            <CustomerPurchaseFlow
+              customer={purchaseFlowCustomer}
+              onComplete={handlePurchaseComplete}
+              onCancel={handlePurchaseCancel}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   )
 }

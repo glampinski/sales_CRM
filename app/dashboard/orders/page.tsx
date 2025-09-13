@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ShoppingCart, Search, Plus, Filter, Download, Eye, Edit, Truck, Package, CreditCard, Calendar, DollarSign, TrendingUp, Clock } from "lucide-react"
+import { ShoppingCart, Search, Plus, Filter, Download, Eye, Edit, Truck, Package, CreditCard, Calendar, DollarSign, TrendingUp, Clock, CheckCircle, XCircle, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,6 +34,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { OrderDetailView } from "@/components/order-detail-view"
 
 // Mock order data
 const orders = [
@@ -164,6 +173,7 @@ export default function OrdersPage() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [paymentFilter, setPaymentFilter] = useState("all")
   const [viewMode, setViewMode] = useState<"list" | "details">("list")
+  const [selectedOrder, setSelectedOrder] = useState<typeof orders[0] | null>(null)
 
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -300,7 +310,7 @@ export default function OrdersPage() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSelectedOrder(order)}>
                 <Eye className="h-4 w-4 mr-2" />
                 View Details
               </DropdownMenuItem>
@@ -478,7 +488,7 @@ export default function OrdersPage() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setSelectedOrder(order)}>
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
@@ -513,6 +523,18 @@ export default function OrdersPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Order Detail Dialog */}
+      {selectedOrder && (
+        <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
+          <DialogContent className="max-w-6xl max-h-[90vh] overflow-auto p-0">
+            <OrderDetailView
+              order={selectedOrder}
+              onClose={() => setSelectedOrder(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   )
 }

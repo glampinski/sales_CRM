@@ -13,7 +13,9 @@ import {
   Shield,
   FileText,
   Bell,
-  Search
+  Search,
+  DollarSign,
+  Crown,
 } from "lucide-react"
 
 import {
@@ -42,14 +44,15 @@ const navigation = {
   ],
   mlm: [
     { name: "Genealogy", href: "/dashboard/genealogy", icon: Building2 },
-    { name: "Commission", href: "/dashboard/commission", icon: CreditCard },
-    { name: "Distributors", href: "/dashboard/distributors", icon: Users },
-    { name: "Ranks", href: "/dashboard/ranks", icon: Shield },
+    { name: "Commission", href: "/dashboard/commission", icon: DollarSign },
+    { name: "Ranks", href: "/dashboard/ranks", icon: Crown },
+    { name: "Distributors", href: "/dashboard/distributors", icon: Shield },
   ],
   business: [
     { name: "Customers", href: "/dashboard/customers", icon: Users },
-    { name: "Orders", href: "/dashboard/orders", icon: FileText },
     { name: "Products", href: "/dashboard/products", icon: Building2 },
+    { name: "Orders", href: "/dashboard/orders", icon: FileText },
+    { name: "Payments", href: "/dashboard/payments", icon: CreditCard },
     { name: "Reports", href: "/dashboard/reports", icon: PieChart },
   ],
   system: [

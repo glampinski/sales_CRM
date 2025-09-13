@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { GenealogyTree } from "@/components/genealogy-tree"
 import {
   Select,
   SelectContent,
@@ -311,9 +312,7 @@ export default function GenealogyPage() {
       {/* Content */}
       <Tabs value={viewMode} className="space-y-4">
         <TabsContent value="tree" className="space-y-4">
-          <div className="bg-muted/10 p-6 rounded-lg">
-            <DistributorCard distributor={genealogyData} />
-          </div>
+          <GenealogyTree />
         </TabsContent>
 
         <TabsContent value="list" className="space-y-4">

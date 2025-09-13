@@ -43,6 +43,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Checkbox } from "@/components/ui/checkbox"
+import { DistributorActions } from "@/components/distributor-actions"
+import { DistributorAnalytics } from "@/components/distributor-analytics"
 
 interface DistributorSummary {
   id: string
@@ -174,7 +177,9 @@ export function DistributorManagement() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [rankFilter, setRankFilter] = useState("all")
-  const [viewMode, setViewMode] = useState<"table" | "cards">("table")
+  const [viewMode, setViewMode] = useState<"table" | "cards" | "analytics">("table")
+  const [selectedDistributors, setSelectedDistributors] = useState<string[]>([])
+  const [showArchived, setShowArchived] = useState(false)
 
   const filteredDistributors = mockDistributors.filter(distributor => {
     const matchesSearch = distributor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -183,6 +188,31 @@ export function DistributorManagement() {
     const matchesRank = rankFilter === "all" || distributor.rank === rankFilter
     return matchesSearch && matchesStatus && matchesRank
   })
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedDistributors(filteredDistributors.map(d => d.id))
+    } else {
+      setSelectedDistributors([])
+    }
+  }
+
+  const handleSelectDistributor = (distributorId: string, checked: boolean) => {
+    if (checked) {
+      setSelectedDistributors(prev => [...prev, distributorId])
+    } else {
+      setSelectedDistributors(prev => prev.filter(id => id !== distributorId))
+    }
+  }
+
+  const handleClearSelection = () => {
+    setSelectedDistributors([])
+  }
+
+  const handleRefresh = () => {
+    // In a real app, this would refetch data
+    console.log("Refreshing distributor data...")
+  }
 
   return (
     <div className="space-y-6">
@@ -194,17 +224,14 @@ export function DistributorManagement() {
             Manage your distributor network and track performance
           </p>
         </div>
-        <div className="flex items-center space-x-2">
-          <Button variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Distributor
-          </Button>
-        </div>
       </div>
+
+      {/* Actions Component */}
+      <DistributorActions 
+        selectedDistributors={selectedDistributors}
+        onClearSelection={handleClearSelection}
+        onRefresh={handleRefresh}
+      />
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -263,10 +290,11 @@ export function DistributorManagement() {
           </SelectContent>
         </Select>
 
-        <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "cards")}>
+        <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "cards" | "analytics")}>
           <TabsList>
             <TabsTrigger value="table">Table</TabsTrigger>
             <TabsTrigger value="cards">Cards</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -285,6 +313,12 @@ export function DistributorManagement() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-12">
+                      <Checkbox
+                        checked={selectedDistributors.length === filteredDistributors.length && filteredDistributors.length > 0}
+                        onCheckedChange={handleSelectAll}
+                      />
+                    </TableHead>
                     <TableHead>Distributor</TableHead>
                     <TableHead>Rank</TableHead>
                     <TableHead>Status</TableHead>
@@ -299,6 +333,12 @@ export function DistributorManagement() {
                 <TableBody>
                   {filteredDistributors.map((distributor) => (
                     <TableRow key={distributor.id}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedDistributors.includes(distributor.id)}
+                          onCheckedChange={(checked) => handleSelectDistributor(distributor.id, checked as boolean)}
+                        />
+                      </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-3">
                           <Avatar className="h-8 w-8">
@@ -442,6 +482,10 @@ export function DistributorManagement() {
               </Card>
             ))}
           </div>
+        </TabsContent>
+
+        <TabsContent value="analytics" className="space-y-4">
+          <DistributorAnalytics />
         </TabsContent>
       </Tabs>
     </div>

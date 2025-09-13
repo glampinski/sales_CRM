@@ -34,120 +34,98 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-// Mock product data
+// Mock product data - Timeshare products only
 const products = [
   {
     id: 1,
-    name: "Wellness Pack Premium",
-    sku: "WP-001",
-    category: "Wellness",
-    price: 89.99,
-    wholesalePrice: 54.00,
-    pv: 65,
-    stock: 150,
+    name: "Full Share",
+    sku: "TS-FULL",
+    category: "Timeshare",
+    price: 150000.00,
+    wholesalePrice: 112500.00, // 75% commission
+    pv: 1500,
+    stock: 25,
     status: "active" as const,
     image: "/placeholder.jpg",
-    description: "Complete wellness solution with vitamins and minerals",
-    rating: 4.8,
-    reviews: 124,
-    sales: 89,
-    tags: ["Popular", "Best Seller"],
+    description: "Full ownership share with 365 days/year access and complete privileges",
+    rating: 4.9,
+    reviews: 45,
+    sales: 12,
+    tags: ["Popular", "Full Access", "Premium"],
+    fraction: "1/1",
+    usageDays: "365 days/year",
+    commissionShare: "75%",
   },
   {
     id: 2,
-    name: "Beauty Essentials Set",
-    sku: "BE-002",
-    category: "Beauty",
-    price: 129.99,
-    wholesalePrice: 78.00,
-    pv: 95,
-    stock: 85,
+    name: "1/2 Share",
+    sku: "TS-HALF",
+    category: "Timeshare",
+    price: 80000.00,
+    wholesalePrice: 58000.00, // 72.5% commission
+    pv: 800,
+    stock: 40,
     status: "active" as const,
     image: "/placeholder.jpg",
-    description: "Premium skincare and beauty products collection",
-    rating: 4.9,
-    reviews: 89,
-    sales: 67,
-    tags: ["Premium", "New"],
+    description: "Half ownership share with 180 days/year access and standard privileges",
+    rating: 4.8,
+    reviews: 67,
+    sales: 28,
+    tags: ["Best Seller", "Balanced"],
+    fraction: "1/2",
+    usageDays: "180 days/year",
+    commissionShare: "72.5%",
   },
   {
     id: 3,
-    name: "Fitness Boost Formula",
-    sku: "FB-003",
-    category: "Fitness",
-    price: 45.99,
-    wholesalePrice: 27.60,
-    pv: 35,
-    stock: 220,
+    name: "1/4 Share",
+    sku: "TS-QUARTER",
+    category: "Timeshare",
+    price: 42500.00,
+    wholesalePrice: 29750.00, // 70% commission
+    pv: 425,
+    stock: 60,
     status: "active" as const,
     image: "/placeholder.jpg",
-    description: "Energy and performance enhancement supplement",
-    rating: 4.6,
-    reviews: 156,
-    sales: 134,
-    tags: ["Fast Moving"],
+    description: "Quarter ownership share with 90 days/year access and basic privileges",
+    rating: 4.7,
+    reviews: 89,
+    sales: 45,
+    tags: ["Popular Choice", "Affordable"],
+    fraction: "1/4",
+    usageDays: "90 days/year",
+    commissionShare: "70%",
   },
   {
     id: 4,
-    name: "Complete Nutrition Bundle",
-    sku: "CN-004",
-    category: "Nutrition",
-    price: 199.99,
-    wholesalePrice: 120.00,
-    pv: 150,
-    stock: 45,
+    name: "1/8 Share",
+    sku: "TS-EIGHTH",
+    category: "Timeshare",
+    price: 21250.00,
+    wholesalePrice: 14343.75, // 67.5% commission
+    pv: 212,
+    stock: 80,
     status: "active" as const,
     image: "/placeholder.jpg",
-    description: "Comprehensive nutrition package for optimal health",
-    rating: 4.7,
-    reviews: 78,
-    sales: 34,
-    tags: ["Bundle", "High Value"],
-  },
-  {
-    id: 5,
-    name: "Organic Green Tea Extract",
-    sku: "GT-005",
-    category: "Wellness",
-    price: 29.99,
-    wholesalePrice: 18.00,
-    pv: 22,
-    stock: 8,
-    status: "low_stock" as const,
-    image: "/placeholder.jpg",
-    description: "Pure organic green tea extract for antioxidant support",
-    rating: 4.5,
-    reviews: 92,
-    sales: 78,
-    tags: ["Organic", "Low Stock"],
-  },
-  {
-    id: 6,
-    name: "Sleep Support Formula",
-    sku: "SS-006",
-    category: "Wellness",
-    price: 39.99,
-    wholesalePrice: 24.00,
-    pv: 30,
-    stock: 0,
-    status: "out_of_stock" as const,
-    image: "/placeholder.jpg",
-    description: "Natural sleep aid with melatonin and herbs",
-    rating: 4.4,
-    reviews: 67,
-    sales: 56,
-    tags: ["Out of Stock"],
+    description: "Eighth ownership share with 40 days/year access and essential privileges",
+    rating: 4.6,
+    reviews: 124,
+    sales: 67,
+    tags: ["Entry Level", "Starter"],
+    fraction: "1/8",
+    usageDays: "40 days/year",
+    commissionShare: "67.5%",
   },
 ]
 
 const stats = [
-  { label: "Total Products", value: "156", change: "+8", icon: Package },
-  { label: "Active Products", value: "142", change: "+5", icon: Package },
-  { label: "Avg. Product Value", value: "$89.50", change: "+$5.20", icon: DollarSign },
-  { label: "Top Performer PV", value: "150", change: "+12", icon: TrendingUp },
+  { label: "Total Products", value: "4", change: "0", icon: Package },
+  { label: "Active Products", value: "4", change: "0", icon: Package },
+  { label: "Avg. Product Value", value: "€73,437", change: "+€2,100", icon: DollarSign },
+  { label: "Total Shares Sold", value: "152", change: "+8", icon: TrendingUp },
 ]
 
-const categories = ["All", "Wellness", "Beauty", "Fitness", "Nutrition"]
+const categories = ["All", "Timeshare"]
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -165,9 +143,9 @@ export default function ProductsPage() {
   })
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-EU', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'EUR',
     }).format(amount)
   }
 
@@ -218,7 +196,7 @@ export default function ProductsPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-muted-foreground">Retail Price</p>
+            <p className="text-sm text-muted-foreground">Share Price</p>
             <p className="text-lg font-bold">{formatCurrency(product.price)}</p>
           </div>
           <div>
@@ -229,14 +207,28 @@ export default function ProductsPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-muted-foreground">Wholesale</p>
+            <p className="text-sm text-muted-foreground">Commission</p>
             <p className="text-sm font-medium">{formatCurrency(product.wholesalePrice)}</p>
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Stock</p>
-            <p className="text-sm font-medium">{product.stock} units</p>
+            <p className="text-sm text-muted-foreground">Available</p>
+            <p className="text-sm font-medium">{product.stock} shares</p>
           </div>
         </div>
+
+        {/* Timeshare-specific info */}
+        {(product as any).fraction && (
+          <div className="grid grid-cols-2 gap-4 pt-2 border-t">
+            <div>
+              <p className="text-sm text-muted-foreground">Ownership</p>
+              <p className="text-sm font-medium">{(product as any).fraction}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Usage Days</p>
+              <p className="text-sm font-medium">{(product as any).usageDays}</p>
+            </div>
+          </div>
+        )}
 
         <div>
           <p className="text-sm text-muted-foreground mb-2">Tags</p>
@@ -288,9 +280,9 @@ export default function ProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Product Catalog</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Timeshare Products</h1>
           <p className="text-muted-foreground">
-            Manage your product inventory and pricing
+            Manage your timeshare offerings and ownership levels
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -383,22 +375,22 @@ export default function ProductsPage() {
         <TabsContent value="table">
           <Card>
             <CardHeader>
-              <CardTitle>Products ({filteredProducts.length})</CardTitle>
+              <CardTitle>Timeshare Products ({filteredProducts.length})</CardTitle>
               <CardDescription>
-                Manage your product catalog and inventory
+                Manage your timeshare ownership levels and pricing
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Product</TableHead>
+                    <TableHead>Timeshare Type</TableHead>
                     <TableHead>SKU</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Retail Price</TableHead>
-                    <TableHead>Wholesale</TableHead>
+                    <TableHead>Ownership</TableHead>
+                    <TableHead>Share Price</TableHead>
+                    <TableHead>Commission</TableHead>
                     <TableHead>PV</TableHead>
-                    <TableHead>Stock</TableHead>
+                    <TableHead>Available</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Sales</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -422,13 +414,18 @@ export default function ProductsPage() {
                         </div>
                       </TableCell>
                       <TableCell className="font-mono text-sm">{product.sku}</TableCell>
-                      <TableCell>{product.category}</TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-medium">{(product as any).fraction || 'N/A'}</span>
+                          <span className="text-xs text-muted-foreground">{(product as any).usageDays || ''}</span>
+                        </div>
+                      </TableCell>
                       <TableCell className="font-medium">{formatCurrency(product.price)}</TableCell>
                       <TableCell>{formatCurrency(product.wholesalePrice)}</TableCell>
                       <TableCell className="font-medium">{product.pv}</TableCell>
                       <TableCell>
                         <span className={product.stock < 20 ? "text-red-600 font-medium" : ""}>
-                          {product.stock}
+                          {product.stock} shares
                         </span>
                       </TableCell>
                       <TableCell>

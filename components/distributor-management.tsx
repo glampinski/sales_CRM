@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -35,15 +35,34 @@ import {
   Award,
   UserPlus,
   Download,
-  Send
+  Send,
+  Calendar,
+  MapPin,
+  Building2,
+  Phone,
+  Mail,
+  RefreshCw,
+  SortAsc,
+  SortDesc,
+  Settings,
+  FileText,
+  Activity,
+  Star
 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Progress } from "@/components/ui/progress"
 import { DistributorActions } from "@/components/distributor-actions"
 import { DistributorAnalytics } from "@/components/distributor-analytics"
 
@@ -51,6 +70,7 @@ interface DistributorSummary {
   id: string
   name: string
   email: string
+  phone?: string
   avatar?: string
   rank: "Bronze" | "Silver" | "Gold" | "Platinum" | "Diamond" | "Ambassador"
   status: "active" | "inactive" | "pending" | "suspended"
@@ -62,6 +82,21 @@ interface DistributorSummary {
   directRecruit: number
   teamSize: number
   lastActivity: string
+  sponsor?: string
+  notes?: string
+  achievementPoints: number
+  nextRankRequirement: number
+  profileCompleteness: number
+}
+
+type SortField = "name" | "rank" | "status" | "personalVolume" | "groupVolume" | "teamSize" | "totalCommission" | "joinDate" | "lastActivity"
+type SortDirection = "asc" | "desc"
+
+interface TableColumn {
+  key: string
+  label: string
+  sortable: boolean
+  visible: boolean
 }
 
 // Mock distributors data
@@ -70,6 +105,7 @@ const mockDistributors: DistributorSummary[] = [
     id: "dist-001",
     name: "Sarah Johnson",
     email: "sarah.johnson@email.com",
+    phone: "+1 (555) 123-4567",
     avatar: "/placeholder-user.jpg",
     rank: "Gold",
     status: "active",
@@ -80,12 +116,18 @@ const mockDistributors: DistributorSummary[] = [
     totalCommission: 4687.50,
     directRecruit: 8,
     teamSize: 23,
-    lastActivity: "2025-09-12"
+    lastActivity: "2025-09-12",
+    sponsor: "Michael Thompson",
+    notes: "High performer, excellent team builder",
+    achievementPoints: 1250,
+    nextRankRequirement: 2000,
+    profileCompleteness: 95
   },
   {
     id: "dist-002", 
     name: "Michael Chen",
     email: "michael.chen@email.com",
+    phone: "+1 (555) 234-5678",
     rank: "Silver",
     status: "active",
     joinDate: "2023-06-20",
@@ -95,12 +137,18 @@ const mockDistributors: DistributorSummary[] = [
     totalCommission: 1875.00,
     directRecruit: 4,
     teamSize: 12,
-    lastActivity: "2025-09-11"
+    lastActivity: "2025-09-11",
+    sponsor: "Jennifer Davis",
+    notes: "Consistent performer, needs support with team building",
+    achievementPoints: 850,
+    nextRankRequirement: 1500,
+    profileCompleteness: 88
   },
   {
     id: "dist-003",
     name: "Emma Wilson",
     email: "emma.wilson@email.com",
+    phone: "+1 (555) 345-6789",
     rank: "Platinum",
     status: "active",
     joinDate: "2022-11-10",
@@ -110,12 +158,18 @@ const mockDistributors: DistributorSummary[] = [
     totalCommission: 8500.00,
     directRecruit: 12,
     teamSize: 45,
-    lastActivity: "2025-09-13"
+    lastActivity: "2025-09-13",
+    sponsor: "Robert Miller",
+    notes: "Top performer, mentor to new distributors",
+    achievementPoints: 3200,
+    nextRankRequirement: 5000,
+    profileCompleteness: 98
   },
   {
     id: "dist-004",
     name: "David Rodriguez",
     email: "david.rodriguez@email.com",
+    phone: "+1 (555) 456-7890",
     rank: "Bronze",
     status: "pending",
     joinDate: "2025-08-15",
@@ -125,12 +179,18 @@ const mockDistributors: DistributorSummary[] = [
     totalCommission: 425.00,
     directRecruit: 1,
     teamSize: 3,
-    lastActivity: "2025-09-10"
+    lastActivity: "2025-09-10",
+    sponsor: "Amanda Wilson",
+    notes: "New distributor, requires onboarding support",
+    achievementPoints: 150,
+    nextRankRequirement: 500,
+    profileCompleteness: 65
   },
   {
     id: "dist-005",
     name: "Lisa Anderson",
     email: "lisa.anderson@email.com",
+    phone: "+1 (555) 567-8901",
     rank: "Diamond",
     status: "active",
     joinDate: "2021-08-05",
@@ -140,7 +200,12 @@ const mockDistributors: DistributorSummary[] = [
     totalCommission: 18750.00,
     directRecruit: 18,
     teamSize: 89,
-    lastActivity: "2025-09-13"
+    lastActivity: "2025-09-13",
+    sponsor: "Corporate",
+    notes: "Regional leader, excellent mentor and trainer",
+    achievementPoints: 8500,
+    nextRankRequirement: 10000,
+    profileCompleteness: 100
   }
 ]
 
@@ -173,21 +238,110 @@ const stats = [
   { label: "Diamond Rank", value: "8", change: "+2", icon: Crown },
 ]
 
+const defaultColumns: TableColumn[] = [
+  { key: "distributor", label: "Distributor", sortable: true, visible: true },
+  { key: "rank", label: "Rank", sortable: true, visible: true },
+  { key: "status", label: "Status", sortable: true, visible: true },
+  { key: "personalVolume", label: "Personal Volume", sortable: true, visible: true },
+  { key: "groupVolume", label: "Group Volume", sortable: true, visible: true },
+  { key: "teamSize", label: "Team Size", sortable: true, visible: true },
+  { key: "commission", label: "Commission", sortable: true, visible: true },
+  { key: "joinDate", label: "Join Date", sortable: true, visible: false },
+  { key: "lastActivity", label: "Last Activity", sortable: true, visible: true },
+  { key: "location", label: "Location", sortable: true, visible: false },
+  { key: "sponsor", label: "Sponsor", sortable: true, visible: false },
+  { key: "progress", label: "Progress", sortable: false, visible: false },
+]
+
 export function DistributorManagement() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [rankFilter, setRankFilter] = useState("all")
+  const [locationFilter, setLocationFilter] = useState("all")
   const [viewMode, setViewMode] = useState<"table" | "cards" | "analytics">("table")
   const [selectedDistributors, setSelectedDistributors] = useState<string[]>([])
   const [showArchived, setShowArchived] = useState(false)
+  const [sortField, setSortField] = useState<SortField>("name")
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc")
+  const [tableColumns, setTableColumns] = useState<TableColumn[]>(defaultColumns)
+  const [isLoading, setIsLoading] = useState(false)
+  const [compactView, setCompactView] = useState(false)
+  const [autoRefresh, setAutoRefresh] = useState(false)
+
+  // Get unique locations for filter
+  const uniqueLocations = Array.from(new Set(mockDistributors.map(d => d.location.split(',')[1]?.trim() || d.location)))
 
   const filteredDistributors = mockDistributors.filter(distributor => {
     const matchesSearch = distributor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         distributor.email.toLowerCase().includes(searchTerm.toLowerCase())
+                         distributor.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         distributor.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (distributor.sponsor && distributor.sponsor.toLowerCase().includes(searchTerm.toLowerCase()))
     const matchesStatus = statusFilter === "all" || distributor.status === statusFilter
     const matchesRank = rankFilter === "all" || distributor.rank === rankFilter
-    return matchesSearch && matchesStatus && matchesRank
+    const matchesLocation = locationFilter === "all" || distributor.location.includes(locationFilter)
+    return matchesSearch && matchesStatus && matchesRank && matchesLocation
+  }).sort((a, b) => {
+    let aValue: any
+    let bValue: any
+    
+    switch (sortField) {
+      case "name":
+        aValue = a.name
+        bValue = b.name
+        break
+      case "rank":
+        const rankOrder = ["Bronze", "Silver", "Gold", "Platinum", "Diamond", "Ambassador"]
+        aValue = rankOrder.indexOf(a.rank)
+        bValue = rankOrder.indexOf(b.rank)
+        break
+      case "status":
+        aValue = a.status
+        bValue = b.status
+        break
+      case "personalVolume":
+        aValue = a.personalVolume
+        bValue = b.personalVolume
+        break
+      case "groupVolume":
+        aValue = a.groupVolume
+        bValue = b.groupVolume
+        break
+      case "teamSize":
+        aValue = a.teamSize
+        bValue = b.teamSize
+        break
+      case "totalCommission":
+        aValue = a.totalCommission
+        bValue = b.totalCommission
+        break
+      case "joinDate":
+        aValue = new Date(a.joinDate)
+        bValue = new Date(b.joinDate)
+        break
+      case "lastActivity":
+        aValue = new Date(a.lastActivity)
+        bValue = new Date(b.lastActivity)
+        break
+      default:
+        aValue = a.name
+        bValue = b.name
+    }
+
+    if (sortDirection === "asc") {
+      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+    } else {
+      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+    }
   })
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+    } else {
+      setSortField(field)
+      setSortDirection("asc")
+    }
+  }
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
@@ -209,10 +363,34 @@ export function DistributorManagement() {
     setSelectedDistributors([])
   }
 
-  const handleRefresh = () => {
-    // In a real app, this would refetch data
-    console.log("Refreshing distributor data...")
+  const handleRefresh = async () => {
+    setIsLoading(true)
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    setIsLoading(false)
   }
+
+  const handleViewProfile = (distributor: DistributorSummary) => {
+    // For now, we'll use an alert. In a real app, this would navigate to a profile page
+    // or open a detailed profile modal
+    alert(`Viewing profile for ${distributor.name}\nRank: ${distributor.rank}\nTeam Size: ${distributor.teamSize}`)
+  }
+
+  const handleColumnToggle = (columnKey: string, visible: boolean) => {
+    setTableColumns(prev => 
+      prev.map(col => 
+        col.key === columnKey ? { ...col, visible } : col
+      )
+    )
+  }
+
+  // Auto-refresh functionality
+  useEffect(() => {
+    if (autoRefresh) {
+      const interval = setInterval(handleRefresh, 30000) // Refresh every 30 seconds
+      return () => clearInterval(interval)
+    }
+  }, [autoRefresh])
 
   return (
     <div className="space-y-6">
@@ -221,8 +399,31 @@ export function DistributorManagement() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Distributor Management</h1>
           <p className="text-muted-foreground">
-            Manage your distributor network and track performance
+            Manage your distributor network and track performance ({filteredDistributors.length} of {mockDistributors.length} distributors)
           </p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 text-sm">
+            <Switch
+              id="auto-refresh"
+              checked={autoRefresh}
+              onCheckedChange={setAutoRefresh}
+            />
+            <Label htmlFor="auto-refresh">Auto-refresh</Label>
+          </div>
+          <Separator orientation="vertical" className="h-6" />
+          <div className="flex items-center space-x-2 text-sm">
+            <Switch
+              id="compact-view"
+              checked={compactView}
+              onCheckedChange={setCompactView}
+            />
+            <Label htmlFor="compact-view">Compact</Label>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
+            <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
         </div>
       </div>
 
@@ -251,12 +452,12 @@ export function DistributorManagement() {
         ))}
       </div>
 
-      {/* Filters */}
-      <div className="flex items-center space-x-4">
-        <div className="relative flex-1 max-w-sm">
+      {/* Enhanced Filters */}
+      <div className="flex flex-wrap items-center gap-4 p-4 bg-muted/50 rounded-lg">
+        <div className="relative flex-1 min-w-[250px] max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search distributors..."
+            placeholder="Search distributors, emails, locations..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-8"
@@ -287,8 +488,43 @@ export function DistributorManagement() {
             <SelectItem value="Gold">Gold</SelectItem>
             <SelectItem value="Silver">Silver</SelectItem>
             <SelectItem value="Bronze">Bronze</SelectItem>
+            <SelectItem value="Ambassador">Ambassador</SelectItem>
           </SelectContent>
         </Select>
+
+        <Select value={locationFilter} onValueChange={setLocationFilter}>
+          <SelectTrigger className="w-[130px]">
+            <SelectValue placeholder="Location" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Locations</SelectItem>
+            {uniqueLocations.map(location => (
+              <SelectItem key={location} value={location}>{location}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Settings className="h-4 w-4 mr-2" />
+              Columns
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[200px]">
+            <DropdownMenuLabel>Show Columns</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {tableColumns.map(column => (
+              <DropdownMenuCheckboxItem
+                key={column.key}
+                checked={column.visible}
+                onCheckedChange={(checked) => handleColumnToggle(column.key, checked)}
+              >
+                {column.label}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "cards" | "analytics")}>
           <TabsList>
@@ -306,7 +542,7 @@ export function DistributorManagement() {
             <CardHeader>
               <CardTitle>Distributors ({filteredDistributors.length})</CardTitle>
               <CardDescription>
-                Complete list of distributors in your network
+                Complete list of distributors in your network with enhanced sorting and filtering
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -319,57 +555,131 @@ export function DistributorManagement() {
                         onCheckedChange={handleSelectAll}
                       />
                     </TableHead>
-                    <TableHead>Distributor</TableHead>
-                    <TableHead>Rank</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Personal Volume</TableHead>
-                    <TableHead>Group Volume</TableHead>
-                    <TableHead>Team Size</TableHead>
-                    <TableHead>Commission</TableHead>
-                    <TableHead>Last Activity</TableHead>
+                    {tableColumns.filter(col => col.visible).map(column => (
+                      <TableHead 
+                        key={column.key}
+                        className={column.sortable ? "cursor-pointer hover:bg-muted/50" : ""}
+                        onClick={() => column.sortable && handleSort(column.key as SortField)}
+                      >
+                        <div className="flex items-center space-x-1">
+                          <span>{column.label}</span>
+                          {column.sortable && sortField === column.key && (
+                            sortDirection === "asc" ? 
+                              <SortAsc className="h-4 w-4" /> : 
+                              <SortDesc className="h-4 w-4" />
+                          )}
+                        </div>
+                      </TableHead>
+                    ))}
                     <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredDistributors.map((distributor) => (
-                    <TableRow key={distributor.id}>
+                    <TableRow key={distributor.id} className={compactView ? "h-12" : ""}>
                       <TableCell>
                         <Checkbox
                           checked={selectedDistributors.includes(distributor.id)}
                           onCheckedChange={(checked) => handleSelectDistributor(distributor.id, checked as boolean)}
                         />
                       </TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={distributor.avatar} />
-                            <AvatarFallback>
-                              {distributor.name.split(' ').map(n => n[0]).join('')}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium">{distributor.name}</p>
-                            <p className="text-sm text-muted-foreground">{distributor.email}</p>
+                      
+                      {tableColumns.find(col => col.key === "distributor")?.visible && (
+                        <TableCell>
+                          <div className="flex items-center space-x-3">
+                            <Avatar className={compactView ? "h-6 w-6" : "h-8 w-8"}>
+                              <AvatarImage src={distributor.avatar} />
+                              <AvatarFallback>
+                                {distributor.name.split(' ').map(n => n[0]).join('')}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className={`font-medium ${compactView ? 'text-sm' : ''}`}>{distributor.name}</p>
+                              {!compactView && (
+                                <p className="text-sm text-muted-foreground">{distributor.email}</p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getRankColor(distributor.rank)}>
-                          {distributor.rank}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getStatusColor(distributor.status)}>
-                          {distributor.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>${distributor.personalVolume.toLocaleString()}</TableCell>
-                      <TableCell>${distributor.groupVolume.toLocaleString()}</TableCell>
-                      <TableCell>{distributor.teamSize}</TableCell>
-                      <TableCell>${distributor.totalCommission.toLocaleString()}</TableCell>
-                      <TableCell>
-                        {new Date(distributor.lastActivity).toLocaleDateString()}
-                      </TableCell>
+                        </TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "rank")?.visible && (
+                        <TableCell>
+                          <Badge className={`${getRankColor(distributor.rank)} ${compactView ? 'text-xs px-1.5 py-0.5' : ''}`}>
+                            {distributor.rank}
+                          </Badge>
+                        </TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "status")?.visible && (
+                        <TableCell>
+                          <Badge className={`${getStatusColor(distributor.status)} ${compactView ? 'text-xs px-1.5 py-0.5' : ''}`}>
+                            {distributor.status}
+                          </Badge>
+                        </TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "personalVolume")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>${distributor.personalVolume.toLocaleString()}</TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "groupVolume")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>${distributor.groupVolume.toLocaleString()}</TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "teamSize")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>{distributor.teamSize}</TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "commission")?.visible && (
+                        <TableCell className={`text-green-600 font-medium ${compactView ? 'text-sm' : ''}`}>
+                          ${distributor.totalCommission.toLocaleString()}
+                        </TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "joinDate")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>
+                          {new Date(distributor.joinDate).toLocaleDateString()}
+                        </TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "lastActivity")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>
+                          {new Date(distributor.lastActivity).toLocaleDateString()}
+                        </TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "location")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>
+                          <div className="flex items-center space-x-1">
+                            <MapPin className="h-4 w-4 text-muted-foreground" />
+                            <span>{distributor.location}</span>
+                          </div>
+                        </TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "sponsor")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>{distributor.sponsor || "N/A"}</TableCell>
+                      )}
+                      
+                      {tableColumns.find(col => col.key === "progress")?.visible && (
+                        <TableCell>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs">
+                              <span>Profile: {distributor.profileCompleteness}%</span>
+                              <span>Rank Progress</span>
+                            </div>
+                            <div className="space-y-1">
+                              <Progress value={distributor.profileCompleteness} className="h-1" />
+                              <Progress 
+                                value={(distributor.achievementPoints / distributor.nextRankRequirement) * 100} 
+                                className="h-1" 
+                              />
+                            </div>
+                          </div>
+                        </TableCell>
+                      )}
+                      
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -378,7 +688,7 @@ export function DistributorManagement() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleViewProfile(distributor)}>
                               <Eye className="mr-2 h-4 w-4" />
                               View Profile
                             </DropdownMenuItem>
@@ -389,6 +699,24 @@ export function DistributorManagement() {
                             <DropdownMenuItem>
                               <Send className="mr-2 h-4 w-4" />
                               Send Message
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                              <Phone className="mr-2 h-4 w-4" />
+                              Call: {distributor.phone}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Mail className="mr-2 h-4 w-4" />
+                              Email: {distributor.email}
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                              <FileText className="mr-2 h-4 w-4" />
+                              View Reports
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Activity className="mr-2 h-4 w-4" />
+                              Activity Log
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -402,9 +730,9 @@ export function DistributorManagement() {
         </TabsContent>
 
         <TabsContent value="cards" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredDistributors.map((distributor) => (
-              <Card key={distributor.id} className="hover:shadow-lg transition-shadow">
+              <Card key={distributor.id} className="hover:shadow-lg transition-all duration-200 cursor-pointer" onClick={() => handleViewProfile(distributor)}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
@@ -416,41 +744,67 @@ export function DistributorManagement() {
                       </Avatar>
                       <div>
                         <CardTitle className="text-lg">{distributor.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground">{distributor.location}</p>
+                        <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                          <MapPin className="h-3 w-3" />
+                          <span>{distributor.location}</span>
+                        </div>
                       </div>
                     </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Profile
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Send className="mr-2 h-4 w-4" />
-                          Send Message
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="flex flex-col items-end space-y-1">
+                      <Checkbox
+                        checked={selectedDistributors.includes(distributor.id)}
+                        onCheckedChange={(checked) => {
+                          handleSelectDistributor(distributor.id, checked as boolean)
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                          <Button variant="ghost" size="icon" className="h-6 w-6">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleViewProfile(distributor)}}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View Profile
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                            <Send className="mr-2 h-4 w-4" />
+                            Send Message
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                            <Phone className="mr-2 h-4 w-4" />
+                            Call
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                            <Mail className="mr-2 h-4 w-4" />
+                            Email
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge className={getRankColor(distributor.rank)}>
-                      {distributor.rank}
-                    </Badge>
-                    <Badge className={getStatusColor(distributor.status)}>
-                      {distributor.status}
-                    </Badge>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Badge className={getRankColor(distributor.rank)}>
+                        {distributor.rank}
+                      </Badge>
+                      <Badge className={getStatusColor(distributor.status)}>
+                        {distributor.status}
+                      </Badge>
+                    </div>
+                    {distributor.rank === "Diamond" && (
+                      <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                    )}
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-muted-foreground">Personal Volume</p>
@@ -469,12 +823,57 @@ export function DistributorManagement() {
                       <p className="font-semibold text-green-600">${distributor.totalCommission.toLocaleString()}</p>
                     </div>
                   </div>
+                  
+                  {/* Progress Indicators */}
+                  <div className="space-y-2">
+                    <div>
+                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                        <span>Profile Complete</span>
+                        <span>{distributor.profileCompleteness}%</span>
+                      </div>
+                      <Progress value={distributor.profileCompleteness} className="h-2" />
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                        <span>Next Rank Progress</span>
+                        <span>{Math.round((distributor.achievementPoints / distributor.nextRankRequirement) * 100)}%</span>
+                      </div>
+                      <Progress 
+                        value={(distributor.achievementPoints / distributor.nextRankRequirement) * 100} 
+                        className="h-2" 
+                      />
+                    </div>
+                  </div>
+
+                  {/* Additional Info */}
+                  <div className="space-y-1 text-xs text-muted-foreground">
+                    <div className="flex items-center justify-between">
+                      <span>Sponsor:</span>
+                      <span className="font-medium">{distributor.sponsor || "Direct"}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Joined:</span>
+                      <span>{new Date(distributor.joinDate).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Last Active:</span>
+                      <span>{new Date(distributor.lastActivity).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+
                   <div className="flex justify-between items-center pt-2 border-t">
-                    <span className="text-xs text-muted-foreground">
-                      Last active: {new Date(distributor.lastActivity).toLocaleDateString()}
-                    </span>
-                    <Button variant="outline" size="sm">
-                      <Eye className="h-4 w-4 mr-1" />
+                    <div className="flex items-center space-x-2">
+                      <Button variant="outline" size="sm" onClick={(e) => {e.stopPropagation(); /* Call functionality */}}>
+                        <Phone className="h-3 w-3 mr-1" />
+                        Call
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={(e) => {e.stopPropagation(); /* Email functionality */}}>
+                        <Mail className="h-3 w-3 mr-1" />
+                        Email
+                      </Button>
+                    </div>
+                    <Button variant="default" size="sm" onClick={(e) => {e.stopPropagation(); handleViewProfile(distributor)}}>
+                      <Eye className="h-3 w-3 mr-1" />
                       View
                     </Button>
                   </div>

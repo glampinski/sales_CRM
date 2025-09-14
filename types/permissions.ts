@@ -3,14 +3,14 @@
 // =============================================================================
 
 // User roles in the system
-export type UserRole = 'super_admin' | 'admin' | 'manager' | 'distributor' | 'user'
+export type UserRole = 'super_admin' | 'admin' | 'manager' | 'affiliate' | 'customer'
 
 // Permission modules (main areas of the application)
 export type PermissionModule = 
   | 'dashboard'
   | 'users' 
   | 'customers'
-  | 'distributors'
+  | 'affiliates'
   | 'products'
   | 'orders'
   | 'analytics'
@@ -25,7 +25,7 @@ export const PERMISSION_MODULES: PermissionModule[] = [
   'dashboard',
   'users',
   'customers',
-  'distributors',
+  'affiliates',
   'products',
   'orders',
   'analytics',
@@ -117,7 +117,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
       'dashboard:view',
       'users:view', 'users:create', 'users:edit', 'users:manage',
       'customers:view', 'customers:create', 'customers:edit', 'customers:delete', 'customers:export',
-      'distributors:view', 'distributors:create', 'distributors:edit', 'distributors:manage',
+      'affiliates:view', 'affiliates:create', 'affiliates:edit', 'affiliates:manage',
       'products:view', 'products:create', 'products:edit', 'products:delete',
       'orders:view', 'orders:create', 'orders:edit', 'orders:manage',
       'analytics:view', 'analytics:export',
@@ -131,7 +131,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
       dashboard: { enabled: true, actions: ['view'] },
       users: { enabled: true, actions: ['view', 'create', 'edit', 'manage'] },
       customers: { enabled: true, actions: ['view', 'create', 'edit', 'delete', 'export'] },
-      distributors: { enabled: true, actions: ['view', 'create', 'edit', 'manage'] },
+      affiliates: { enabled: true, actions: ['view', 'create', 'edit', 'manage'] },
       products: { enabled: true, actions: ['view', 'create', 'edit', 'delete'] },
       orders: { enabled: true, actions: ['view', 'create', 'edit', 'manage'] },
       analytics: { enabled: true, actions: ['view', 'export'] },
@@ -150,7 +150,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
       'dashboard:view',
       'users:view',
       'customers:view', 'customers:create', 'customers:edit', 'customers:export',
-      'distributors:view', 'distributors:edit',
+      'affiliates:view', 'affiliates:edit',
       'products:view',
       'orders:view', 'orders:edit',
       'analytics:view',
@@ -161,7 +161,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
       dashboard: { enabled: true, actions: ['view'] },
       users: { enabled: true, actions: ['view'] },
       customers: { enabled: true, actions: ['view', 'create', 'edit', 'export'] },
-      distributors: { enabled: true, actions: ['view', 'edit'] },
+      affiliates: { enabled: true, actions: ['view', 'edit'] },
       products: { enabled: true, actions: ['view'] },
       orders: { enabled: true, actions: ['view', 'edit'] },
       analytics: { enabled: true, actions: ['view'] },
@@ -170,9 +170,9 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     }
   },
   
-  distributor: {
-    role: 'distributor',
-    description: 'Distributor access for MLM operations',
+  affiliate: {
+    role: 'affiliate',
+    description: 'Affiliate access for MLM operations',
     permissions: [
       'dashboard:view',
       'customers:view', 'customers:create',
@@ -191,9 +191,9 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     }
   },
   
-  user: {
-    role: 'user',
-    description: 'Basic user access',
+  customer: {
+    role: 'customer',
+    description: 'Basic customer access',
     permissions: [
       'dashboard:view',
       'products:view',
@@ -221,8 +221,8 @@ export const DASHBOARD_WIDGETS: DashboardWidget[] = [
       super_admin: { enabled: true, variant: 'full' },
       admin: { enabled: true, variant: 'detailed' },
       manager: { enabled: true, variant: 'summary' },
-      distributor: { enabled: true, variant: 'personal' },
-      user: { enabled: false }
+      affiliate: { enabled: true, variant: 'personal' },
+      customer: { enabled: false }
     }
   },
   {
@@ -237,8 +237,8 @@ export const DASHBOARD_WIDGETS: DashboardWidget[] = [
       super_admin: { enabled: true },
       admin: { enabled: true },
       manager: { enabled: true, variant: 'basic' },
-      distributor: { enabled: false },
-      user: { enabled: false }
+      affiliate: { enabled: false },
+      customer: { enabled: false }
     }
   },
   {
@@ -253,8 +253,8 @@ export const DASHBOARD_WIDGETS: DashboardWidget[] = [
       super_admin: { enabled: true },
       admin: { enabled: true },
       manager: { enabled: true },
-      distributor: { enabled: true, variant: 'personal' },
-      user: { enabled: true, variant: 'personal' }
+      affiliate: { enabled: true, variant: 'personal' },
+      customer: { enabled: true, variant: 'personal' }
     }
   },
   {
@@ -278,8 +278,8 @@ export const DASHBOARD_WIDGETS: DashboardWidget[] = [
       super_admin: { enabled: true },
       admin: { enabled: true },
       manager: { enabled: false },
-      distributor: { enabled: true, variant: 'personal' },
-      user: { enabled: false }
+      affiliate: { enabled: true, variant: 'personal' },
+      customer: { enabled: false }
     }
   },
   {
@@ -294,8 +294,8 @@ export const DASHBOARD_WIDGETS: DashboardWidget[] = [
       super_admin: { enabled: true },
       admin: { enabled: true },
       manager: { enabled: true },
-      distributor: { enabled: false },
-      user: { enabled: false }
+      affiliate: { enabled: false },
+      customer: { enabled: false }
     }
   }
 ]

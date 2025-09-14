@@ -94,8 +94,8 @@ interface Customer {
   totalUsageDays: number
   usedDays: number
   lastActivity: string
-  distributorId?: string
-  distributorName?: string
+  affiliateId?: string
+  affiliateName?: string
   timeshareOwnerships: TimeshareOwnership[]
   contractsCount: number
   documentsStatus: "complete" | "incomplete" | "pending"
@@ -136,8 +136,8 @@ const mockCustomers: Customer[] = [
     totalUsageDays: 455,
     usedDays: 120,
     lastActivity: "2025-09-12",
-    distributorId: "dist-001",
-    distributorName: "Sarah Johnson",
+    affiliateId: "aff-001",
+    affiliateName: "Sarah Johnson",
     contractsCount: 2,
     documentsStatus: "complete",
     paymentHistory: {
@@ -192,8 +192,8 @@ const mockCustomers: Customer[] = [
     totalUsageDays: 180,
     usedDays: 45,
     lastActivity: "2025-09-11",
-    distributorId: "dist-002",
-    distributorName: "Michael Chen",
+    affiliateId: "aff-002",
+    affiliateName: "Michael Chen",
     contractsCount: 1,
     documentsStatus: "complete",
     paymentHistory: {
@@ -234,8 +234,8 @@ const mockCustomers: Customer[] = [
     totalUsageDays: 40,
     usedDays: 0,
     lastActivity: "2025-09-10",
-    distributorId: "dist-003",
-    distributorName: "Emma Wilson",
+    affiliateId: "aff-003",
+    affiliateName: "Emma Wilson",
     contractsCount: 1,
     documentsStatus: "pending",
     paymentHistory: {
@@ -318,7 +318,7 @@ const defaultColumns: TableColumn[] = [
   { key: "totalInvestment", label: "Total Investment", sortable: true, visible: true },
   { key: "totalShares", label: "Shares Owned", sortable: true, visible: true },
   { key: "usageDays", label: "Usage Days", sortable: true, visible: true },
-  { key: "distributor", label: "Distributor", sortable: true, visible: false },
+  { key: "affiliate", label: "Affiliate", sortable: true, visible: false },
   { key: "joinDate", label: "Join Date", sortable: true, visible: false },
   { key: "lastActivity", label: "Last Activity", sortable: true, visible: true },
   { key: "paymentMethod", label: "Payment Method", sortable: true, visible: false },
@@ -377,7 +377,7 @@ export function CustomerManagement() {
     const matchesSearch = customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          customer.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (customer.distributorName && customer.distributorName.toLowerCase().includes(searchTerm.toLowerCase()))
+                         (customer.affiliateName && customer.affiliateName.toLowerCase().includes(searchTerm.toLowerCase()))
     const matchesStatus = statusFilter === "all" || customer.status === statusFilter
     const matchesTier = tierFilter === "all" || customer.tier === tierFilter
     const matchesLocation = locationFilter === "all" || customer.location.includes(locationFilter)
@@ -725,8 +725,8 @@ export function CustomerManagement() {
                         </TableCell>
                       )}
                       
-                      {tableColumns.find(col => col.key === "distributor")?.visible && (
-                        <TableCell className={compactView ? 'text-sm' : ''}>{customer.distributorName || "Direct"}</TableCell>
+                      {tableColumns.find(col => col.key === "affiliate")?.visible && (
+                        <TableCell className={compactView ? 'text-sm' : ''}>{customer.affiliateName || "Direct"}</TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "joinDate")?.visible && (
@@ -996,8 +996,8 @@ export function CustomerManagement() {
                       <span className="font-medium">{customer.timeshareOwnerships.length}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>Distributor:</span>
-                      <span className="font-medium">{customer.distributorName || "Direct"}</span>
+                      <span>Affiliate:</span>
+                      <span className="font-medium">{customer.affiliateName || "Direct"}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Joined:</span>

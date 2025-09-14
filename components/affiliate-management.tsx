@@ -64,12 +64,12 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Progress } from "@/components/ui/progress"
-import { DistributorActions } from "@/components/distributor-actions"
-import { DistributorAnalytics } from "@/components/distributor-analytics"
-import { DistributorTeamHierarchy } from "@/components/distributor-team-hierarchy"
-import { DistributorPerformanceTracking } from "@/components/distributor-performance-tracking"
+import { DistributorActions } from "@/components/affiliate-actions"
+import { DistributorAnalytics } from "@/components/affiliate-analytics"
+import { DistributorTeamHierarchy } from "@/components/affiliate-team-hierarchy"
+import { DistributorPerformanceTracking } from "@/components/affiliate-performance-tracking"
 
-interface DistributorSummary {
+interface AffiliateSummary {
   id: string
   name: string
   email: string
@@ -102,8 +102,8 @@ interface TableColumn {
   visible: boolean
 }
 
-// Mock distributors data
-const mockDistributors: DistributorSummary[] = [
+// Mock affiliates data
+const mockAffiliates: AffiliateSummary[] = [
   {
     id: "dist-001",
     name: "Sarah Johnson",
@@ -304,9 +304,9 @@ export function DistributorManagement() {
   };
 
   // Get unique locations for filter
-  const uniqueLocations = Array.from(new Set(mockDistributors.map(d => d.location.split(',')[1]?.trim() || d.location)))
+  const uniqueLocations = Array.from(new Set(mockAffiliates.map((d: AffiliateSummary) => d.location.split(',')[1]?.trim() || d.location)))
 
-  const filteredDistributors = mockDistributors.filter(distributor => {
+  const filteredAffiliates = mockAffiliates.filter((affiliate: AffiliateSummary) => {
     const matchesSearch = distributor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          distributor.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          distributor.location.toLowerCase().includes(searchTerm.toLowerCase()) ||

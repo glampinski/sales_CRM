@@ -53,9 +53,55 @@ export function PermissionProvider({ children }: { children: React.ReactNode }) 
     
     if (savedPermissions) {
       try {
-        setRolePermissions(JSON.parse(savedPermissions))
+        const parsed = JSON.parse(savedPermissions)
+        
+        // Check if this is old data with distributor/user roles
+        const hasOldRoles = 'distributor' in parsed || 'user' in parsed
+        const hasNewRoles = 'affiliate' in parsed && 'customer' in parsed
+        
+        if (hasOldRoles && !hasNewRoles) {
+          // Clear old data and use defaults
+          console.log('Migrating from old role structure, using defaults')
+          localStorage.removeItem('rolePermissions')
+          setRolePermissions(DEFAULT_ROLE_PERMISSIONS)
+        } else {
+          // Migrate old role names to new ones
+          const migrated: Record<UserRole, RolePermissions> = { ...DEFAULT_ROLE_PERMISSIONS }
+          
+          // Copy existing roles that still exist
+          Object.keys(parsed).forEach(oldRole => {
+            if (oldRole === 'distributor' && parsed[oldRole]) {
+              // Migrate distributor to affiliate
+              migrated.affiliate = {
+                ...parsed[oldRole],
+                role: 'affiliate' as UserRole
+              }
+            } else if (oldRole === 'user' && parsed[oldRole]) {
+              // Migrate user to customer
+              migrated.customer = {
+                ...parsed[oldRole],
+                role: 'customer' as UserRole
+              }
+            } else if (oldRole in migrated && parsed[oldRole]) {
+              // Keep existing valid roles
+              migrated[oldRole as UserRole] = parsed[oldRole]
+            }
+          })
+          
+          // Ensure all roles have proper modules structure
+          Object.keys(migrated).forEach(role => {
+            const roleKey = role as UserRole
+            if (!migrated[roleKey].modules) {
+              migrated[roleKey].modules = DEFAULT_ROLE_PERMISSIONS[roleKey].modules
+            }
+          })
+          
+          setRolePermissions(migrated)
+        }
       } catch (error) {
         console.error('Failed to load saved permissions:', error)
+        // Fallback to defaults if loading fails
+        setRolePermissions(DEFAULT_ROLE_PERMISSIONS)
       }
     }
     

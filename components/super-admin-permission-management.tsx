@@ -63,8 +63,14 @@ interface PermissionMatrixProps {
 }
 
 function PermissionMatrix({ role, permissions, onPermissionChange }: PermissionMatrixProps) {
+  // Ensure permissions has a modules property
+  const safePermissions = {
+    ...permissions,
+    modules: permissions.modules || {}
+  }
+
   const handleModuleToggle = (module: PermissionModule, enabled: boolean) => {
-    const updatedPermissions = { ...permissions }
+    const updatedPermissions = { ...safePermissions }
     
     if (enabled) {
       // Enable module with view permission by default
@@ -93,7 +99,7 @@ function PermissionMatrix({ role, permissions, onPermissionChange }: PermissionM
   }
 
   const handleActionToggle = (module: PermissionModule, action: PermissionAction, enabled: boolean) => {
-    const updatedPermissions = { ...permissions }
+    const updatedPermissions = { ...safePermissions }
     const moduleConfig = updatedPermissions.modules[module]
     
     if (!moduleConfig?.enabled) return
@@ -124,8 +130,8 @@ function PermissionMatrix({ role, permissions, onPermissionChange }: PermissionM
       case 'super_admin': return 'bg-purple-100 text-purple-800 border-purple-200'
       case 'admin': return 'bg-blue-100 text-blue-800 border-blue-200'
       case 'manager': return 'bg-green-100 text-green-800 border-green-200'
-      case 'distributor': return 'bg-orange-100 text-orange-800 border-orange-200'
-      case 'user': return 'bg-gray-100 text-gray-800 border-gray-200'
+      case 'affiliate': return 'bg-orange-100 text-orange-800 border-orange-200'
+      case 'customer': return 'bg-gray-100 text-gray-800 border-gray-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
@@ -135,7 +141,7 @@ function PermissionMatrix({ role, permissions, onPermissionChange }: PermissionM
       case 'dashboard': return '📊'
       case 'users': return '👥'
       case 'customers': return '🛒'
-      case 'distributors': return '🏢'
+      case 'affiliates': return '🏢'
       case 'products': return '📦'
       case 'orders': return '📋'
       case 'analytics': return '📈'
@@ -173,7 +179,7 @@ function PermissionMatrix({ role, permissions, onPermissionChange }: PermissionM
       <CardContent>
         <div className="space-y-6">
           {PERMISSION_MODULES.map((module) => {
-            const moduleConfig = permissions.modules[module]
+            const moduleConfig = safePermissions.modules[module]
             const isModuleEnabled = moduleConfig?.enabled || false
 
             return (
@@ -238,12 +244,12 @@ export function SuperAdminPermissionManagement() {
   
   const [selectedRole, setSelectedRole] = useState<UserRole>('admin')
   const [copyFromRole, setCopyFromRole] = useState<UserRole>('admin')
-  const [copyToRole, setCopyToRole] = useState<UserRole>('distributor')
+  const [copyToRole, setCopyToRole] = useState<UserRole>('affiliate')
   const [importData, setImportData] = useState('')
   const [showExport, setShowExport] = useState(false)
   const [showImport, setShowImport] = useState(false)
 
-  const roles: UserRole[] = ['super_admin', 'admin', 'manager', 'distributor', 'user']
+  const roles: UserRole[] = ['super_admin', 'admin', 'manager', 'affiliate', 'customer']
 
   const handleExport = () => {
     const data = exportPermissions()

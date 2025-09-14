@@ -64,7 +64,7 @@ const navigationConfig: Record<string, {
       { name: "Genealogy", href: "/dashboard/genealogy", icon: Building2 },
       { name: "Commission", href: "/dashboard/commission", icon: DollarSign },
       { name: "Ranks", href: "/dashboard/ranks", icon: Crown },
-      { name: "Distributors", href: "/dashboard/distributors", icon: Shield },
+      { name: "Affiliates", href: "/dashboard/affiliates", icon: Shield },
     ],
     business: [
       { name: "Customers", href: "/dashboard/customers", icon: Users },
@@ -75,7 +75,7 @@ const navigationConfig: Record<string, {
     ],
     system: [
       { name: "Super Admin", href: "/dashboard/super-admin", icon: Crown },
-      { name: "User Management", href: "/dashboard/users", icon: UserCog },
+      { name: "Customer Management", href: "/dashboard/users", icon: UserCog },
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
       { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
     ],
@@ -91,7 +91,7 @@ const navigationConfig: Record<string, {
       { name: "Genealogy", href: "/dashboard/genealogy", icon: Building2 },
       { name: "Commission", href: "/dashboard/commission", icon: DollarSign },
       { name: "Ranks", href: "/dashboard/ranks", icon: Crown },
-      { name: "Distributors", href: "/dashboard/distributors", icon: Shield },
+      { name: "Affiliates", href: "/dashboard/affiliates", icon: Shield },
     ],
     business: [
       { name: "Customers", href: "/dashboard/customers", icon: Users },
@@ -122,7 +122,7 @@ const navigationConfig: Record<string, {
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
     ],
   },
-  distributor: {
+  affiliate: {
     main: [
       { name: "Dashboard", href: "/dashboard", icon: Home },
       { name: "My Network", href: "/dashboard/genealogy", icon: Building2 },
@@ -190,7 +190,7 @@ export function AppSidebar() {
   
   if (!user) return null
   
-  const navigation = navigationConfig[user.role] || navigationConfig.user
+  const navigation = navigationConfig[user.role] || navigationConfig.customer
 
   return (
     <Sidebar>

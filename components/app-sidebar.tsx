@@ -74,7 +74,6 @@ const navigationConfig: Record<string, {
       { name: "Reports", href: "/dashboard/reports", icon: PieChart },
     ],
     system: [
-      { name: "Super Admin", href: "/dashboard/super-admin", icon: Crown },
       { name: "Customer Management", href: "/dashboard/users", icon: UserCog },
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
       { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
@@ -204,7 +203,7 @@ export function AppSidebar() {
             className="h-8 w-8 rounded"
           />
           <span className="font-semibold text-lg">
-            {user.role === 'user' ? 'Glampinski' : 'MLM CRM'}
+            {user.role === 'customer' ? 'Glampinski' : 'MLM CRM'}
           </span>
         </div>
       </SidebarHeader>

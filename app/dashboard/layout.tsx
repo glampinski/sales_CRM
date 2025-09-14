@@ -24,13 +24,13 @@ export default function DashboardLayout({
         </div>
       }
     >
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={true}>
         <div className="flex min-h-screen w-full">
           <AppSidebar />
           <div className="flex-1 flex flex-col overflow-hidden">
             <ImpersonationBanner />
             <DashboardHeader />
-            <main className="flex-1 overflow-auto bg-muted/10">
+            <main className="flex-1 overflow-auto bg-muted/10 relative">
               {children}
             </main>
           </div>

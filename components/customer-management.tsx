@@ -465,6 +465,19 @@ export function CustomerManagement() {
           </p>
         </div>
         <div className="flex items-center space-x-2">
+          {/* Test dropdown */}
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                Test
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Test Item 1</DropdownMenuItem>
+              <DropdownMenuItem>Test Item 2</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
           <div className="flex items-center space-x-2 text-sm">
             <Switch
               id="compact-view"
@@ -553,7 +566,7 @@ export function CustomerManagement() {
           </SelectContent>
         </Select>
 
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm">
               <Settings className="h-4 w-4 mr-2" />
@@ -730,16 +743,20 @@ export function CustomerManagement() {
                       <TableCell>
                         <DropdownMenu modal={false}>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
+                            <Button 
+                              variant="ghost" 
+                              size="icon"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => handleViewProfile(customer)}>
+                          <DropdownMenuContent align="end" className="z-50">
+                            <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleViewProfile(customer)}}>
                               <Eye className="mr-2 h-4 w-4" />
                               View Profile
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                               <Edit className="mr-2 h-4 w-4" />
                               Edit Details
                             </DropdownMenuItem>
@@ -747,7 +764,7 @@ export function CustomerManagement() {
                               <>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem 
-                                  onClick={() => handleImpersonate(customer.id)}
+                                  onClick={(e) => {e.stopPropagation(); handleImpersonate(customer.id)}}
                                   className="text-orange-600"
                                 >
                                   <Eye className="mr-2 h-4 w-4" />
@@ -755,25 +772,25 @@ export function CustomerManagement() {
                                 </DropdownMenuItem>
                               </>
                             )}
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                               <FileText className="mr-2 h-4 w-4" />
                               View Contracts
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                               <Phone className="mr-2 h-4 w-4" />
                               Call: {customer.phone}
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                               <Mail className="mr-2 h-4 w-4" />
                               Email: {customer.email}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                               <Building2 className="mr-2 h-4 w-4" />
                               Manage Properties
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                               <Calendar className="mr-2 h-4 w-4" />
                               Booking Calendar
                             </DropdownMenuItem>
@@ -823,7 +840,7 @@ export function CustomerManagement() {
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        <DropdownMenuContent align="end" className="z-50">
                           <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleViewProfile(customer)}}>
                             <Eye className="mr-2 h-4 w-4" />
                             View Profile

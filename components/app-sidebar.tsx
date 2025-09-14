@@ -35,8 +35,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from "@/contexts/AuthContext"
-import { usePermissions } from "@/contexts/PermissionContext"
-import { PermissionGate } from "@/components/permission-gate"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -47,8 +45,11 @@ type NavigationItem = {
   icon: any
 }
 
-// Role-based navigation configuration
-const navigationConfig: Record<string, {
+// User Groups (simplified from complex roles)
+type UserGroup = 'super_admin' | 'admin' | 'manager' | 'affiliate' | 'customer'
+
+// Group-based navigation configuration (simplified)
+const navigationConfig: Record<UserGroup, {
   main?: NavigationItem[]
   mlm?: NavigationItem[]
   business?: NavigationItem[]
@@ -75,7 +76,7 @@ const navigationConfig: Record<string, {
       { name: "Reports", href: "/dashboard/reports", icon: PieChart },
     ],
     system: [
-      { name: "Customer Management", href: "/dashboard/users", icon: UserCog },
+      { name: "User Management", href: "/dashboard/users", icon: UserCog },
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
       { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
     ],
@@ -137,41 +138,9 @@ const navigationConfig: Record<string, {
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
     ],
   },
-  user: {
-    main: [
-      { name: "Dashboard", href: "/dashboard", icon: Home },
-      { name: "Products", href: "/dashboard/products", icon: Building2 },
-      { name: "My Orders", href: "/dashboard/orders", icon: FileText },
-    ],
-    system: [
-      { name: "Settings", href: "/dashboard/settings", icon: Settings },
-    ],
-  },
-  salesperson: {
-    main: [
-      { name: "Dashboard", href: "/dashboard", icon: Home },
-      { name: "Contacts", href: "/dashboard/contacts", icon: Users },
-      { name: "Tasks", href: "/dashboard/tasks", icon: CheckSquare },
-      { name: "Pipeline", href: "/dashboard/pipeline", icon: TrendingUp },
-    ],
-    mlm: [
-      { name: "My Genealogy", href: "/dashboard/genealogy", icon: Building2 },
-      { name: "My Commission", href: "/dashboard/commission", icon: DollarSign },
-      { name: "My Rank", href: "/dashboard/ranks", icon: Crown },
-    ],
-    business: [
-      { name: "My Customers", href: "/dashboard/customers", icon: Users },
-      { name: "Products", href: "/dashboard/products", icon: Building2 },
-      { name: "My Orders", href: "/dashboard/orders", icon: FileText },
-    ],
-    system: [
-      { name: "Settings", href: "/dashboard/settings", icon: Settings },
-    ],
-  },
   customer: {
     main: [
       { name: "My Dashboard", href: "/dashboard", icon: Home },
-      { name: "My Profile", href: "/dashboard/profile", icon: Users },
     ],
     business: [
       { name: "Browse Products", href: "/dashboard/products", icon: Building2 },
@@ -186,11 +155,25 @@ const navigationConfig: Record<string, {
 
 export function AppSidebar() {
   const { user, logout } = useAuth()
-  const { hasModuleAccess } = usePermissions()
   
   if (!user) return null
   
-  const navigation = navigationConfig[user.role] || navigationConfig.customer
+  // Map user roles to groups (simplified)
+  const getUserGroup = (role: string): UserGroup => {
+    switch (role) {
+      case 'super_admin': return 'super_admin'
+      case 'admin': return 'admin'
+      case 'manager': return 'manager'
+      case 'affiliate':
+      case 'salesperson': return 'affiliate'
+      case 'customer':
+      case 'user': return 'customer'
+      default: return 'customer'
+    }
+  }
+  
+  const userGroup = getUserGroup(user.role)
+  const navigation = navigationConfig[userGroup]
 
   return (
     <Sidebar>
@@ -204,7 +187,7 @@ export function AppSidebar() {
             className="h-8 w-8 rounded"
           />
           <span className="font-semibold text-lg">
-            {user.role === 'customer' ? 'Glampinski' : 'MLM CRM'}
+            {userGroup === 'customer' ? 'Glampinski' : 'MLM CRM'}
           </span>
         </div>
       </SidebarHeader>

@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { 
   Users, 
@@ -11,7 +12,11 @@ import {
   DollarSign, 
   Target,
   Calendar,
+  Phone,
+  Mail,
   CheckSquare,
+  Crown,
+  Settings,
   Eye
 } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { DistributorProfile } from "@/components/distributor-profile"
+import { DistributorProfile } from "@/components/affiliate-profile"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 
 export default function DistributorDetailPage() {

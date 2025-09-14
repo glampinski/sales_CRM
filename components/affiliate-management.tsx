@@ -235,14 +235,14 @@ const getStatusColor = (status: string) => {
 }
 
 const stats = [
-  { label: "Total Distributors", value: "156", change: "+12", icon: Users },
+  { label: "Total Affiliates", value: "156", change: "+12", icon: Users },
   { label: "Active This Month", value: "142", change: "+8", icon: TrendingUp },
   { label: "New This Month", value: "24", change: "+15", icon: UserPlus },
   { label: "Diamond Rank", value: "8", change: "+2", icon: Crown },
 ]
 
 const defaultColumns: TableColumn[] = [
-  { key: "distributor", label: "Distributor", sortable: true, visible: true },
+  { key: "affiliate", label: "Affiliate", sortable: true, visible: true },
   { key: "rank", label: "Rank", sortable: true, visible: true },
   { key: "status", label: "Status", sortable: true, visible: true },
   { key: "personalVolume", label: "Personal Volume", sortable: true, visible: true },
@@ -256,14 +256,14 @@ const defaultColumns: TableColumn[] = [
   { key: "progress", label: "Progress", sortable: false, visible: false },
 ]
 
-export function DistributorManagement() {
+export function AffiliateManagement() {
   const { canImpersonate, startImpersonation } = useAuth()
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [rankFilter, setRankFilter] = useState("all")
   const [locationFilter, setLocationFilter] = useState("all")
   const [viewMode, setViewMode] = useState<"table" | "cards" | "analytics" | "team" | "performance">("table")
-  const [selectedDistributors, setSelectedDistributors] = useState<string[]>([])
+  const [selectedAffiliates, setSelectedAffiliates] = useState<string[]>([])
   const [showArchived, setShowArchived] = useState(false)
   const [sortField, setSortField] = useState<SortField>("name")
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc")
@@ -295,25 +295,26 @@ export function DistributorManagement() {
     };
   }, []);
 
-  const toggleDropdown = (distributorId: string, event: React.MouseEvent) => {
+  const toggleDropdown = (affiliateId: string, event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
     // Ensure no focus issues
     (event.target as HTMLElement).blur();
-    setOpenDropdown(openDropdown === distributorId ? null : distributorId);
+    setOpenDropdown(openDropdown === affiliateId ? null : affiliateId);
   };
 
   // Get unique locations for filter
   const uniqueLocations = Array.from(new Set(mockAffiliates.map((d: AffiliateSummary) => d.location.split(',')[1]?.trim() || d.location)))
 
+  // Create alias for consistency
   const filteredAffiliates = mockAffiliates.filter((affiliate: AffiliateSummary) => {
-    const matchesSearch = distributor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         distributor.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         distributor.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (distributor.sponsor && distributor.sponsor.toLowerCase().includes(searchTerm.toLowerCase()))
-    const matchesStatus = statusFilter === "all" || distributor.status === statusFilter
-    const matchesRank = rankFilter === "all" || distributor.rank === rankFilter
-    const matchesLocation = locationFilter === "all" || distributor.location.includes(locationFilter)
+    const matchesSearch = affiliate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         affiliate.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         affiliate.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (affiliate.sponsor && affiliate.sponsor.toLowerCase().includes(searchTerm.toLowerCase()))
+    const matchesStatus = statusFilter === "all" || affiliate.status === statusFilter
+    const matchesRank = rankFilter === "all" || affiliate.rank === rankFilter
+    const matchesLocation = locationFilter === "all" || affiliate.location.includes(locationFilter)
     return matchesSearch && matchesStatus && matchesRank && matchesLocation
   }).sort((a, b) => {
     let aValue: any
@@ -380,22 +381,22 @@ export function DistributorManagement() {
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedDistributors(filteredDistributors.map(d => d.id))
+      setSelectedAffiliates(filteredAffiliates.map(d => d.id))
     } else {
-      setSelectedDistributors([])
+      setSelectedAffiliates([])
     }
   }
 
-  const handleSelectDistributor = (distributorId: string, checked: boolean) => {
+  const handleSelectAffiliate = (affiliateId: string, checked: boolean) => {
     if (checked) {
-      setSelectedDistributors(prev => [...prev, distributorId])
+      setSelectedAffiliates(prev => [...prev, affiliateId])
     } else {
-      setSelectedDistributors(prev => prev.filter(id => id !== distributorId))
+      setSelectedAffiliates(prev => prev.filter(id => id !== affiliateId))
     }
   }
 
   const handleClearSelection = () => {
-    setSelectedDistributors([])
+    setSelectedAffiliates([])
   }
 
   const handleRefresh = async () => {
@@ -405,18 +406,18 @@ export function DistributorManagement() {
     setIsLoading(false)
   }
 
-  const handleViewProfile = (distributor: DistributorSummary) => {
+  const handleViewProfile = (affiliate: AffiliateSummary) => {
     // Navigate to the detailed profile page
-    window.location.href = `/dashboard/distributors/${distributor.id}`
+    window.location.href = `/dashboard/affiliates/${affiliate.id}`
   }
 
-  const handleImpersonate = (distributorId: string) => {
-    // Map distributor to user ID (admin or salesperson)
-    // In real app, this would look up the actual user ID for the distributor
-    const distributorUserId = distributorId === "1" ? "2" : "3" // Map to admin or salesperson
-    const success = startImpersonation(distributorUserId)
+  const handleImpersonate = (affiliateId: string) => {
+    // Map affiliate to user ID (admin or salesperson)
+    // In real app, this would look up the actual user ID for the affiliate
+    const affiliateUserId = affiliateId === "1" ? "2" : "3" // Map to admin or salesperson
+    const success = startImpersonation(affiliateUserId)
     if (success) {
-      // Redirect to show distributor dashboard view
+      // Redirect to show affiliate dashboard view
       window.location.href = '/dashboard'
     }
   }
@@ -442,9 +443,9 @@ export function DistributorManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Distributor Management</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Affiliate Management</h1>
           <p className="text-muted-foreground">
-            Manage your distributor network and track performance ({filteredDistributors.length} of {mockDistributors.length} distributors)
+            Manage your affiliate network and track performance ({filteredAffiliates.length} of {mockAffiliates.length} affiliates)
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -474,7 +475,7 @@ export function DistributorManagement() {
 
       {/* Actions Component */}
       <DistributorActions 
-        selectedDistributors={selectedDistributors}
+        selectedDistributors={selectedAffiliates}
         onClearSelection={handleClearSelection}
         onRefresh={handleRefresh}
       />
@@ -587,9 +588,9 @@ export function DistributorManagement() {
         <TabsContent value="table" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Distributors ({filteredDistributors.length})</CardTitle>
+              <CardTitle>Affiliates ({filteredAffiliates.length})</CardTitle>
               <CardDescription>
-                Complete list of distributors in your network with enhanced sorting and filtering
+                Complete list of affiliates in your network with enhanced sorting and filtering
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -598,7 +599,7 @@ export function DistributorManagement() {
                   <TableRow>
                     <TableHead className="w-12">
                       <Checkbox
-                        checked={selectedDistributors.length === filteredDistributors.length && filteredDistributors.length > 0}
+                        checked={selectedAffiliates.length === filteredAffiliates.length && filteredAffiliates.length > 0}
                         onCheckedChange={handleSelectAll}
                       />
                     </TableHead>
@@ -622,28 +623,28 @@ export function DistributorManagement() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredDistributors.map((distributor) => (
-                    <TableRow key={distributor.id} className={compactView ? "h-12" : ""}>
+                  {filteredAffiliates.map((affiliate) => (
+                    <TableRow key={affiliate.id} className={compactView ? "h-12" : ""}>
                       <TableCell>
                         <Checkbox
-                          checked={selectedDistributors.includes(distributor.id)}
-                          onCheckedChange={(checked) => handleSelectDistributor(distributor.id, checked as boolean)}
+                          checked={selectedAffiliates.includes(affiliate.id)}
+                          onCheckedChange={(checked) => handleSelectAffiliate(affiliate.id, checked as boolean)}
                         />
                       </TableCell>
                       
-                      {tableColumns.find(col => col.key === "distributor")?.visible && (
+                      {tableColumns.find(col => col.key === "affiliate")?.visible && (
                         <TableCell>
                           <div className="flex items-center space-x-3">
                             <Avatar className={compactView ? "h-6 w-6" : "h-8 w-8"}>
-                              <AvatarImage src={distributor.avatar} />
+                              <AvatarImage src={affiliate.avatar} />
                               <AvatarFallback>
-                                {distributor.name.split(' ').map(n => n[0]).join('')}
+                                {affiliate.name.split(' ').map(n => n[0]).join('')}
                               </AvatarFallback>
                             </Avatar>
                             <div>
-                              <p className={`font-medium ${compactView ? 'text-sm' : ''}`}>{distributor.name}</p>
+                              <p className={`font-medium ${compactView ? 'text-sm' : ''}`}>{affiliate.name}</p>
                               {!compactView && (
-                                <p className="text-sm text-muted-foreground">{distributor.email}</p>
+                                <p className="text-sm text-muted-foreground">{affiliate.email}</p>
                               )}
                             </div>
                           </div>
@@ -652,47 +653,47 @@ export function DistributorManagement() {
                       
                       {tableColumns.find(col => col.key === "rank")?.visible && (
                         <TableCell>
-                          <Badge className={`${getRankColor(distributor.rank)} ${compactView ? 'text-xs px-1.5 py-0.5' : ''}`}>
-                            {distributor.rank}
+                          <Badge className={`${getRankColor(affiliate.rank)} ${compactView ? 'text-xs px-1.5 py-0.5' : ''}`}>
+                            {affiliate.rank}
                           </Badge>
                         </TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "status")?.visible && (
                         <TableCell>
-                          <Badge className={`${getStatusColor(distributor.status)} ${compactView ? 'text-xs px-1.5 py-0.5' : ''}`}>
-                            {distributor.status}
+                          <Badge className={`${getStatusColor(affiliate.status)} ${compactView ? 'text-xs px-1.5 py-0.5' : ''}`}>
+                            {affiliate.status}
                           </Badge>
                         </TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "personalVolume")?.visible && (
-                        <TableCell className={compactView ? 'text-sm' : ''}>${distributor.personalVolume.toLocaleString()}</TableCell>
+                        <TableCell className={compactView ? 'text-sm' : ''}>${affiliate.personalVolume.toLocaleString()}</TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "groupVolume")?.visible && (
-                        <TableCell className={compactView ? 'text-sm' : ''}>${distributor.groupVolume.toLocaleString()}</TableCell>
+                        <TableCell className={compactView ? 'text-sm' : ''}>${affiliate.groupVolume.toLocaleString()}</TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "teamSize")?.visible && (
-                        <TableCell className={compactView ? 'text-sm' : ''}>{distributor.teamSize}</TableCell>
+                        <TableCell className={compactView ? 'text-sm' : ''}>{affiliate.teamSize}</TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "commission")?.visible && (
                         <TableCell className={`text-green-600 font-medium ${compactView ? 'text-sm' : ''}`}>
-                          ${distributor.totalCommission.toLocaleString()}
+                          ${affiliate.totalCommission.toLocaleString()}
                         </TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "joinDate")?.visible && (
                         <TableCell className={compactView ? 'text-sm' : ''}>
-                          {new Date(distributor.joinDate).toLocaleDateString()}
+                          {new Date(affiliate.joinDate).toLocaleDateString()}
                         </TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "lastActivity")?.visible && (
                         <TableCell className={compactView ? 'text-sm' : ''}>
-                          {new Date(distributor.lastActivity).toLocaleDateString()}
+                          {new Date(affiliate.lastActivity).toLocaleDateString()}
                         </TableCell>
                       )}
                       
@@ -700,26 +701,26 @@ export function DistributorManagement() {
                         <TableCell className={compactView ? 'text-sm' : ''}>
                           <div className="flex items-center space-x-1">
                             <MapPin className="h-4 w-4 text-muted-foreground" />
-                            <span>{distributor.location}</span>
+                            <span>{affiliate.location}</span>
                           </div>
                         </TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "sponsor")?.visible && (
-                        <TableCell className={compactView ? 'text-sm' : ''}>{distributor.sponsor || "N/A"}</TableCell>
+                        <TableCell className={compactView ? 'text-sm' : ''}>{affiliate.sponsor || "N/A"}</TableCell>
                       )}
                       
                       {tableColumns.find(col => col.key === "progress")?.visible && (
                         <TableCell>
                           <div className="space-y-1">
                             <div className="flex justify-between text-xs">
-                              <span>Profile: {distributor.profileCompleteness}%</span>
+                              <span>Profile: {affiliate.profileCompleteness}%</span>
                               <span>Rank Progress</span>
                             </div>
                             <div className="space-y-1">
-                              <Progress value={distributor.profileCompleteness} className="h-1" />
+                              <Progress value={affiliate.profileCompleteness} className="h-1" />
                               <Progress 
-                                value={(distributor.achievementPoints / distributor.nextRankRequirement) * 100} 
+                                value={(affiliate.achievementPoints / affiliate.nextRankRequirement) * 100} 
                                 className="h-1" 
                               />
                             </div>
@@ -732,7 +733,7 @@ export function DistributorManagement() {
                           <Button 
                             variant="ghost" 
                             size="icon"
-                            onClick={(e) => toggleDropdown(distributor.id, e)}
+                            onClick={(e) => toggleDropdown(affiliate.id, e)}
                             className="focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                             onBlur={() => {
                               // Small delay to allow click to register before closing
@@ -745,7 +746,7 @@ export function DistributorManagement() {
                           >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
-                          {openDropdown === distributor.id && (
+                          {openDropdown === affiliate.id && (
                             <div 
                               className="absolute right-0 top-8 bg-white border rounded-md shadow-lg p-1 min-w-[200px] z-50"
                               onClick={(e) => e.stopPropagation()}
@@ -755,7 +756,7 @@ export function DistributorManagement() {
                                 onClick={(e) => {
                                   e.stopPropagation(); 
                                   setOpenDropdown(null);
-                                  handleViewProfile(distributor);
+                                  handleViewProfile(affiliate);
                                 }}
                               >
                                 <Eye className="mr-2 h-4 w-4" />
@@ -779,11 +780,11 @@ export function DistributorManagement() {
                                     onClick={(e) => {
                                       e.stopPropagation(); 
                                       setOpenDropdown(null);
-                                      handleImpersonate(distributor.id);
+                                      handleImpersonate(affiliate.id);
                                     }}
                                   >
                                     <Eye className="mr-2 h-4 w-4" />
-                                    Impersonate Distributor
+                                    Impersonate Affiliate
                                   </button>
                                 </>
                               )}
@@ -811,30 +812,30 @@ export function DistributorManagement() {
 
         <TabsContent value="cards" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredDistributors.map((distributor) => (
-              <Card key={distributor.id} className="hover:shadow-lg transition-all duration-200 cursor-pointer" onClick={() => handleViewProfile(distributor)}>
+            {filteredAffiliates.map((affiliate) => (
+              <Card key={affiliate.id} className="hover:shadow-lg transition-all duration-200 cursor-pointer" onClick={() => handleViewProfile(affiliate)}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-12 w-12">
-                        <AvatarImage src={distributor.avatar} />
+                        <AvatarImage src={affiliate.avatar} />
                         <AvatarFallback>
-                          {distributor.name.split(' ').map(n => n[0]).join('')}
+                          {affiliate.name.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <CardTitle className="text-lg">{distributor.name}</CardTitle>
+                        <CardTitle className="text-lg">{affiliate.name}</CardTitle>
                         <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                           <MapPin className="h-3 w-3" />
-                          <span>{distributor.location}</span>
+                          <span>{affiliate.location}</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-col items-end space-y-1">
                       <Checkbox
-                        checked={selectedDistributors.includes(distributor.id)}
+                        checked={selectedAffiliates.includes(affiliate.id)}
                         onCheckedChange={(checked) => {
-                          handleSelectDistributor(distributor.id, checked as boolean)
+                          handleSelectAffiliate(affiliate.id, checked as boolean)
                         }}
                         onClick={(e) => e.stopPropagation()}
                       />
@@ -843,11 +844,11 @@ export function DistributorManagement() {
                           variant="ghost" 
                           size="icon" 
                           className="h-6 w-6 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                          onClick={(e) => toggleDropdown(`card-${distributor.id}`, e)}
+                          onClick={(e) => toggleDropdown(`card-${affiliate.id}`, e)}
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
-                        {openDropdown === `card-${distributor.id}` && (
+                        {openDropdown === `card-${affiliate.id}` && (
                           <div 
                             className="absolute right-0 top-8 bg-white border rounded-md shadow-lg p-1 min-w-[180px] z-50"
                             onClick={(e) => e.stopPropagation()}
@@ -857,7 +858,7 @@ export function DistributorManagement() {
                               onClick={(e) => {
                                 e.stopPropagation(); 
                                 setOpenDropdown(null);
-                                handleViewProfile(distributor);
+                                handleViewProfile(affiliate);
                               }}
                             >
                               <Eye className="mr-2 h-4 w-4" />
@@ -871,11 +872,11 @@ export function DistributorManagement() {
                                   onClick={(e) => {
                                     e.stopPropagation(); 
                                     setOpenDropdown(null);
-                                    handleImpersonate(distributor.id);
+                                    handleImpersonate(affiliate.id);
                                   }}
                                 >
                                   <Eye className="mr-2 h-4 w-4" />
-                                  Impersonate Distributor
+                                  Impersonate Affiliate
                                 </button>
                               </>
                             )}
@@ -886,14 +887,14 @@ export function DistributorManagement() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Badge className={getRankColor(distributor.rank)}>
-                        {distributor.rank}
+                      <Badge className={getRankColor(affiliate.rank)}>
+                        {affiliate.rank}
                       </Badge>
-                      <Badge className={getStatusColor(distributor.status)}>
-                        {distributor.status}
+                      <Badge className={getStatusColor(affiliate.status)}>
+                        {affiliate.status}
                       </Badge>
                     </div>
-                    {distributor.rank === "Diamond" && (
+                    {affiliate.rank === "Diamond" && (
                       <Star className="h-4 w-4 text-yellow-500 fill-current" />
                     )}
                   </div>
@@ -902,19 +903,19 @@ export function DistributorManagement() {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-muted-foreground">Personal Volume</p>
-                      <p className="font-semibold">${distributor.personalVolume.toLocaleString()}</p>
+                      <p className="font-semibold">${affiliate.personalVolume.toLocaleString()}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Group Volume</p>
-                      <p className="font-semibold">${distributor.groupVolume.toLocaleString()}</p>
+                      <p className="font-semibold">${affiliate.groupVolume.toLocaleString()}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Team Size</p>
-                      <p className="font-semibold">{distributor.teamSize}</p>
+                      <p className="font-semibold">{affiliate.teamSize}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Commission</p>
-                      <p className="font-semibold text-green-600">${distributor.totalCommission.toLocaleString()}</p>
+                      <p className="font-semibold text-green-600">${affiliate.totalCommission.toLocaleString()}</p>
                     </div>
                   </div>
                   
@@ -923,17 +924,17 @@ export function DistributorManagement() {
                     <div>
                       <div className="flex justify-between text-xs text-muted-foreground mb-1">
                         <span>Profile Complete</span>
-                        <span>{distributor.profileCompleteness}%</span>
+                        <span>{affiliate.profileCompleteness}%</span>
                       </div>
-                      <Progress value={distributor.profileCompleteness} className="h-2" />
+                      <Progress value={affiliate.profileCompleteness} className="h-2" />
                     </div>
                     <div>
                       <div className="flex justify-between text-xs text-muted-foreground mb-1">
                         <span>Next Rank Progress</span>
-                        <span>{Math.round((distributor.achievementPoints / distributor.nextRankRequirement) * 100)}%</span>
+                        <span>{Math.round((affiliate.achievementPoints / affiliate.nextRankRequirement) * 100)}%</span>
                       </div>
                       <Progress 
-                        value={(distributor.achievementPoints / distributor.nextRankRequirement) * 100} 
+                        value={(affiliate.achievementPoints / affiliate.nextRankRequirement) * 100} 
                         className="h-2" 
                       />
                     </div>
@@ -943,15 +944,15 @@ export function DistributorManagement() {
                   <div className="space-y-1 text-xs text-muted-foreground">
                     <div className="flex items-center justify-between">
                       <span>Sponsor:</span>
-                      <span className="font-medium">{distributor.sponsor || "Direct"}</span>
+                      <span className="font-medium">{affiliate.sponsor || "Direct"}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Joined:</span>
-                      <span>{new Date(distributor.joinDate).toLocaleDateString()}</span>
+                      <span>{new Date(affiliate.joinDate).toLocaleDateString()}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Last Active:</span>
-                      <span>{new Date(distributor.lastActivity).toLocaleDateString()}</span>
+                      <span>{new Date(affiliate.lastActivity).toLocaleDateString()}</span>
                     </div>
                   </div>
 
@@ -966,7 +967,7 @@ export function DistributorManagement() {
                         Email
                       </Button>
                     </div>
-                    <Button variant="default" size="sm" onClick={(e) => {e.stopPropagation(); handleViewProfile(distributor)}}>
+                    <Button variant="default" size="sm" onClick={(e) => {e.stopPropagation(); handleViewProfile(affiliate)}}>
                       <Eye className="h-3 w-3 mr-1" />
                       View
                     </Button>

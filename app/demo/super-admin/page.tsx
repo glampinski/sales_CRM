@@ -8,8 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Crown, CheckCircle, Users, Shield, Settings, Eye } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
-import { usePermissions } from '@/contexts/PermissionContext'
-import { PermissionGate } from '@/components/permission-gate'
 
 const DEMO_FEATURES = [
   {

@@ -2,15 +2,12 @@
 
 import React, { createContext, useContext } from 'react'
 import { useAuth } from './AuthContext'
-import { DEFAULT_ROLE_PERMISSIONS, DASHBOARD_WIDGETS } from '@/types/permissions'
 
 // Simple permission context for compatibility
 interface SimplePermissionContextType {
   hasPermission: (permission: string) => boolean
   hasModuleAccess: (module: string) => boolean
   hasModuleAction: (module: string, action: string) => boolean
-  rolePermissions: typeof DEFAULT_ROLE_PERMISSIONS
-  dashboardWidgets: typeof DASHBOARD_WIDGETS
 }
 
 const SimplePermissionContext = createContext<SimplePermissionContextType | undefined>(undefined)
@@ -47,8 +44,6 @@ export function PermissionProvider({ children }: { children: React.ReactNode }) 
     hasPermission,
     hasModuleAccess,
     hasModuleAction,
-    rolePermissions: DEFAULT_ROLE_PERMISSIONS,
-    dashboardWidgets: DASHBOARD_WIDGETS,
   }
 
   return (

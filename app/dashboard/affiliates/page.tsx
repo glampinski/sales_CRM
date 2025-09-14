@@ -1,13 +1,13 @@
 "use client"
 
-import { DistributorManagement } from "@/components/distributor-management"
+import { AffiliateManagement } from "@/components/affiliate-management"
 // Temporarily removing auth for testing
 // import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 
-export default function DistributorsPage() {
+export default function AffiliatesPage() {
   return (
     <div className="p-6">
-      <DistributorManagement />
+      <AffiliateManagement />
     </div>
   )
 }

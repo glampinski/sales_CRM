@@ -30,7 +30,14 @@ export default function DashboardLayout({
           <div className="flex-1 flex flex-col overflow-hidden">
             <ImpersonationBanner />
             <DashboardHeader />
-            <main className="flex-1 overflow-auto bg-muted/10 relative">
+            <main 
+              className="flex-1 overflow-auto bg-muted/10 relative"
+              onClick={() => {
+                // Close any open dropdowns when clicking in main content
+                const event = new CustomEvent('closeDropdowns');
+                document.dispatchEvent(event);
+              }}
+            >
               {children}
             </main>
           </div>

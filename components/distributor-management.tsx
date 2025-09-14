@@ -271,6 +271,37 @@ export function DistributorManagement() {
   const [isLoading, setIsLoading] = useState(false)
   const [compactView, setCompactView] = useState(false)
   const [autoRefresh, setAutoRefresh] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('[data-dropdown-container]')) {
+        setOpenDropdown(null);
+      }
+    };
+
+    const handleCloseDropdowns = () => {
+      setOpenDropdown(null);
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('closeDropdowns', handleCloseDropdowns);
+    
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('closeDropdowns', handleCloseDropdowns);
+    };
+  }, []);
+
+  const toggleDropdown = (distributorId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    // Ensure no focus issues
+    (event.target as HTMLElement).blur();
+    setOpenDropdown(openDropdown === distributorId ? null : distributorId);
+  };
 
   // Get unique locations for filter
   const uniqueLocations = Array.from(new Set(mockDistributors.map(d => d.location.split(',')[1]?.trim() || d.location)))
@@ -697,57 +728,78 @@ export function DistributorManagement() {
                       )}
                       
                       <TableCell>
-                        <DropdownMenu modal={false}>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => handleViewProfile(distributor)}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Profile
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Details
-                            </DropdownMenuItem>
-                            {canImpersonate() && (
-                              <>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem 
-                                  onClick={() => handleImpersonate(distributor.id)}
-                                  className="text-orange-600"
-                                >
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  Impersonate Distributor
-                                </DropdownMenuItem>
-                              </>
-                            )}
-                            <DropdownMenuItem>
-                              <Send className="mr-2 h-4 w-4" />
-                              Send Message
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                              <Phone className="mr-2 h-4 w-4" />
-                              Call: {distributor.phone}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Mail className="mr-2 h-4 w-4" />
-                              Email: {distributor.email}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                              <FileText className="mr-2 h-4 w-4" />
-                              View Reports
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Activity className="mr-2 h-4 w-4" />
-                              Activity Log
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="relative" data-dropdown-container>
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            onClick={(e) => toggleDropdown(distributor.id, e)}
+                            className="focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                            onBlur={() => {
+                              // Small delay to allow click to register before closing
+                              setTimeout(() => {
+                                if (document.activeElement?.tagName !== 'BUTTON') {
+                                  setOpenDropdown(null);
+                                }
+                              }, 150);
+                            }}
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                          {openDropdown === distributor.id && (
+                            <div 
+                              className="absolute right-0 top-8 bg-white border rounded-md shadow-lg p-1 min-w-[200px] z-50"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <button 
+                                className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                                onClick={(e) => {
+                                  e.stopPropagation(); 
+                                  setOpenDropdown(null);
+                                  handleViewProfile(distributor);
+                                }}
+                              >
+                                <Eye className="mr-2 h-4 w-4" />
+                                View Profile
+                              </button>
+                              <button 
+                                className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenDropdown(null);
+                                }}
+                              >
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit Details
+                              </button>
+                              {canImpersonate() && (
+                                <>
+                                  <div className="border-t my-1"></div>
+                                  <button 
+                                    className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-orange-600"
+                                    onClick={(e) => {
+                                      e.stopPropagation(); 
+                                      setOpenDropdown(null);
+                                      handleImpersonate(distributor.id);
+                                    }}
+                                  >
+                                    <Eye className="mr-2 h-4 w-4" />
+                                    Impersonate Distributor
+                                  </button>
+                                </>
+                              )}
+                              <button 
+                                className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenDropdown(null);
+                                }}
+                              >
+                                <Send className="mr-2 h-4 w-4" />
+                                Send Message
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -786,48 +838,50 @@ export function DistributorManagement() {
                         }}
                         onClick={(e) => e.stopPropagation()}
                       />
-                      <DropdownMenu modal={false}>
-                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" className="h-6 w-6">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleViewProfile(distributor)}}>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Profile
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit Details
-                          </DropdownMenuItem>
-                          {canImpersonate() && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem 
-                                onClick={(e) => {e.stopPropagation(); handleImpersonate(distributor.id)}}
-                                className="text-orange-600"
-                              >
-                                <Eye className="mr-2 h-4 w-4" />
-                                Impersonate Distributor
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <Send className="mr-2 h-4 w-4" />
-                            Send Message
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <Phone className="mr-2 h-4 w-4" />
-                            Call
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <Mail className="mr-2 h-4 w-4" />
-                            Email
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="relative" data-dropdown-container>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-6 w-6 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          onClick={(e) => toggleDropdown(`card-${distributor.id}`, e)}
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                        {openDropdown === `card-${distributor.id}` && (
+                          <div 
+                            className="absolute right-0 top-8 bg-white border rounded-md shadow-lg p-1 min-w-[180px] z-50"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                              onClick={(e) => {
+                                e.stopPropagation(); 
+                                setOpenDropdown(null);
+                                handleViewProfile(distributor);
+                              }}
+                            >
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Profile
+                            </button>
+                            {canImpersonate() && (
+                              <>
+                                <div className="border-t my-1"></div>
+                                <button 
+                                  className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-orange-600"
+                                  onClick={(e) => {
+                                    e.stopPropagation(); 
+                                    setOpenDropdown(null);
+                                    handleImpersonate(distributor.id);
+                                  }}
+                                >
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  Impersonate Distributor
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">

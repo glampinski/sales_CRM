@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -113,6 +113,37 @@ export default function UsersPage() {
   const [roleFilter, setRoleFilter] = useState<string>("all")
   const [users, setUsers] = useState(mockUsers)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('[data-dropdown-container]')) {
+        setOpenDropdown(null);
+      }
+    };
+
+    const handleCloseDropdowns = () => {
+      setOpenDropdown(null);
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('closeDropdowns', handleCloseDropdowns);
+    
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('closeDropdowns', handleCloseDropdowns);
+    };
+  }, []);
+
+  const toggleDropdown = (userId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    // Ensure no focus issues
+    (event.target as HTMLElement).blur();
+    setOpenDropdown(openDropdown === userId ? null : userId);
+  };
 
   const form = useForm({
     defaultValues: {
@@ -417,55 +448,94 @@ export default function UsersPage() {
                     <TableCell className="text-sm">{user.lastLogin}</TableCell>
                     <TableCell className="text-sm">{user.createdAt}</TableCell>
                     <TableCell>
-                      <DropdownMenu modal={false}>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Open menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit User
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleToggleStatus(user.id)}>
-                            {user.status === 'Active' ? (
+                      <div className="relative" data-dropdown-container>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={(e) => toggleDropdown(user.id.toString(), e)}
+                          className="focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          onBlur={() => {
+                            // Small delay to allow click to register before closing
+                            setTimeout(() => {
+                              if (document.activeElement?.tagName !== 'BUTTON') {
+                                setOpenDropdown(null);
+                              }
+                            }, 150);
+                          }}
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Open menu</span>
+                        </Button>
+                        {openDropdown === user.id.toString() && (
+                          <div 
+                            className="absolute right-0 top-8 bg-white border rounded-md shadow-lg p-1 min-w-[200px] z-50"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="px-2 py-1.5 text-sm font-medium text-gray-700 border-b">Actions</div>
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenDropdown(null);
+                              }}
+                            >
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit User
+                            </button>
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenDropdown(null);
+                                handleToggleStatus(user.id);
+                              }}
+                            >
+                              {user.status === 'Active' ? (
+                                <>
+                                  <X className="mr-2 h-4 w-4" />
+                                  Deactivate
+                                </>
+                              ) : (
+                                <>
+                                  <CheckSquare className="mr-2 h-4 w-4" />
+                                  Activate
+                                </>
+                              )}
+                            </button>
+                            {canImpersonate() && user.role !== 'super_admin' && (
                               <>
-                                <X className="mr-2 h-4 w-4" />
-                                Deactivate
-                              </>
-                            ) : (
-                              <>
-                                <CheckSquare className="mr-2 h-4 w-4" />
-                                Activate
+                                <div className="border-t my-1"></div>
+                                <button 
+                                  className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-orange-600"
+                                  onClick={(e) => {
+                                    e.stopPropagation(); 
+                                    setOpenDropdown(null);
+                                    handleImpersonate(user.id);
+                                  }}
+                                >
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  Impersonate User
+                                </button>
                               </>
                             )}
-                          </DropdownMenuItem>
-                          {canImpersonate() && user.role !== 'super_admin' && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem 
-                                onClick={() => handleImpersonate(user.id)}
-                                className="text-orange-600"
-                              >
-                                <Eye className="mr-2 h-4 w-4" />
-                                Impersonate User
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem 
-                            onClick={() => handleDeleteUser(user.id)}
-                            disabled={user.role === 'super_admin'}
-                            className="text-red-600"
-                          >
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete User
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                            <div className="border-t my-1"></div>
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-red-600"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenDropdown(null);
+                                if (user.role !== 'super_admin') {
+                                  handleDeleteUser(user.id);
+                                }
+                              }}
+                              disabled={user.role === 'super_admin'}
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete User
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

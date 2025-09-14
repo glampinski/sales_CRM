@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -338,6 +338,37 @@ export function CustomerManagement() {
   const [tableColumns, setTableColumns] = useState<TableColumn[]>(defaultColumns)
   const [isLoading, setIsLoading] = useState(false)
   const [compactView, setCompactView] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('[data-dropdown-container]')) {
+        setOpenDropdown(null);
+      }
+    };
+
+    const handleCloseDropdowns = () => {
+      setOpenDropdown(null);
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('closeDropdowns', handleCloseDropdowns);
+    
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('closeDropdowns', handleCloseDropdowns);
+    };
+  }, []);
+
+  const toggleDropdown = (customerId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    // Ensure no focus issues
+    (event.target as HTMLElement).blur();
+    setOpenDropdown(openDropdown === customerId ? null : customerId);
+  };
 
   // Get unique locations for filter
   const uniqueLocations = Array.from(new Set(mockCustomers.map(c => c.location.split(',')[1]?.trim() || c.location)))
@@ -465,19 +496,6 @@ export function CustomerManagement() {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          {/* Test dropdown */}
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                Test
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>Test Item 1</DropdownMenuItem>
-              <DropdownMenuItem>Test Item 2</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
           <div className="flex items-center space-x-2 text-sm">
             <Switch
               id="compact-view"
@@ -741,61 +759,78 @@ export function CustomerManagement() {
                       )}
                       
                       <TableCell>
-                        <DropdownMenu modal={false}>
-                          <DropdownMenuTrigger asChild>
-                            <Button 
-                              variant="ghost" 
-                              size="icon"
+                        <div className="relative" data-dropdown-container>
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            onClick={(e) => toggleDropdown(customer.id, e)}
+                            className="focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                            onBlur={() => {
+                              // Small delay to allow click to register before closing
+                              setTimeout(() => {
+                                if (document.activeElement?.tagName !== 'BUTTON') {
+                                  setOpenDropdown(null);
+                                }
+                              }, 150);
+                            }}
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                          {openDropdown === customer.id && (
+                            <div 
+                              className="absolute right-0 top-8 bg-white border rounded-md shadow-lg p-1 min-w-[200px] z-50"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="z-50">
-                            <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleViewProfile(customer)}}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Profile
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Details
-                            </DropdownMenuItem>
-                            {canImpersonate() && (
-                              <>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem 
-                                  onClick={(e) => {e.stopPropagation(); handleImpersonate(customer.id)}}
-                                  className="text-orange-600"
-                                >
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  Impersonate Customer
-                                </DropdownMenuItem>
-                              </>
-                            )}
-                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                              <FileText className="mr-2 h-4 w-4" />
-                              View Contracts
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                              <Phone className="mr-2 h-4 w-4" />
-                              Call: {customer.phone}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                              <Mail className="mr-2 h-4 w-4" />
-                              Email: {customer.email}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                              <Building2 className="mr-2 h-4 w-4" />
-                              Manage Properties
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                              <Calendar className="mr-2 h-4 w-4" />
-                              Booking Calendar
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                              <button 
+                                className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                                onClick={(e) => {
+                                  e.stopPropagation(); 
+                                  setOpenDropdown(null);
+                                  handleViewProfile(customer);
+                                }}
+                              >
+                                <Eye className="mr-2 h-4 w-4" />
+                                View Profile
+                              </button>
+                              <button 
+                                className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenDropdown(null);
+                                }}
+                              >
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit Details
+                              </button>
+                              {canImpersonate() && (
+                                <>
+                                  <div className="border-t my-1"></div>
+                                  <button 
+                                    className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-orange-600"
+                                    onClick={(e) => {
+                                      e.stopPropagation(); 
+                                      setOpenDropdown(null);
+                                      handleImpersonate(customer.id);
+                                    }}
+                                  >
+                                    <Eye className="mr-2 h-4 w-4" />
+                                    Impersonate Customer
+                                  </button>
+                                </>
+                              )}
+                              <button 
+                                className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenDropdown(null);
+                                }}
+                              >
+                                <FileText className="mr-2 h-4 w-4" />
+                                View Contracts
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -834,39 +869,78 @@ export function CustomerManagement() {
                         }}
                         onClick={(e) => e.stopPropagation()}
                       />
-                      <DropdownMenu modal={false}>
-                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" className="h-6 w-6">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="z-50">
-                          <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleViewProfile(customer)}}>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Profile
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit Details
-                          </DropdownMenuItem>
-                          {canImpersonate() && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem 
-                                onClick={(e) => {e.stopPropagation(); handleImpersonate(customer.id)}}
-                                className="text-orange-600"
-                              >
-                                <Eye className="mr-2 h-4 w-4" />
-                                Impersonate Customer
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <FileText className="mr-2 h-4 w-4" />
-                            View Contracts
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="relative" data-dropdown-container>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-6 w-6 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          onClick={(e) => toggleDropdown(`card-${customer.id}`, e)}
+                          onBlur={() => {
+                            // Small delay to allow click to register before closing
+                            setTimeout(() => {
+                              if (document.activeElement?.tagName !== 'BUTTON') {
+                                setOpenDropdown(null);
+                              }
+                            }, 150);
+                          }}
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                        {openDropdown === `card-${customer.id}` && (
+                          <div 
+                            className="absolute right-0 top-8 bg-white border rounded-md shadow-lg p-1 min-w-[180px] z-50"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                              onClick={(e) => {
+                                e.stopPropagation(); 
+                                setOpenDropdown(null);
+                                handleViewProfile(customer);
+                              }}
+                            >
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Profile
+                            </button>
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenDropdown(null);
+                              }}
+                            >
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit Details
+                            </button>
+                            {canImpersonate() && (
+                              <>
+                                <div className="border-t my-1"></div>
+                                <button 
+                                  className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-orange-600"
+                                  onClick={(e) => {
+                                    e.stopPropagation(); 
+                                    setOpenDropdown(null);
+                                    handleImpersonate(customer.id);
+                                  }}
+                                >
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  Impersonate Customer
+                                </button>
+                              </>
+                            )}
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenDropdown(null);
+                              }}
+                            >
+                              <FileText className="mr-2 h-4 w-4" />
+                              View Contracts
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">

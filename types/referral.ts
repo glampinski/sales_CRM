@@ -29,7 +29,7 @@ export interface Affiliate {
 export interface ReferralLink {
   id: string;
   affiliate_id: string;
-  link_type: 'landing' | 'onboarding' | 'signup';
+  link_type: 'landing' | 'onboarding';
   base_url: string;
   tracking_code: string;
   created_at: string;

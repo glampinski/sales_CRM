@@ -28,7 +28,11 @@ const signupSchema = z.object({
 
 type SignupFormData = z.infer<typeof signupSchema>;
 
-export function SignupForm() {
+interface SignupFormProps {
+  referralUserId?: string;
+}
+
+export function SignupForm({ referralUserId }: SignupFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { hasReferralAttribution, getReferralCode, processSignupReferral } = useReferralIntegration();
@@ -59,12 +63,13 @@ export function SignupForm() {
       };
 
       // Process referral if present
+      const currentReferralCode = referralUserId || getReferralCode();
       const referral = processSignupReferral(userData);
       
-      if (referral) {
+      if (referral || currentReferralCode) {
         toast({
           title: "Welcome!",
-          description: `Account created successfully! You were referred by ${referral.referral_code}`,
+          description: `Account created successfully! You were referred by ${currentReferralCode}`,
         });
       } else {
         toast({
@@ -95,13 +100,13 @@ export function SignupForm() {
           Enter your information to create your account
         </CardDescription>
         
-        {hasReferralAttribution() && (
+        {(hasReferralAttribution() || referralUserId) && (
           <Alert className="border-green-200 bg-green-50">
             <Users className="h-4 w-4" />
             <AlertDescription className="flex items-center gap-2">
               You&apos;re joining through a referral! 
               <Badge variant="outline" className="bg-green-100">
-                {getReferralCode()}
+                {referralUserId || getReferralCode()}
               </Badge>
             </AlertDescription>
           </Alert>

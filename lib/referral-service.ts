@@ -41,16 +41,6 @@ export class ReferralService {
         created_at: new Date().toISOString(),
         clicks: 0,
         conversions: 0
-      },
-      {
-        id: `signup_${userId}`,
-        affiliate_id: userId,
-        link_type: 'signup',
-        base_url: `${baseUrl}/${userId}/signup`,
-        tracking_code: userId,
-        created_at: new Date().toISOString(),
-        clicks: 0,
-        conversions: 0
       }
     ];
   }

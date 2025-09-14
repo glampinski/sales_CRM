@@ -141,21 +141,21 @@ export function CompactReferralSection({ userId, userEmail }: CompactReferralSec
         <div className="grid gap-2">
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
             <div>
-              <p className="font-medium text-sm">Quick Signup Link</p>
-              <p className="text-xs text-muted-foreground">Direct customers to signup</p>
+              <p className="font-medium text-sm">Quick Referral Link</p>
+              <p className="text-xs text-muted-foreground">Direct prospects to choose timeshare & signup</p>
             </div>
             <div className="flex gap-1">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => copyToClipboard(referralLinks.find(l => l.link_type === 'signup')?.base_url || '', 'Signup link')}
+                onClick={() => copyToClipboard(referralLinks.find(l => l.link_type === 'landing')?.base_url || '', 'Referral link')}
               >
                 <Copy className="h-3 w-3" />
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => window.open(referralLinks.find(l => l.link_type === 'signup')?.base_url || '', '_blank')}
+                onClick={() => window.open(referralLinks.find(l => l.link_type === 'landing')?.base_url || '', '_blank')}
               >
                 <ExternalLink className="h-3 w-3" />
               </Button>

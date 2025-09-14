@@ -13,6 +13,7 @@ interface ShareSelectionProps {
   updateData: (updates: Partial<OnboardingData>) => void
   onNext: () => void
   canProceed: boolean
+  isReferralFlow?: boolean
 }
 
 const shareOptions = [
@@ -67,7 +68,7 @@ const shareOptions = [
   },
 ]
 
-export function ShareSelection({ data, updateData, onNext, canProceed }: ShareSelectionProps) {
+export function ShareSelection({ data, updateData, onNext, canProceed, isReferralFlow = false }: ShareSelectionProps) {
   const handleShareSelect = (shareLevel: ShareLevel) => {
     updateData({
       shareLevel,
@@ -181,7 +182,7 @@ export function ShareSelection({ data, updateData, onNext, canProceed }: ShareSe
 
       <div className="flex justify-center pt-6">
         <Button onClick={onNext} disabled={!canProceed} size="lg" className="px-8">
-          Continue to Documents
+          {isReferralFlow ? "Continue to Sign Up" : "Continue to Sign Up"}
         </Button>
       </div>
     </div>

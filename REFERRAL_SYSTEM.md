@@ -14,19 +14,16 @@ This implementation provides a comprehensive referral system for the sales CRM u
   - Analytics and performance tracking
 
 ### 2. Referral Link Types
-The system generates three types of referral links using clean, short URLs:
+The system generates two types of referral links using clean, short URLs:
 
 1. **Landing Page Links**: `glampinski.com/USER_ID`
+   - Complete customer journey: timeshare selection → signup → documents → payment
    - Use on marketing materials and external websites
-   - Tracks initial interest and attribution
+   - Tracks entire conversion funnel
 
-2. **Signup Links**: `glampinski.com/USER_ID/signup`
-   - Direct link to customer registration
-   - Highest conversion potential
-
-3. **Onboarding Links**: `glampinski.com/USER_ID/onboarding`
-   - Direct customers to the onboarding process
-   - Perfect for existing leads
+2. **Onboarding Links**: `glampinski.com/USER_ID/onboarding`
+   - Direct customers to the complete onboarding process
+   - Perfect for existing leads who need to complete setup
 
 ### 3. Tracking System
 - **Clean URL Tracking**: Uses short URLs like `glampinski.com/USER_ID`

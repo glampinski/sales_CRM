@@ -1,12 +1,14 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Progress } from "@/components/ui/progress"
-import { CheckCircle, FileText, CreditCard, Shield, Building2 } from "lucide-react"
+import { CheckCircle, FileText, CreditCard, Shield, Building2, User } from "lucide-react"
 import { ShareSelection } from "./share-selection"
 import { DocumentHandling } from "./document-handling"
 import { PaymentStep } from "./payment-step"
 import { ConfirmationStep } from "./confirmation-step"
+import { OnboardingSignupStep } from "./onboarding-signup-step"
 import { ImpersonationBanner } from "./impersonation-banner"
 import Image from "next/image"
 
@@ -19,18 +21,26 @@ export interface OnboardingData {
   documentsUploaded: string[]
   paymentMethod: "bank" | "crypto" | null
   completed: boolean
+  userInfo?: any
+}
+
+interface OnboardingFlowProps {
+  isReferralFlow?: boolean
+  referralUserId?: string
 }
 
 const steps = [
   { id: 1, name: "Choose", icon: Building2 },
-  { id: 2, name: "Docs", icon: FileText },
-  { id: 3, name: "Upload", icon: CheckCircle },
-  { id: 4, name: "Payment", icon: CreditCard },
-  { id: 5, name: "Confirmation", icon: Shield },
+  { id: 2, name: "Sign Up", icon: User },
+  { id: 3, name: "Docs", icon: FileText },
+  { id: 4, name: "Upload", icon: CheckCircle },
+  { id: 5, name: "Payment", icon: CreditCard },
+  { id: 6, name: "Confirmation", icon: Shield },
 ]
 
-export function OnboardingFlow() {
+export function OnboardingFlow({ isReferralFlow = false, referralUserId }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState(1)
+  const router = useRouter()
   const [data, setData] = useState<OnboardingData>({
     shareLevel: null,
     vipPresale: false,
@@ -45,7 +55,8 @@ export function OnboardingFlow() {
   }
 
   const nextStep = () => {
-    if (currentStep < 5) {
+    // Normal flow - continue to next step
+    if (currentStep < 6) {
       setCurrentStep((prev) => prev + 1)
     }
   }
@@ -55,10 +66,12 @@ export function OnboardingFlow() {
       case 2:
         return data.shareLevel !== null
       case 3:
-        return data.documentsRead.length === 5
+        return true // User is signed up
       case 4:
-        return data.documentsUploaded.length === 5
+        return data.documentsRead.length === 5
       case 5:
+        return data.documentsUploaded.length === 5
+      case 6:
         return data.paymentMethod !== null
       default:
         return true
@@ -66,7 +79,7 @@ export function OnboardingFlow() {
   }
 
   const getStepProgress = () => {
-    return ((currentStep - 1) / 4) * 100
+    return ((currentStep - 1) / 5) * 100
   }
 
   return (
@@ -122,28 +135,44 @@ export function OnboardingFlow() {
         {/* Step Content */}
         <div className="max-w-4xl mx-auto">
           {currentStep === 1 && (
-            <ShareSelection data={data} updateData={updateData} onNext={nextStep} canProceed={canProceedToStep(2)} />
+            <ShareSelection 
+              data={data} 
+              updateData={updateData} 
+              onNext={nextStep} 
+              canProceed={canProceedToStep(2)} 
+              isReferralFlow={isReferralFlow}
+            />
           )}
 
           {currentStep === 2 && (
-            <DocumentHandling data={data} updateData={updateData} onNext={nextStep} canProceed={canProceedToStep(3)} />
+            <OnboardingSignupStep 
+              data={data} 
+              updateData={updateData} 
+              onNext={nextStep} 
+              canProceed={canProceedToStep(3)}
+              referralUserId={referralUserId}
+            />
           )}
 
           {currentStep === 3 && (
+            <DocumentHandling data={data} updateData={updateData} onNext={nextStep} canProceed={canProceedToStep(4)} />
+          )}
+
+          {currentStep === 4 && (
             <DocumentHandling
               data={data}
               updateData={updateData}
               onNext={nextStep}
-              canProceed={canProceedToStep(4)}
+              canProceed={canProceedToStep(5)}
               uploadMode={true}
             />
           )}
 
-          {currentStep === 4 && (
-            <PaymentStep data={data} updateData={updateData} onNext={nextStep} canProceed={canProceedToStep(5)} />
+          {currentStep === 5 && (
+            <PaymentStep data={data} updateData={updateData} onNext={nextStep} canProceed={canProceedToStep(6)} />
           )}
 
-          {currentStep === 5 && <ConfirmationStep data={data} />}
+          {currentStep === 6 && <ConfirmationStep data={data} />}
         </div>
       </div>
     </div>

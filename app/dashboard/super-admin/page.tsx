@@ -1,5 +1,6 @@
 "use client"
 
+import Link from 'next/link'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -27,18 +28,17 @@ export default function SuperAdminRedirectPage() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <a href="/dashboard" className="flex items-center">
+                <Link href="/dashboard" className="flex items-center">
                   <Crown className="h-4 w-4 mr-2" />
                   Go to Super Admin Dashboard
                   <ArrowRight className="h-4 w-4 ml-2" />
-                </a>
+                </Link>
               </Button>
               
               <Button variant="outline" size="lg" asChild>
-                <a href="/demo/super-admin" className="flex items-center">
+                <Link href="/demo/super-admin" className="flex items-center">
                   <Eye className="h-4 w-4 mr-2" />
-                  View Demo Features
-                </a>
+                  View Demo Features</Link>
               </Button>
             </div>
           </CardContent>

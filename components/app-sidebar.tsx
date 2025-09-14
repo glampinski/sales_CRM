@@ -38,6 +38,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext"
 import { PermissionGate } from "@/components/permission-gate"
 import Image from "next/image"
+import Link from "next/link"
 
 // Navigation item type
 type NavigationItem = {
@@ -218,10 +219,10 @@ export function AppSidebar() {
                 {navigation.main.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <a href={item.href} className="flex items-center gap-2">
+                      <Link href={item.href} className="flex items-center gap-2">
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -239,10 +240,10 @@ export function AppSidebar() {
                 {navigation.mlm.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <a href={item.href} className="flex items-center gap-2">
+                      <Link href={item.href} className="flex items-center gap-2">
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -260,10 +261,10 @@ export function AppSidebar() {
                 {navigation.business.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <a href={item.href} className="flex items-center gap-2">
+                      <Link href={item.href} className="flex items-center gap-2">
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -281,10 +282,10 @@ export function AppSidebar() {
                 {navigation.system.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <a href={item.href} className="flex items-center gap-2">
+                      <Link href={item.href} className="flex items-center gap-2">
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

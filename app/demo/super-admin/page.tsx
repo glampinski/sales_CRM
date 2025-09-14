@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -209,18 +210,18 @@ export default function SuperAdminDemoPage() {
           </Button>
         }>
           <Button asChild>
-            <a href="/dashboard/super-admin">
+            <Link href="/dashboard/super-admin">
               <Crown className="h-4 w-4 mr-2" />
               Access Super Admin Dashboard
-            </a>
+            </Link>
           </Button>
         </PermissionGate>
         
         <Button variant="outline" asChild>
-          <a href="/dashboard">
+          <Link href="/dashboard">
             <Eye className="h-4 w-4 mr-2" />
             View Standard Dashboard
-          </a>
+          </Link>
         </Button>
       </div>
     </div>

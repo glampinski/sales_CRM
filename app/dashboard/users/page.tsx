@@ -30,6 +30,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
   Form,
   FormControl,
   FormField,
@@ -38,7 +46,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
-import { UserPlus, Search, Shield, UserCog, Trash2, Edit, CheckSquare, X } from "lucide-react"
+import { useAuth } from "@/contexts/AuthContext"
+import { UserPlus, Search, Shield, UserCog, Trash2, Edit, CheckSquare, X, MoreHorizontal, Eye } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { UserRole } from "@/types/auth"
 
@@ -99,6 +108,7 @@ const roleColors = {
 } as const
 
 export default function UsersPage() {
+  const { canImpersonate, startImpersonation } = useAuth()
   const [searchTerm, setSearchTerm] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("all")
   const [users, setUsers] = useState(mockUsers)
@@ -145,6 +155,14 @@ export default function UsersPage() {
 
   const handleDeleteUser = (userId: number) => {
     setUsers(users.filter(user => user.id !== userId))
+  }
+
+  const handleImpersonate = (userId: number) => {
+    const success = startImpersonation(userId.toString())
+    if (success) {
+      // Redirect to dashboard to show impersonated view
+      window.location.href = '/dashboard'
+    }
   }
 
   return (
@@ -399,33 +417,55 @@ export default function UsersPage() {
                     <TableCell className="text-sm">{user.lastLogin}</TableCell>
                     <TableCell className="text-sm">{user.createdAt}</TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleToggleStatus(user.id)}
-                        >
-                          {user.status === 'Active' ? (
-                            <X className="h-4 w-4" />
-                          ) : (
-                            <CheckSquare className="h-4 w-4" />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuItem>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit User
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleToggleStatus(user.id)}>
+                            {user.status === 'Active' ? (
+                              <>
+                                <X className="mr-2 h-4 w-4" />
+                                Deactivate
+                              </>
+                            ) : (
+                              <>
+                                <CheckSquare className="mr-2 h-4 w-4" />
+                                Activate
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                          {canImpersonate() && user.role !== 'super_admin' && (
+                            <>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem 
+                                onClick={() => handleImpersonate(user.id)}
+                                className="text-orange-600"
+                              >
+                                <Eye className="mr-2 h-4 w-4" />
+                                Impersonate User
+                              </DropdownMenuItem>
+                            </>
                           )}
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDeleteUser(user.id)}
-                          disabled={user.role === 'super_admin'}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem 
+                            onClick={() => handleDeleteUser(user.id)}
+                            disabled={user.role === 'super_admin'}
+                            className="text-red-600"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete User
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}

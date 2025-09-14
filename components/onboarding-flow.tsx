@@ -7,6 +7,7 @@ import { ShareSelection } from "./share-selection"
 import { DocumentHandling } from "./document-handling"
 import { PaymentStep } from "./payment-step"
 import { ConfirmationStep } from "./confirmation-step"
+import { ImpersonationBanner } from "./impersonation-banner"
 import Image from "next/image"
 
 export type ShareLevel = "full" | "half" | "quarter" | "eighth"
@@ -70,6 +71,7 @@ export function OnboardingFlow() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+      <ImpersonationBanner />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">

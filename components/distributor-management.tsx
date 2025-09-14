@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useAuth } from "@/contexts/AuthContext"
 import { 
   Select,
   SelectContent,
@@ -65,6 +66,8 @@ import { Separator } from "@/components/ui/separator"
 import { Progress } from "@/components/ui/progress"
 import { DistributorActions } from "@/components/distributor-actions"
 import { DistributorAnalytics } from "@/components/distributor-analytics"
+import { DistributorTeamHierarchy } from "@/components/distributor-team-hierarchy"
+import { DistributorPerformanceTracking } from "@/components/distributor-performance-tracking"
 
 interface DistributorSummary {
   id: string
@@ -254,11 +257,12 @@ const defaultColumns: TableColumn[] = [
 ]
 
 export function DistributorManagement() {
+  const { canImpersonate, startImpersonation } = useAuth()
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [rankFilter, setRankFilter] = useState("all")
   const [locationFilter, setLocationFilter] = useState("all")
-  const [viewMode, setViewMode] = useState<"table" | "cards" | "analytics">("table")
+  const [viewMode, setViewMode] = useState<"table" | "cards" | "analytics" | "team" | "performance">("table")
   const [selectedDistributors, setSelectedDistributors] = useState<string[]>([])
   const [showArchived, setShowArchived] = useState(false)
   const [sortField, setSortField] = useState<SortField>("name")
@@ -371,9 +375,19 @@ export function DistributorManagement() {
   }
 
   const handleViewProfile = (distributor: DistributorSummary) => {
-    // For now, we'll use an alert. In a real app, this would navigate to a profile page
-    // or open a detailed profile modal
-    alert(`Viewing profile for ${distributor.name}\nRank: ${distributor.rank}\nTeam Size: ${distributor.teamSize}`)
+    // Navigate to the detailed profile page
+    window.location.href = `/dashboard/distributors/${distributor.id}`
+  }
+
+  const handleImpersonate = (distributorId: string) => {
+    // Map distributor to user ID (admin or salesperson)
+    // In real app, this would look up the actual user ID for the distributor
+    const distributorUserId = distributorId === "1" ? "2" : "3" // Map to admin or salesperson
+    const success = startImpersonation(distributorUserId)
+    if (success) {
+      // Redirect to show distributor dashboard view
+      window.location.href = '/dashboard'
+    }
   }
 
   const handleColumnToggle = (columnKey: string, visible: boolean) => {
@@ -526,11 +540,13 @@ export function DistributorManagement() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "cards" | "analytics")}>
+        <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "cards" | "analytics" | "team" | "performance")}>
           <TabsList>
             <TabsTrigger value="table">Table</TabsTrigger>
             <TabsTrigger value="cards">Cards</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="team">Team Hierarchy</TabsTrigger>
+            <TabsTrigger value="performance">Performance</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -696,6 +712,18 @@ export function DistributorManagement() {
                               <Edit className="mr-2 h-4 w-4" />
                               Edit Details
                             </DropdownMenuItem>
+                            {canImpersonate() && (
+                              <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem 
+                                  onClick={() => handleImpersonate(distributor.id)}
+                                  className="text-orange-600"
+                                >
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  Impersonate Distributor
+                                </DropdownMenuItem>
+                              </>
+                            )}
                             <DropdownMenuItem>
                               <Send className="mr-2 h-4 w-4" />
                               Send Message
@@ -773,6 +801,18 @@ export function DistributorManagement() {
                             <Edit className="mr-2 h-4 w-4" />
                             Edit Details
                           </DropdownMenuItem>
+                          {canImpersonate() && (
+                            <>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem 
+                                onClick={(e) => {e.stopPropagation(); handleImpersonate(distributor.id)}}
+                                className="text-orange-600"
+                              >
+                                <Eye className="mr-2 h-4 w-4" />
+                                Impersonate Distributor
+                              </DropdownMenuItem>
+                            </>
+                          )}
                           <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                             <Send className="mr-2 h-4 w-4" />
                             Send Message
@@ -885,6 +925,14 @@ export function DistributorManagement() {
 
         <TabsContent value="analytics" className="space-y-4">
           <DistributorAnalytics />
+        </TabsContent>
+
+        <TabsContent value="team" className="space-y-4">
+          <DistributorTeamHierarchy />
+        </TabsContent>
+
+        <TabsContent value="performance" className="space-y-4">
+          <DistributorPerformanceTracking />
         </TabsContent>
       </Tabs>
     </div>

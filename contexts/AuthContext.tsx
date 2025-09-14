@@ -5,12 +5,17 @@ import { User, UserRole, DEFAULT_ROLE_PERMISSIONS } from '@/types/auth'
 
 interface AuthContextType {
   user: User | null
+  originalUser: User | null // For tracking the real user during impersonation
+  isImpersonating: boolean
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
+  startImpersonation: (targetUserId: string) => boolean
+  stopImpersonation: () => void
   hasPermission: (resource: string, action: string) => boolean
   hasPageAccess: (page: string) => boolean
   hasFeatureAccess: (feature: string) => boolean
   canAccessPage: (page: string) => boolean
+  canImpersonate: () => boolean
   isLoading: boolean
 }
 
@@ -54,13 +59,24 @@ const MOCK_USERS: User[] = [
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [originalUser, setOriginalUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  
+  const isImpersonating = originalUser !== null
 
   useEffect(() => {
-    // Check for stored user session
-    const storedUser = localStorage.getItem('auth_user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    // Check for impersonation state first
+    const impersonationData = localStorage.getItem('impersonation_data')
+    if (impersonationData) {
+      const { originalUser, targetUser } = JSON.parse(impersonationData)
+      setOriginalUser(originalUser)
+      setUser(targetUser)
+    } else {
+      // Check for stored user session
+      const storedUser = localStorage.getItem('auth_user')
+      if (storedUser) {
+        setUser(JSON.parse(storedUser))
+      }
     }
     setIsLoading(false)
   }, [])
@@ -78,7 +94,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     setUser(null)
+    setOriginalUser(null) // Clear impersonation on logout
     localStorage.removeItem('auth_user')
+    localStorage.removeItem('impersonation_data')
+    // Redirect to home page after logout
+    if (typeof window !== 'undefined') {
+      window.location.href = '/'
+    }
+  }
+
+  const startImpersonation = (targetUserId: string): boolean => {
+    if (!user || !canImpersonate()) return false
+    
+    const targetUser = MOCK_USERS.find(u => u.id === targetUserId)
+    if (!targetUser) return false
+    
+    setOriginalUser(user)
+    setUser(targetUser)
+    
+    // Store impersonation state
+    localStorage.setItem('impersonation_data', JSON.stringify({
+      originalUser: user,
+      targetUser: targetUser
+    }))
+    
+    return true
+  }
+
+  const stopImpersonation = () => {
+    if (!originalUser) return
+    
+    setUser(originalUser)
+    setOriginalUser(null)
+    localStorage.removeItem('impersonation_data')
+    localStorage.setItem('auth_user', JSON.stringify(originalUser))
+  }
+
+  const canImpersonate = (): boolean => {
+    if (!user) return false
+    
+    // Super admin can always impersonate
+    if (user.role === 'super_admin') return true
+    
+    // Check if admin has impersonation permission (future feature)
+    // This would check settings to see which admins are allowed to impersonate
+    if (user.role === 'admin') {
+      // For now, allow all admins - in real app, check settings
+      return true
+    }
+    
+    return false
   }
 
   const hasPermission = (resource: string, action: string): boolean => {
@@ -116,12 +181,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider value={{
       user,
+      originalUser,
+      isImpersonating,
       login,
       logout,
+      startImpersonation,
+      stopImpersonation,
       hasPermission,
       hasPageAccess,
       hasFeatureAccess,
       canAccessPage,
+      canImpersonate,
       isLoading
     }}>
       {children}

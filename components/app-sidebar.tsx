@@ -206,12 +206,10 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
 
-        {/* Business */}
+        {/* Business Features */}
         {navigation.business && (
           <SidebarGroup>
-            <SidebarGroupLabel>
-              {user.role === 'customer' ? 'Shopping' : 'Business'}
-            </SidebarGroupLabel>
+            <SidebarGroupLabel>Business</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {navigation.business.map((item) => (
@@ -229,7 +227,7 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
 
-        {/* System */}
+        {/* System Features */}
         {navigation.system && (
           <SidebarGroup>
             <SidebarGroupLabel>System</SidebarGroupLabel>
@@ -252,28 +250,30 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-border">
-        <div className="flex items-center gap-2 px-4 py-2">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/placeholder-user.jpg" />
-            <AvatarFallback>
-              {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{user.name}</p>
-            <p className="text-xs text-muted-foreground truncate capitalize">
-              {user.role.replace('_', ' ')}
-            </p>
-          </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={logout}
-            className="h-8 w-8 p-0"
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
-        </div>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex items-center gap-2 px-2 py-1">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback>
+                  {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{user.name}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={logout}
+                className="h-8 w-8"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   )

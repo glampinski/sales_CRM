@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/AuthContext"
 import { Package, Search, Plus, Filter, Download, Eye, Edit, Trash2, Star, TrendingUp, ShoppingCart, DollarSign } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -128,10 +130,24 @@ const stats = [
 const categories = ["All", "Timeshare"]
 
 export default function ProductsPage() {
+  const { user } = useAuth()
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("All")
   const [statusFilter, setStatusFilter] = useState("all")
   const [viewMode, setViewMode] = useState<"table" | "grid">("grid")
+
+  const isCustomer = user?.role === 'customer'
+
+  const handleProductPurchase = (product: any) => {
+    if (isCustomer) {
+      // Redirect customers to onboarding flow for purchase
+      router.push('/onboarding')
+    } else {
+      // For admin/sales team, add to order (existing functionality)
+      console.log("Adding to order:", product.name)
+    }
+  }
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -261,18 +277,25 @@ export default function ProductsPage() {
                 <Eye className="h-4 w-4 mr-2" />
                 View Details
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Edit className="h-4 w-4 mr-2" />
-                Edit Product
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
+              {!isCustomer && (
+                <DropdownMenuItem className="cursor-pointer">
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Product
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem 
+                className="cursor-pointer"
+                onClick={() => handleProductPurchase(product)}
+              >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Order
+                {isCustomer ? "Purchase" : "Add to Order"}
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600 cursor-pointer">
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete
-              </DropdownMenuItem>
+              {!isCustomer && (
+                <DropdownMenuItem className="text-red-600 cursor-pointer">
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -285,20 +308,29 @@ export default function ProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Timeshare Products</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {isCustomer ? "Available Timeshare Products" : "Timeshare Products"}
+          </h1>
           <p className="text-muted-foreground">
-            Manage your timeshare offerings and ownership levels
+            {isCustomer 
+              ? "Choose your timeshare ownership level and start your onboarding process"
+              : "Manage your timeshare offerings and ownership levels"
+            }
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Export Catalog
-          </Button>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Product
-          </Button>
+          {!isCustomer && (
+            <>
+              <Button variant="outline">
+                <Download className="h-4 w-4 mr-2" />
+                Export Catalog
+              </Button>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Product
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
@@ -456,18 +488,25 @@ export default function ProductsPage() {
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
-                              <Edit className="h-4 w-4 mr-2" />
-                              Edit Product
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
+                            {!isCustomer && (
+                              <DropdownMenuItem className="cursor-pointer">
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit Product
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem 
+                              className="cursor-pointer"
+                              onClick={() => handleProductPurchase(product)}
+                            >
                               <ShoppingCart className="h-4 w-4 mr-2" />
-                              Add to Order
+                              {isCustomer ? "Purchase" : "Add to Order"}
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600 cursor-pointer">
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Delete
-                            </DropdownMenuItem>
+                            {!isCustomer && (
+                              <DropdownMenuItem className="text-red-600 cursor-pointer">
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            )}
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

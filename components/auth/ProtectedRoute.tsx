@@ -20,7 +20,16 @@ export function ProtectedRoute({
   requiredFeature,
   fallback 
 }: ProtectedRouteProps) {
-  const { user, hasPermission, hasFeatureAccess } = useAuth()
+  const { user, hasPermission, hasFeatureAccess, isLoading } = useAuth()
+
+  // Show loading state during auth check
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
 
   if (!user) {
     return fallback || (

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ConditionalRender } from "@/components/auth/ProtectedRoute"
 import { 
   Select,
   SelectContent,
@@ -40,7 +41,9 @@ import {
   Smartphone,
   CreditCard,
   Palette,
-  Monitor
+  Monitor,
+  FileText,
+  Eye
 } from "lucide-react"
 import {
   Dialog,
@@ -62,6 +65,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { ContractTemplateManagement } from "@/components/contract-template-management"
 
 interface UserProfile {
   firstName: string
@@ -207,12 +211,19 @@ export default function SettingsPage() {
 
       {/* Settings Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="system">System</TabsTrigger>
           <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsTrigger value="contracts">Contracts</TabsTrigger>
+          <ConditionalRender requiredRole={['super_admin', 'admin']}>
+            <TabsTrigger value="impersonation">
+              <Eye className="h-4 w-4 mr-1" />
+              Impersonation
+            </TabsTrigger>
+          </ConditionalRender>
         </TabsList>
 
         {/* Profile Settings */}
@@ -736,6 +747,103 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Contract Templates */}
+        <TabsContent value="contracts" className="space-y-6">
+          <ContractTemplateManagement />
+        </TabsContent>
+
+        {/* User Impersonation Permissions - Only for Super Admin */}
+        <TabsContent value="impersonation" className="space-y-6">
+          <ConditionalRender requiredRole={['super_admin']}>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Eye className="h-5 w-5 text-orange-600" />
+                  Impersonation Permissions Management
+                </CardTitle>
+                <CardDescription>
+                  Control which user roles and specific users can impersonate others. This is a powerful security feature that should be managed carefully.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Role-Based Permissions</Label>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <Label className="font-medium">Super Admin</Label>
+                          <p className="text-sm text-muted-foreground">Can always impersonate all users</p>
+                        </div>
+                        <Badge variant="secondary">Always Enabled</Badge>
+                      </div>
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <Label className="font-medium">Admin</Label>
+                          <p className="text-sm text-muted-foreground">Allow admins to impersonate users</p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <Label className="font-medium">Salesperson</Label>
+                          <p className="text-sm text-muted-foreground">Allow salespeople to impersonate customers (for support)</p>
+                        </div>
+                        <Switch />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Individual User Permissions</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Override role-based permissions for specific users. These settings take precedence over role permissions.
+                    </p>
+                    <div className="space-y-2">
+                      {/* This would be populated with actual users in a real app */}
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-8 w-8">
+                            <AvatarFallback>AU</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <Label className="font-medium">Admin User</Label>
+                            <p className="text-sm text-muted-foreground">admin@glampinski.com</p>
+                          </div>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-8 w-8">
+                            <AvatarFallback>SP</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <Label className="font-medium">Sales Person</Label>
+                            <p className="text-sm text-muted-foreground">sales@glampinski.com</p>
+                          </div>
+                        </div>
+                        <Switch />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button>
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Permissions
+                  </Button>
+                  <Button variant="outline">
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Reset to Defaults
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </ConditionalRender>
         </TabsContent>
       </Tabs>
 

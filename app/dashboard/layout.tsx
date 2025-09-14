@@ -4,6 +4,7 @@ import React from "react"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
+import { ImpersonationBanner } from "@/components/impersonation-banner"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 
 export default function DashboardLayout({
@@ -27,6 +28,7 @@ export default function DashboardLayout({
         <div className="flex min-h-screen w-full">
           <AppSidebar />
           <div className="flex-1 flex flex-col overflow-hidden">
+            <ImpersonationBanner />
             <DashboardHeader />
             <main className="flex-1 overflow-auto bg-muted/10">
               {children}

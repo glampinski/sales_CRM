@@ -17,6 +17,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext"
 import { SuperAdminDashboard } from "@/components/super-admin-dashboard"
 import { SimpleGroupPermissions } from "@/components/simple-group-permissions"
+import { CompactReferralSection } from "@/components/compact-referral-section"
 
 // Mock data for dashboard
 const stats = [
@@ -158,7 +159,7 @@ export default function Dashboard() {
         </Tabs>
       ) : (
         // Regular user dashboard
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Stats Overview */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => (
@@ -257,6 +258,12 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Referral Dashboard Section */}
+          <CompactReferralSection 
+            userId={user?.id || 'user_123'} 
+            userEmail={user?.email || 'user@example.com'} 
+          />
         </div>
       )}
     </div>

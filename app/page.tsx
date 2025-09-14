@@ -2,6 +2,8 @@
 
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginForm } from '@/components/auth/LoginForm'
+import { ReferralTracker } from '@/components/referral-tracker'
+import { Suspense } from 'react'
 
 export default function HomePage() {
   const { user, isLoading } = useAuth()
@@ -15,7 +17,13 @@ export default function HomePage() {
   }
 
   if (!user) {
-    return <LoginForm />
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <ReferralTracker>
+          <LoginForm />
+        </ReferralTracker>
+      </Suspense>
+    )
   }
 
   // Redirect based on user role
@@ -31,8 +39,12 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ReferralTracker>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        </div>
+      </ReferralTracker>
+    </Suspense>
   )
 }

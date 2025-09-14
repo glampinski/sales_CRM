@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Search, Settings, User, LogOut } from "lucide-react"
+import { Bell, Search, Settings, User, LogOut, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -15,8 +15,26 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/contexts/AuthContext"
 
+// Mock users for role switching (development only)
+const TEST_USERS = [
+  { id: '1', name: 'Super Admin', email: 'superadmin@glampinski.com', role: 'super_admin' },
+  { id: '2', name: 'Admin User', email: 'admin@glampinski.com', role: 'admin' },
+  { id: '3', name: 'Sales Person', email: 'sales@glampinski.com', role: 'manager' },
+  { id: '4', name: 'John Customer', email: 'customer@example.com', role: 'customer' },
+  { id: '5', name: 'Jane Affiliate', email: 'affiliate@glampinski.com', role: 'affiliate' }
+]
+
 export function DashboardHeader() {
   const { user, logout } = useAuth()
+
+  const switchUser = (testUser: typeof TEST_USERS[0]) => {
+    localStorage.setItem('auth_user', JSON.stringify({
+      ...testUser,
+      createdAt: '2024-01-01',
+      lastLogin: new Date().toISOString()
+    }))
+    window.location.reload()
+  }
 
   if (!user) return null
 
@@ -110,6 +128,26 @@ export function DashboardHeader() {
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
+              
+              {/* Development: User Role Switcher */}
+              <DropdownMenuLabel className="text-xs text-muted-foreground">
+                Switch User Role (Dev)
+              </DropdownMenuLabel>
+              {TEST_USERS.map((testUser) => (
+                <DropdownMenuItem 
+                  key={testUser.id}
+                  onClick={() => switchUser(testUser)}
+                  className={user.role === testUser.role ? "bg-accent" : ""}
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  <span>{testUser.name} ({testUser.role})</span>
+                  {user.role === testUser.role && (
+                    <Badge variant="secondary" className="ml-auto text-xs">Current</Badge>
+                  )}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>

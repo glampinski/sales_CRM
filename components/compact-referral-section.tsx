@@ -22,9 +22,10 @@ import { ReferralStats, ReferralLink } from "@/types/referral";
 interface CompactReferralSectionProps {
   userId: string;
   userEmail: string;
+  userRole?: string;
 }
 
-export function CompactReferralSection({ userId, userEmail }: CompactReferralSectionProps) {
+export function CompactReferralSection({ userId, userEmail, userRole }: CompactReferralSectionProps) {
   const [stats, setStats] = useState<ReferralStats | null>(null);
   const [referralLinks, setReferralLinks] = useState<ReferralLink[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -33,6 +34,11 @@ export function CompactReferralSection({ userId, userEmail }: CompactReferralSec
   
   const referralService = ReferralService.getInstance();
   const userReferralCode = userId; // Use userId directly instead of generated code
+
+  // Don't render for non-affiliates
+  if (userRole !== 'affiliate') {
+    return null;
+  }
 
   useEffect(() => {
     loadReferralData();
@@ -43,7 +49,7 @@ export function CompactReferralSection({ userId, userEmail }: CompactReferralSec
       setLoading(true);
       const statsData = await referralService.getUserReferralStats(userId);
       setStats(statsData);
-      setReferralLinks(referralService.generateReferralLinks(userId));
+      setReferralLinks(referralService.generateReferralLinks(userId, userRole));
     } catch (error) {
       toast({
         title: "Error",

@@ -19,10 +19,11 @@ export function LoginForm() {
 
   // Quick login options for demo
   const quickLogins = [
-    { label: 'Super Admin', email: 'superadmin@glampinski.com' },
-    { label: 'Admin', email: 'admin@glampinski.com' },
-    { label: 'Salesperson', email: 'sales@glampinski.com' },
-    { label: 'Customer', email: 'customer@example.com' }
+    { label: 'Super Admin', email: 'superadmin@glampinski.com', password: 'admin123' },
+    { label: 'Admin', email: 'admin@glampinski.com', password: 'admin123' },
+    { label: 'Salesperson', email: 'sales@glampinski.com', password: 'sales123' },
+    { label: 'Customer', email: 'customer@example.com', password: 'customer123' },
+    { label: 'Affiliate', email: 'affiliate@glampinski.com', password: 'affiliate123' }
   ]
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,9 +43,13 @@ export function LoginForm() {
     }
   }
 
-  const handleQuickLogin = (userEmail: string) => {
+  const handleQuickLogin = (userEmail: string, userPassword: string) => {
     setEmail(userEmail)
-    setPassword('password')
+    setPassword(userPassword)
+    // Auto-submit the form
+    setTimeout(() => {
+      login(userEmail, userPassword)
+    }, 100)
   }
 
   return (
@@ -116,7 +121,7 @@ export function LoginForm() {
                   key={user.email}
                   variant="outline"
                   size="sm"
-                  onClick={() => handleQuickLogin(user.email)}
+                  onClick={() => handleQuickLogin(user.email, user.password)}
                   className="text-xs"
                 >
                   {user.label}
@@ -124,7 +129,7 @@ export function LoginForm() {
               ))}
             </div>
             <p className="text-xs text-muted-foreground text-center">
-              Password for all demo accounts: <code>password</code>
+              Each account has its own password, or click buttons for auto-login
             </p>
           </div>
         </CardContent>

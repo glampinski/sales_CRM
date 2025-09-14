@@ -43,7 +43,7 @@ const MOCK_USERS: User[] = [
     id: '3',
     name: 'Sales Person',
     email: 'sales@glampinski.com',
-    role: 'salesperson',
+    role: 'manager',
     createdAt: '2024-02-01',
     lastLogin: '2024-09-14'
   },
@@ -53,6 +53,14 @@ const MOCK_USERS: User[] = [
     email: 'customer@example.com',
     role: 'customer',
     createdAt: '2024-03-01',
+    lastLogin: '2024-09-14'
+  },
+  {
+    id: '5',
+    name: 'Jane Affiliate',
+    email: 'affiliate@glampinski.com',
+    role: 'affiliate',
+    createdAt: '2024-02-15',
     lastLogin: '2024-09-14'
   }
 ]
@@ -75,16 +83,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Check for stored user session
       const storedUser = localStorage.getItem('auth_user')
       if (storedUser) {
-        setUser(JSON.parse(storedUser))
+        try {
+          setUser(JSON.parse(storedUser))
+        } catch (error) {
+          console.error('Error parsing stored user:', error)
+          localStorage.removeItem('auth_user')
+        }
       }
     }
     setIsLoading(false)
   }, [])
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Mock authentication - in real app, this would call your API
+    // Mock authentication with specific passwords for each user
     const foundUser = MOCK_USERS.find(u => u.email === email)
-    if (foundUser && password === 'password') {
+    if (!foundUser) return false
+    
+    // Check specific passwords for each user
+    const validPasswords: { [key: string]: string[] } = {
+      'superadmin@glampinski.com': ['admin123', 'password'],
+      'admin@glampinski.com': ['admin123', 'password'],
+      'sales@glampinski.com': ['sales123', 'password'],
+      'customer@example.com': ['customer123', 'password'],
+      'affiliate@glampinski.com': ['affiliate123', 'password']
+    }
+    
+    const userPasswords = validPasswords[email] || []
+    if (userPasswords.includes(password)) {
       setUser(foundUser)
       localStorage.setItem('auth_user', JSON.stringify(foundUser))
       return true

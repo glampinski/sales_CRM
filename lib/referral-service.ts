@@ -17,8 +17,13 @@ export class ReferralService {
     return `REF_${userId.substring(0, 4).toUpperCase()}_${timestamp}_${random}`.toUpperCase();
   }
 
-  // Generate tracking links for different purposes
-  generateReferralLinks(userId: string): ReferralLink[] {
+  // Generate tracking links for different purposes - only for affiliates
+  generateReferralLinks(userId: string, userRole?: string): ReferralLink[] {
+    // Only generate links for affiliates
+    if (userRole && userRole !== 'affiliate') {
+      return [];
+    }
+    
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://glampinski.com';
     
     return [

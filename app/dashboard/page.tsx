@@ -109,6 +109,7 @@ export default function Dashboard() {
 
   // Simple role-based check
   const isSuperAdmin = user?.role === 'super_admin'
+  const isAffiliate = user?.role === 'affiliate'
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -259,11 +260,14 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* Referral Dashboard Section */}
-          <CompactReferralSection 
-            userId={user?.id || 'user_123'} 
-            userEmail={user?.email || 'user@example.com'} 
-          />
+          {/* Referral Dashboard Section - Only for Affiliates */}
+          {isAffiliate && (
+            <CompactReferralSection 
+              userId={user?.id || 'user_123'} 
+              userEmail={user?.email || 'user@example.com'}
+              userRole={user?.role}
+            />
+          )}
         </div>
       )}
     </div>

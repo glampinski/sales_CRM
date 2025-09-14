@@ -35,6 +35,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from "@/contexts/AuthContext"
+import { usePermissions } from "@/contexts/PermissionContext"
+import { PermissionGate } from "@/components/permission-gate"
 import Image from "next/image"
 
 // Navigation item type
@@ -72,6 +74,7 @@ const navigationConfig: Record<string, {
       { name: "Reports", href: "/dashboard/reports", icon: PieChart },
     ],
     system: [
+      { name: "Super Admin", href: "/dashboard/super-admin", icon: Crown },
       { name: "User Management", href: "/dashboard/users", icon: UserCog },
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
       { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
@@ -100,6 +103,48 @@ const navigationConfig: Record<string, {
     system: [
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
       { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
+    ],
+  },
+  manager: {
+    main: [
+      { name: "Dashboard", href: "/dashboard", icon: Home },
+      { name: "Contacts", href: "/dashboard/contacts", icon: Users },
+      { name: "Tasks", href: "/dashboard/tasks", icon: CheckSquare },
+      { name: "Pipeline", href: "/dashboard/pipeline", icon: TrendingUp },
+    ],
+    business: [
+      { name: "Customers", href: "/dashboard/customers", icon: Users },
+      { name: "Products", href: "/dashboard/products", icon: Building2 },
+      { name: "Orders", href: "/dashboard/orders", icon: FileText },
+      { name: "Reports", href: "/dashboard/reports", icon: PieChart },
+    ],
+    system: [
+      { name: "Settings", href: "/dashboard/settings", icon: Settings },
+    ],
+  },
+  distributor: {
+    main: [
+      { name: "Dashboard", href: "/dashboard", icon: Home },
+      { name: "My Network", href: "/dashboard/genealogy", icon: Building2 },
+      { name: "Commission", href: "/dashboard/commission", icon: DollarSign },
+    ],
+    business: [
+      { name: "Customers", href: "/dashboard/customers", icon: Users },
+      { name: "Products", href: "/dashboard/products", icon: Building2 },
+      { name: "Orders", href: "/dashboard/orders", icon: FileText },
+    ],
+    system: [
+      { name: "Settings", href: "/dashboard/settings", icon: Settings },
+    ],
+  },
+  user: {
+    main: [
+      { name: "Dashboard", href: "/dashboard", icon: Home },
+      { name: "Products", href: "/dashboard/products", icon: Building2 },
+      { name: "My Orders", href: "/dashboard/orders", icon: FileText },
+    ],
+    system: [
+      { name: "Settings", href: "/dashboard/settings", icon: Settings },
     ],
   },
   salesperson: {
@@ -141,10 +186,11 @@ const navigationConfig: Record<string, {
 
 export function AppSidebar() {
   const { user, logout } = useAuth()
+  const { hasModuleAccess } = usePermissions()
   
   if (!user) return null
   
-  const navigation = navigationConfig[user.role] || navigationConfig.customer
+  const navigation = navigationConfig[user.role] || navigationConfig.user
 
   return (
     <Sidebar>
@@ -158,7 +204,7 @@ export function AppSidebar() {
             className="h-8 w-8 rounded"
           />
           <span className="font-semibold text-lg">
-            {user.role === 'customer' ? 'Glampinski' : 'MLM CRM'}
+            {user.role === 'user' ? 'Glampinski' : 'MLM CRM'}
           </span>
         </div>
       </SidebarHeader>

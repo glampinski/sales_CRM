@@ -1,4 +1,4 @@
-export type UserRole = 'super_admin' | 'admin' | 'salesperson' | 'customer'
+export type UserRole = 'super_admin' | 'admin' | 'manager' | 'distributor' | 'user'
 
 export interface User {
   id: string
@@ -55,8 +55,8 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
       'settings'
     ]
   },
-  salesperson: {
-    role: 'salesperson',
+  manager: {
+    role: 'manager',
     permissions: [],
     pages: [
       '/dashboard',
@@ -74,18 +74,37 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
       'pipeline'
     ]
   },
-  customer: {
-    role: 'customer',
+  distributor: {
+    role: 'distributor',
     permissions: [],
     pages: [
       '/dashboard',
+      '/dashboard/customers',
+      '/dashboard/products',
       '/dashboard/orders',
-      '/onboarding'
+      '/dashboard/genealogy',
+      '/dashboard/commission'
     ],
     features: [
-      'order_view_own',
-      'timeshare_purchase',
-      'profile_view'
+      'customer_view',
+      'customer_create',
+      'product_view',
+      'order_create',
+      'order_view',
+      'mlm_features'
+    ]
+  },
+  user: {
+    role: 'user',
+    permissions: [],
+    pages: [
+      '/dashboard',
+      '/dashboard/products',
+      '/dashboard/orders'
+    ],
+    features: [
+      'product_view',
+      'order_view'
     ]
   }
 }

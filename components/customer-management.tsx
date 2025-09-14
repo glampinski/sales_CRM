@@ -728,7 +728,7 @@ export function CustomerManagement() {
                       )}
                       
                       <TableCell>
-                        <DropdownMenu>
+                        <DropdownMenu modal={false}>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon">
                               <MoreHorizontal className="h-4 w-4" />
@@ -817,7 +817,7 @@ export function CustomerManagement() {
                         }}
                         onClick={(e) => e.stopPropagation()}
                       />
-                      <DropdownMenu>
+                      <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                           <Button variant="ghost" size="icon" className="h-6 w-6">
                             <MoreHorizontal className="h-4 w-4" />

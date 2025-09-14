@@ -139,30 +139,40 @@ export default function DashboardPage() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight flex items-center">
-            {isSuperAdmin && <Crown className="h-8 w-8 text-yellow-500 mr-3" />}
-            Dashboard
-          </h1>
-          <p className="text-muted-foreground">
-            {isSuperAdmin 
-              ? "Super Admin Control Center - Manage everything and control what users see"
-              : "Welcome back! Here's what's happening with your business."
-            }
-          </p>
+      {!isSuperAdmin && (
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight flex items-center">
+              Dashboard
+            </h1>
+            <p className="text-muted-foreground">
+              Welcome back! Here's what's happening with your business.
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <PermissionGate module="customers" action="create">
+              <Button>Add Contact</Button>
+            </PermissionGate>
+            <Button variant="outline">Create Task</Button>
+          </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <PermissionGate module="customers" action="create">
-            <Button>Add Contact</Button>
-          </PermissionGate>
-          <Button variant="outline">Create Task</Button>
-        </div>
-      </div>
+      )}
 
       {/* Super Admin Interface */}
       {isSuperAdmin ? (
-        <Tabs defaultValue="overview" className="space-y-6">
+        <div className="space-y-6">
+          {/* Super Admin Header */}
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight flex items-center">
+              <Crown className="h-8 w-8 text-yellow-500 mr-3" />
+              Super Admin Dashboard
+            </h1>
+            <p className="text-muted-foreground">
+              Comprehensive system overview and management controls
+            </p>
+          </div>
+          
+          <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview" className="flex items-center space-x-2">
               <BarChart3 className="h-4 w-4" />
@@ -198,6 +208,7 @@ export default function DashboardPage() {
             <DashboardWidgetManagement />
           </TabsContent>
         </Tabs>
+        </div>
       ) : (
         /* Regular User Dashboard */
         <RoleBasedDashboard />

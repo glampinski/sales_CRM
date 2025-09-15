@@ -412,9 +412,9 @@ export function AffiliateManagement() {
   }
 
   const handleImpersonate = (affiliateId: string) => {
-    // Map affiliate to user ID (admin or salesperson)
+    // Map affiliate to the actual affiliate user ID
     // In real app, this would look up the actual user ID for the affiliate
-    const affiliateUserId = affiliateId === "1" ? "2" : "3" // Map to admin or salesperson
+    const affiliateUserId = "5" // Map to Jane Affiliate (the actual affiliate user)
     const success = startImpersonation(affiliateUserId)
     if (success) {
       // Redirect to show affiliate dashboard view

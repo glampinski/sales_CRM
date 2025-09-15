@@ -42,20 +42,20 @@ export function DashboardHeader() {
 
   return (
     <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-16 items-center px-6">
+      <div className="flex h-16 items-center px-4 sm:px-6">
         {/* Search */}
-        <div className="flex items-center space-x-4 lg:space-x-6">
-          <div className="relative w-64">
+        <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
+          <div className="relative w-48 sm:w-64">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={canSearchAdvanced ? "Search contacts, tasks, orders..." : "Search products, orders..."}
-              className="pl-8"
+              placeholder={canSearchAdvanced ? "Search contacts, tasks..." : "Search products..."}
+              className="pl-8 text-sm"
             />
           </div>
         </div>
         
         {/* Right side */}
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="ml-auto flex items-center space-x-2 sm:space-x-4">
           {/* Notifications - Only for non-customers */}
           {canSearchAdvanced && (
             <DropdownMenu>

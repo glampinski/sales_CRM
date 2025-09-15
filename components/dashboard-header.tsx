@@ -18,8 +18,8 @@ import { useAuth } from "@/contexts/AuthContext"
 // Mock users for role switching (development only)
 const TEST_USERS = [
   { id: '1', name: 'Super Admin', email: 'superadmin@glampinski.com', role: 'super_admin' },
-  { id: '2', name: 'Admin User', email: 'admin@glampinski.com', role: 'admin' },
-  { id: '3', name: 'Sales Person', email: 'sales@glampinski.com', role: 'manager' },
+  { id: '2', name: 'Department Head', email: 'admin@glampinski.com', role: 'admin' },
+  { id: '3', name: 'Department Employee', email: 'manager@glampinski.com', role: 'manager' },
   { id: '4', name: 'John Customer', email: 'customer@example.com', role: 'customer' },
   { id: '5', name: 'Jane Affiliate', email: 'affiliate@glampinski.com', role: 'affiliate' }
 ]

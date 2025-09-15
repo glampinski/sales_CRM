@@ -44,11 +44,16 @@ export function ProtectedRoute({
 
   // Check role-based access
   if (requiredRole && !requiredRole.includes(user.role)) {
+    console.log('Access denied:', {
+      userRole: user.role,
+      requiredRoles: requiredRole,
+      user: user
+    })
     return fallback || (
       <Alert className="m-4" variant="destructive">
         <Shield className="h-4 w-4" />
         <AlertDescription>
-          You don't have the required role to access this content.
+          You don't have the required role to access this content. Your role: {user.role}
         </AlertDescription>
       </Alert>
     )

@@ -33,7 +33,7 @@ const MOCK_USERS: User[] = [
   },
   {
     id: '2',
-    name: 'Admin User',
+    name: 'Department Head',
     email: 'admin@glampinski.com',
     role: 'admin',
     createdAt: '2024-01-15',
@@ -41,8 +41,8 @@ const MOCK_USERS: User[] = [
   },
   {
     id: '3',
-    name: 'Sales Person',
-    email: 'sales@glampinski.com',
+    name: 'Department Employee',
+    email: 'manager@glampinski.com',
     role: 'manager',
     createdAt: '2024-02-01',
     lastLogin: '2024-09-14'
@@ -103,7 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const validPasswords: { [key: string]: string[] } = {
       'superadmin@glampinski.com': ['admin123', 'password'],
       'admin@glampinski.com': ['admin123', 'password'],
-      'sales@glampinski.com': ['sales123', 'password'],
+      'manager@glampinski.com': ['manager123', 'password'],
       'customer@example.com': ['customer123', 'password'],
       'affiliate@glampinski.com': ['affiliate123', 'password']
     }
@@ -134,6 +134,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const targetUser = MOCK_USERS.find(u => u.id === targetUserId)
     if (!targetUser) return false
     
+    console.log('Starting impersonation:', {
+      original: user,
+      target: targetUser,
+      targetRole: targetUser.role
+    })
+    
     setOriginalUser(user)
     setUser(targetUser)
     
@@ -142,6 +148,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       originalUser: user,
       targetUser: targetUser
     }))
+    
+    console.log('Impersonation data stored:', localStorage.getItem('impersonation_data'))
     
     return true
   }

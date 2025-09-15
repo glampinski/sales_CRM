@@ -10,9 +10,10 @@ import { UserCheck, Shield, Eye, AlertTriangle } from 'lucide-react'
 
 // Mock users for impersonation
 const IMPERSONATION_TARGETS = [
-  { id: '2', name: 'Admin User', email: 'admin@glampinski.com', role: 'admin' },
-  { id: '3', name: 'Sales Person', email: 'sales@glampinski.com', role: 'salesperson' },
-  { id: '4', name: 'John Customer', email: 'customer@example.com', role: 'customer' }
+  { id: '2', name: 'Department Head', email: 'admin@glampinski.com', role: 'admin' },
+  { id: '3', name: 'Department Employee', email: 'manager@glampinski.com', role: 'manager' },
+  { id: '4', name: 'John Customer', email: 'customer@example.com', role: 'customer' },
+  { id: '5', name: 'Jane Affiliate', email: 'affiliate@glampinski.com', role: 'affiliate' }
 ]
 
 export function ImpersonationControls() {

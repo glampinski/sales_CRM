@@ -30,9 +30,12 @@ type SignupFormData = z.infer<typeof signupSchema>;
 
 interface SignupFormProps {
   referralUserId?: string;
+  onSignupComplete?: () => void;
+  prefilledEmail?: string;
+  assignedRole?: string;
 }
 
-export function SignupForm({ referralUserId }: SignupFormProps) {
+export function SignupForm({ referralUserId, onSignupComplete, prefilledEmail, assignedRole }: SignupFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { hasReferralAttribution, getReferralCode, processSignupReferral } = useReferralIntegration();
@@ -43,6 +46,9 @@ export function SignupForm({ referralUserId }: SignupFormProps) {
     formState: { errors },
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      email: prefilledEmail || '',
+    },
   });
 
   const onSubmit = async (data: SignupFormData) => {
@@ -59,6 +65,7 @@ export function SignupForm({ referralUserId }: SignupFormProps) {
         lastName: data.lastName,
         email: data.email,
         phone: data.phone,
+        role: assignedRole || 'customer',
         createdAt: new Date().toISOString()
       };
 
@@ -71,6 +78,11 @@ export function SignupForm({ referralUserId }: SignupFormProps) {
           title: "Welcome!",
           description: `Account created successfully! You were referred by ${currentReferralCode}`,
         });
+      } else if (assignedRole) {
+        toast({
+          title: "Welcome!",
+          description: `Account created successfully! You have been assigned the role: ${assignedRole}`,
+        });
       } else {
         toast({
           title: "Welcome!",
@@ -78,8 +90,12 @@ export function SignupForm({ referralUserId }: SignupFormProps) {
         });
       }
 
-      // Redirect to onboarding or dashboard
-      window.location.href = '/onboarding';
+      // Call onSignupComplete if provided, otherwise redirect
+      if (onSignupComplete) {
+        onSignupComplete();
+      } else {
+        window.location.href = '/onboarding';
+      }
       
     } catch (error) {
       toast({

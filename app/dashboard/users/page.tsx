@@ -47,7 +47,10 @@ import {
 } from "@/components/ui/form"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 import { useAuth } from "@/contexts/AuthContext"
-import { UserPlus, Search, Shield, UserCog, Trash2, Edit, CheckSquare, X, MoreHorizontal, Eye } from "lucide-react"
+import { InviteUserForm } from "@/components/invite-user-form"
+import { InvitationManagement } from "@/components/invitation-management"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { UserPlus, Search, Shield, UserCog, Trash2, Edit, CheckSquare, X, MoreHorizontal, Eye, Mail } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { UserRole } from "@/types/auth"
 
@@ -73,9 +76,9 @@ const mockUsers = [
   },
   {
     id: 3,
-    name: "Sales Person",
-    email: "sales@glampinski.com",
-    role: "salesperson" as UserRole,
+    name: "Manager User",
+    email: "manager@glampinski.com",
+    role: "manager" as UserRole,
     status: "Active",
     lastLogin: "2024-01-19 04:45 PM",
     createdAt: "2023-06-10"
@@ -91,10 +94,10 @@ const mockUsers = [
   },
   {
     id: 5,
-    name: "John Smith",
-    email: "john.smith@example.com",
-    role: "salesperson" as UserRole,
-    status: "Inactive",
+    name: "Jane Affiliate",
+    email: "affiliate@glampinski.com",
+    role: "affiliate" as UserRole,
+    status: "Active",
     lastLogin: "2024-01-15 11:30 AM",
     createdAt: "2023-09-22"
   }
@@ -103,7 +106,8 @@ const mockUsers = [
 const roleColors = {
   super_admin: "destructive",
   admin: "default",
-  salesperson: "secondary",
+  manager: "secondary",
+  affiliate: "outline",
   customer: "outline"
 } as const
 
@@ -114,6 +118,11 @@ export default function UsersPage() {
   const [users, setUsers] = useState(mockUsers)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
+
+  const handleInvitationSent = () => {
+    setRefreshTrigger(prev => prev + 1)
+  }
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -213,10 +222,40 @@ export default function UsersPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold">User Management</h1>
-            <p className="text-muted-foreground">Manage user accounts and permissions</p>
+            <p className="text-muted-foreground">Manage user accounts, permissions, and send invitations</p>
           </div>
-          
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+        </div>
+
+        <Tabs defaultValue="users" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <UserCog className="h-4 w-4" />
+              Manage Users
+            </TabsTrigger>
+            <TabsTrigger value="invite" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Send Invitations
+            </TabsTrigger>
+            <TabsTrigger value="invitations" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Manage Invitations
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="users" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold">Active Users</h2>
+                <p className="text-muted-foreground">Manage existing user accounts</p>
+              </div>
+              
+              <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Add User Directly
+                  </Button>
+                </DialogTrigger>
             <DialogTrigger asChild>
               <Button>
                 <UserPlus className="mr-2 h-4 w-4" />
@@ -272,7 +311,8 @@ export default function UsersPage() {
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="customer">Customer</SelectItem>
-                            <SelectItem value="salesperson">Salesperson</SelectItem>
+                            <SelectItem value="affiliate">Affiliate</SelectItem>
+                            <SelectItem value="manager">Manager</SelectItem>
                             <SelectItem value="admin">Admin</SelectItem>
                             <SelectItem value="super_admin">Super Admin</SelectItem>
                           </SelectContent>
@@ -342,12 +382,12 @@ export default function UsersPage() {
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Salespeople</CardTitle>
+              <CardTitle className="text-sm font-medium">Managers & Affiliates</CardTitle>
               <UserCog className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {users.filter(u => u.role === 'salesperson').length}
+                {users.filter(u => u.role === 'manager' || u.role === 'affiliate').length}
               </div>
               <p className="text-xs text-muted-foreground">
                 Sales team members
@@ -390,7 +430,8 @@ export default function UsersPage() {
               <SelectItem value="all">All Roles</SelectItem>
               <SelectItem value="super_admin">Super Admin</SelectItem>
               <SelectItem value="admin">Admin</SelectItem>
-              <SelectItem value="salesperson">Salesperson</SelectItem>
+              <SelectItem value="manager">Manager</SelectItem>
+              <SelectItem value="affiliate">Affiliate</SelectItem>
               <SelectItem value="customer">Customer</SelectItem>
             </SelectContent>
           </Select>
@@ -543,6 +584,18 @@ export default function UsersPage() {
             </Table>
           </CardContent>
         </Card>
+          </TabsContent>
+
+          <TabsContent value="invite" className="space-y-6">
+            <div className="max-w-2xl">
+              <InviteUserForm onInvitationSent={handleInvitationSent} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="invitations" className="space-y-6">
+            <InvitationManagement refreshTrigger={refreshTrigger} />
+          </TabsContent>
+        </Tabs>
       </div>
     </ProtectedRoute>
   )

@@ -14,7 +14,7 @@ export default function DashboardLayout({
 }) {
   return (
     <ProtectedRoute 
-      requiredRole={['super_admin', 'admin', 'salesperson', 'customer', 'affiliate']}
+      requiredRole={['super_admin', 'admin', 'manager', 'customer', 'affiliate']}
       fallback={
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">

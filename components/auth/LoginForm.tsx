@@ -20,8 +20,8 @@ export function LoginForm() {
   // Quick login options for demo
   const quickLogins = [
     { label: 'Super Admin', email: 'superadmin@glampinski.com', password: 'admin123' },
-    { label: 'Admin', email: 'admin@glampinski.com', password: 'admin123' },
-    { label: 'Salesperson', email: 'sales@glampinski.com', password: 'sales123' },
+    { label: 'Department Head', email: 'admin@glampinski.com', password: 'admin123' },
+    { label: 'Department Employee', email: 'manager@glampinski.com', password: 'manager123' },
     { label: 'Customer', email: 'customer@example.com', password: 'customer123' },
     { label: 'Affiliate', email: 'affiliate@glampinski.com', password: 'affiliate123' }
   ]

@@ -73,7 +73,6 @@ const navigationConfig: Record<UserGroup, {
       { name: "Products", href: "/dashboard/products", icon: Building2 },
       { name: "Orders", href: "/dashboard/orders", icon: FileText },
       { name: "Payments", href: "/dashboard/payments", icon: CreditCard },
-      { name: "Reports", href: "/dashboard/reports", icon: PieChart },
     ],
     system: [
       { name: "User Management", href: "/dashboard/users", icon: UserCog },
@@ -99,7 +98,6 @@ const navigationConfig: Record<UserGroup, {
       { name: "Products", href: "/dashboard/products", icon: Building2 },
       { name: "Orders", href: "/dashboard/orders", icon: FileText },
       { name: "Payments", href: "/dashboard/payments", icon: CreditCard },
-      { name: "Reports", href: "/dashboard/reports", icon: PieChart },
     ],
     system: [
       { name: "Settings", href: "/dashboard/settings", icon: Settings },
@@ -117,7 +115,6 @@ const navigationConfig: Record<UserGroup, {
       { name: "Customers", href: "/dashboard/customers", icon: Users },
       { name: "Products", href: "/dashboard/products", icon: Building2 },
       { name: "Orders", href: "/dashboard/orders", icon: FileText },
-      { name: "Reports", href: "/dashboard/reports", icon: PieChart },
     ],
     system: [
       { name: "Settings", href: "/dashboard/settings", icon: Settings },

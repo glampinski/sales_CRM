@@ -43,7 +43,10 @@ import {
   Download,
   Layout,
   Menu,
-  Bug
+  Bug,
+  BookOpen,
+  Calendar,
+  Target
 } from "lucide-react"
 
 // User Groups (simplified from roles)
@@ -194,6 +197,37 @@ const SYSTEM_COMPONENTS: SystemComponent[] = [
   { id: 'component_affiliate_actions', name: 'Affiliate Actions', description: 'Bulk affiliate operations', type: 'feature', category: 'mlm', icon: Settings },
   { id: 'component_affiliate_team_hierarchy', name: 'Affiliate Team Hierarchy', description: 'Team organization view', type: 'feature', category: 'mlm', icon: Building2 },
   { id: 'component_distributor_team_hierarchy', name: 'Distributor Team Hierarchy', description: 'Distributor team structure', type: 'feature', category: 'mlm', icon: Building2 },
+
+  // NEW AFFILIATE COMPONENTS - Added to complete UI
+  { id: 'component_wallet_dashboard', name: 'Wallet Dashboard', description: 'Financial management interface', type: 'feature', category: 'mlm', icon: CreditCard },
+  { id: 'component_support_ticket_system', name: 'Support Ticket System', description: 'Help desk and support management', type: 'feature', category: 'system', icon: Shield },
+  { id: 'component_internal_communication', name: 'Internal Communication', description: 'Team messaging and announcements', type: 'feature', category: 'system', icon: Mail },
+  { id: 'component_training_center', name: 'Training & Learning Center', description: 'Course management and certifications', type: 'feature', category: 'system', icon: Award },
+  { id: 'component_marketing_tools', name: 'Marketing Tools & Resources', description: 'Content creation and campaign management', type: 'feature', category: 'business', icon: Share2 },
+
+  // New Financial Features
+  { id: 'feature_wallet_balance_view', name: 'View Wallet Balance', description: 'Check account balance', type: 'feature', category: 'mlm', icon: Eye },
+  { id: 'feature_transaction_history', name: 'Transaction History', description: 'View payment history', type: 'feature', category: 'mlm', icon: FileText },
+  { id: 'feature_payout_request', name: 'Request Payouts', description: 'Submit payout requests', type: 'feature', category: 'mlm', icon: DollarSign },
+  { id: 'feature_payment_method_management', name: 'Payment Method Management', description: 'Add/edit payment methods', type: 'feature', category: 'mlm', icon: CreditCard },
+
+  // Support & Communication Features
+  { id: 'feature_create_support_ticket', name: 'Create Support Tickets', description: 'Submit help requests', type: 'feature', category: 'system', icon: Plus },
+  { id: 'feature_view_support_tickets', name: 'View Support Tickets', description: 'Access support history', type: 'feature', category: 'system', icon: Eye },
+  { id: 'feature_internal_messaging', name: 'Internal Messaging', description: 'Team chat functionality', type: 'feature', category: 'system', icon: Mail },
+  { id: 'feature_announcements', name: 'Company Announcements', description: 'View company updates', type: 'feature', category: 'system', icon: Bell },
+
+  // Training & Learning Features
+  { id: 'feature_course_access', name: 'Course Access', description: 'Access training courses', type: 'feature', category: 'system', icon: BookOpen },
+  { id: 'feature_certification_tracking', name: 'Certification Tracking', description: 'Track certification progress', type: 'feature', category: 'system', icon: Award },
+  { id: 'feature_live_event_registration', name: 'Live Event Registration', description: 'Register for webinars/workshops', type: 'feature', category: 'system', icon: Calendar },
+  { id: 'feature_learning_analytics', name: 'Learning Analytics', description: 'View learning progress', type: 'feature', category: 'system', icon: BarChart3 },
+
+  // Marketing & Content Features
+  { id: 'feature_marketing_materials_access', name: 'Marketing Materials Access', description: 'Download marketing content', type: 'feature', category: 'business', icon: Download },
+  { id: 'feature_social_media_posting', name: 'Social Media Posting', description: 'Create social media content', type: 'feature', category: 'business', icon: Share2 },
+  { id: 'feature_campaign_management', name: 'Campaign Management', description: 'Manage marketing campaigns', type: 'feature', category: 'business', icon: Target },
+  { id: 'feature_content_templates', name: 'Content Templates', description: 'Access content templates', type: 'feature', category: 'business', icon: FileText },
 ]
 
 // Default permissions for each group
@@ -230,11 +264,34 @@ const DEFAULT_GROUP_PERMISSIONS: Record<UserGroup, Record<string, boolean>> = {
       comp.id.startsWith('component_product') ||
       comp.id.startsWith('component_customer') ||
       comp.id.startsWith('component_order') ||
+      comp.id.startsWith('component_marketing') ||
       comp.id.startsWith('feature_customer') ||
       comp.id.startsWith('feature_product') ||
-      comp.id.startsWith('feature_order')
+      comp.id.startsWith('feature_order') ||
+      comp.id.startsWith('feature_marketing') ||
+      comp.id.startsWith('feature_campaign') ||
+      comp.id.startsWith('feature_social_media') ||
+      comp.id.startsWith('feature_content')
     )) ||
-    comp.id === 'dashboard_settings'
+    (comp.category === 'system' && (
+      comp.id === 'dashboard_settings' ||
+      comp.id.startsWith('component_support_ticket') ||
+      comp.id.startsWith('component_internal_communication') ||
+      comp.id.startsWith('component_training_center') ||
+      comp.id.startsWith('feature_create_support') ||
+      comp.id.startsWith('feature_view_support') ||
+      comp.id.startsWith('feature_internal_messaging') ||
+      comp.id.startsWith('feature_announcements') ||
+      comp.id.startsWith('feature_course') ||
+      comp.id.startsWith('feature_certification') ||
+      comp.id.startsWith('feature_live_event') ||
+      comp.id.startsWith('feature_learning')
+    )) ||
+    // All financial/wallet features for affiliates
+    comp.id.startsWith('feature_wallet') ||
+    comp.id.startsWith('feature_transaction') ||
+    comp.id.startsWith('feature_payout') ||
+    comp.id.startsWith('feature_payment_method')
   ])), 
   
   customer: Object.fromEntries(SYSTEM_COMPONENTS.map(comp => [

@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -21,10 +21,26 @@ import {
   Clock,
   Eye,
   Filter,
-  Download
+  Download,
+  Wallet,
+  MessageSquare,
+  BookOpen,
+  Megaphone,
+  HeadphonesIcon,
+  Target,
+  Award,
+  Share2,
+  FileText,
+  Calendar,
+  TrendingDown
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { usePermissions } from '@/contexts/PermissionContext'
+import { WalletDashboard } from '@/components/wallet-dashboard'
+import { SupportTicketSystem } from '@/components/support-ticket-system'
+import { InternalCommunication } from '@/components/internal-communication'
+import { TrainingCenter } from '@/components/training-center'
+import { MarketingTools } from '@/components/marketing-tools'
 
 // Mock data for comprehensive dashboard
 const DASHBOARD_STATS = {
@@ -214,12 +230,17 @@ export function SuperAdminDashboard() {
 
       {/* Detailed Analytics */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-10">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="users">User Analytics</TabsTrigger>
-          <TabsTrigger value="revenue">Revenue Breakdown</TabsTrigger>
+          <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="revenue">Revenue</TabsTrigger>
           <TabsTrigger value="distributors">Distributors</TabsTrigger>
-          <TabsTrigger value="system">System Health</TabsTrigger>
+          <TabsTrigger value="system">System</TabsTrigger>
+          <TabsTrigger value="wallet">Wallet</TabsTrigger>
+          <TabsTrigger value="support">Support</TabsTrigger>
+          <TabsTrigger value="communication">Communication</TabsTrigger>
+          <TabsTrigger value="training">Training</TabsTrigger>
+          <TabsTrigger value="marketing">Marketing</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -435,6 +456,131 @@ export function SuperAdminDashboard() {
               className="bg-blue-50 border-blue-200"
             />
           </div>
+        </TabsContent>
+
+        <TabsContent value="wallet" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Wallet className="h-5 w-5" />
+                    <span>Affiliate Wallet Management</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Comprehensive financial management for all affiliates
+                  </CardDescription>
+                </div>
+                <Badge className="bg-green-100 text-green-800">
+                  <CheckCircle className="h-3 w-3 mr-1" />
+                  Active
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <WalletDashboard />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="support" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center space-x-2">
+                    <HeadphonesIcon className="h-5 w-5" />
+                    <span>Support Ticket System</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Manage support requests and communication
+                  </CardDescription>
+                </div>
+                <Badge className="bg-blue-100 text-blue-800">
+                  <Activity className="h-3 w-3 mr-1" />
+                  Live
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <SupportTicketSystem />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="communication" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center space-x-2">
+                    <MessageSquare className="h-5 w-5" />
+                    <span>Internal Communication</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Team messaging and announcements
+                  </CardDescription>
+                </div>
+                <Badge className="bg-purple-100 text-purple-800">
+                  <Users className="h-3 w-3 mr-1" />
+                  Connected
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <InternalCommunication />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="training" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center space-x-2">
+                    <BookOpen className="h-5 w-5" />
+                    <span>Training & Learning Center</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Course management and certification tracking
+                  </CardDescription>
+                </div>
+                <Badge className="bg-yellow-100 text-yellow-800">
+                  <Award className="h-3 w-3 mr-1" />
+                  Learning
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <TrainingCenter />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="marketing" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Megaphone className="h-5 w-5" />
+                    <span>Marketing Tools & Resources</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Content creation and campaign management
+                  </CardDescription>
+                </div>
+                <Badge className="bg-orange-100 text-orange-800">
+                  <Target className="h-3 w-3 mr-1" />
+                  Active Campaigns
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <MarketingTools />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

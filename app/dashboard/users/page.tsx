@@ -207,7 +207,7 @@ export default function UsersPage() {
 
   return (
     <ProtectedRoute 
-      requiredRole={['super_admin']}
+      
       fallback={
         <div className="p-6">
           <div className="text-center">

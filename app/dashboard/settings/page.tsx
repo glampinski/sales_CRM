@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ConditionalRender } from "@/components/auth/ProtectedRoute"
+import { usePermissions } from "@/contexts/PermissionContext-simple"
 import { 
   Select,
   SelectContent,
@@ -115,6 +115,7 @@ interface SystemSettings {
 }
 
 export default function SettingsPage() {
+  const { hasModuleAccess } = usePermissions()
   const [activeTab, setActiveTab] = useState("profile")
   const [isSaving, setIsSaving] = useState(false)
   
@@ -218,12 +219,12 @@ export default function SettingsPage() {
           <TabsTrigger value="system">System</TabsTrigger>
           <TabsTrigger value="billing">Billing</TabsTrigger>
           <TabsTrigger value="contracts">Contracts</TabsTrigger>
-          <ConditionalRender requiredRole={['super_admin', 'admin']}>
+          {hasModuleAccess('admin') && (
             <TabsTrigger value="impersonation">
               <Eye className="h-4 w-4 mr-1" />
               Impersonation
             </TabsTrigger>
-          </ConditionalRender>
+          )}
         </TabsList>
 
         {/* Profile Settings */}
@@ -756,7 +757,7 @@ export default function SettingsPage() {
 
         {/* User Impersonation Permissions - Only for Super Admin */}
         <TabsContent value="impersonation" className="space-y-6">
-          <ConditionalRender requiredRole={['super_admin']}>
+          {hasModuleAccess('admin') && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -843,7 +844,7 @@ export default function SettingsPage() {
                 </div>
               </CardContent>
             </Card>
-          </ConditionalRender>
+          )}
         </TabsContent>
       </Tabs>
 

@@ -14,17 +14,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <ProtectedRoute 
-      requiredRole={['super_admin', 'admin', 'manager', 'customer', 'affiliate']}
-      fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
-            <p className="text-muted-foreground">You don't have permission to access this area.</p>
-          </div>
-        </div>
-      }
-    >
+    <ProtectedRoute>
       <PermissionProvider>
         <SidebarProvider defaultOpen={true}>
           <div className="flex min-h-screen w-full">

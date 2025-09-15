@@ -17,7 +17,7 @@ export default function AffiliatesPage() {
 export default function DistributorsPage() {
   return (
     <ProtectedRoute 
-      requiredRole={['super_admin', 'admin', 'manager', 'salesperson']}
+      
       fallback={
         <div className="p-6">
           <div className="text-center">

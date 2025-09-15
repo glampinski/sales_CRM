@@ -6,7 +6,7 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 export default function DistributorTeamPage() {
   return (
     <ProtectedRoute 
-      requiredRole={['super_admin', 'admin', 'manager']}
+      
       fallback={
         <div className="p-6">
           <div className="text-center">

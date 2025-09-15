@@ -39,10 +39,24 @@ export function PermissionProvider({ children }: { children: React.ReactNode }) 
     
     // Define module access based on roles
     const roleModules: Record<string, string[]> = {
-      'admin': ['overview', 'business', 'network', 'admin'],
-      'manager': ['overview', 'business', 'network'],
-      'affiliate': ['overview', 'referrals'],
-      'customer': ['overview']
+      'admin': [
+        'overview', 'contacts', 'tasks', 'pipeline', 'network', 'commission', 
+        'ranks', 'affiliates', 'customers', 'products', 'orders', 'payments', 
+        'wallet', 'marketing', 'reports', 'training', 'support', 'communication', 
+        'admin', 'settings'
+      ],
+      'manager': [
+        'overview', 'contacts', 'tasks', 'pipeline', 'customers', 'products', 
+        'orders', 'payments', 'marketing', 'reports', 'training', 'support', 
+        'communication', 'settings'
+      ],
+      'affiliate': [
+        'overview', 'network', 'commission', 'customers', 'products', 'orders', 
+        'payments', 'wallet', 'marketing', 'training', 'support', 'communication', 'settings'
+      ],
+      'customer': [
+        'overview', 'products', 'orders', 'payments', 'support', 'settings'
+      ]
     }
     
     return roleModules[user.role]?.includes(module) || false

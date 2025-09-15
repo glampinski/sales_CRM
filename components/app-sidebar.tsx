@@ -115,15 +115,15 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
+        <div className="flex items-start justify-start p-0">
           <Image 
-            src="/logo.png" 
+            src="/images/glampinski-logo.jpg" 
             alt="Glampinski Logo" 
-            width={32} 
-            height={32}
-            className="rounded"
+            width={160} 
+            height={160}
+            className="object-contain mix-blend-multiply bg-transparent"
+            style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
           />
-          <span className="text-lg font-semibold">Glampinski</span>
         </div>
       </SidebarHeader>
 

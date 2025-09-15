@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Search, Settings, User, LogOut, Users } from "lucide-react"
+import { Bell, Search, Settings, User, LogOut, Users, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -13,8 +13,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
+import Image from "next/image"
 
 // Mock users for role switching (development only)
 const TEST_USERS = [
@@ -43,9 +45,26 @@ export function DashboardHeader() {
   return (
     <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 sm:px-6">
-        {/* Search */}
-        <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
-          <div className="relative w-48 sm:w-64">
+        {/* Mobile hamburger menu and logo */}
+        <div className="md:hidden flex items-center space-x-3 mr-auto">
+          <SidebarTrigger className="p-3 hover:bg-gray-100 rounded-md transition-colors flex flex-col space-y-1.5">
+            <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
+            <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
+            <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
+          </SidebarTrigger>
+          <Image 
+            src="/images/glampinski-logo.jpg" 
+            alt="Glampinski Logo" 
+            width={100} 
+            height={100}
+            className="object-contain mix-blend-multiply bg-transparent"
+            style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
+          />
+        </div>
+        
+        {/* Desktop Search */}
+        <div className="hidden md:flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
+          <div className="relative w-48 md:w-64">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder={canSearchAdvanced ? "Search contacts, tasks..." : "Search products..."}
@@ -56,6 +75,15 @@ export function DashboardHeader() {
         
         {/* Right side */}
         <div className="ml-auto flex items-center space-x-2 sm:space-x-4">
+          {/* Mobile Search */}
+          <div className="md:hidden relative w-32">
+            <Search className="absolute left-2 top-2.5 h-3 w-3 text-muted-foreground" />
+            <Input
+              placeholder="Search..."
+              className="pl-7 text-xs h-8"
+            />
+          </div>
+          
           {/* Notifications - Only for non-customers */}
           {canSearchAdvanced && (
             <DropdownMenu>

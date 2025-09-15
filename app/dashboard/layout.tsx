@@ -16,7 +16,7 @@ export default function DashboardLayout({
   return (
     <ProtectedRoute>
       <PermissionProvider>
-        <SidebarProvider defaultOpen={true}>
+        <SidebarProvider>
           <div className="flex min-h-screen w-full">
             <AppSidebar />
             <div className="flex-1 flex flex-col overflow-hidden">

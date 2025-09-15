@@ -115,12 +115,24 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-start justify-start p-0">
+        {/* Desktop logo - hidden on mobile */}
+        <div className="hidden md:flex items-start justify-start p-0">
           <Image 
             src="/images/glampinski-logo.jpg" 
             alt="Glampinski Logo" 
             width={160} 
             height={160}
+            className="object-contain mix-blend-multiply bg-transparent"
+            style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
+          />
+        </div>
+        {/* Mobile logo - larger, centered, visible only on mobile */}
+        <div className="md:hidden flex items-center justify-center px-2 py-2">
+          <Image 
+            src="/images/glampinski-logo.jpg" 
+            alt="Glampinski Logo" 
+            width={120} 
+            height={120}
             className="object-contain mix-blend-multiply bg-transparent"
             style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
           />

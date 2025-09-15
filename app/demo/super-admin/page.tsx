@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Crown, CheckCircle, Users, Shield, Settings, Eye } from 'lucide-react'
+import { Crown, CheckCircle, Users, Shield, Settings, Eye, Home, Building2, CheckSquare, TrendingUp, DollarSign, FileText, CreditCard, Wallet, Megaphone, PieChart, BookOpen, HeadphonesIcon, MessageSquare, Bell, UserCog } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { usePermissions } from '@/contexts/PermissionContext-simple'
 
@@ -66,7 +66,9 @@ export default function SuperAdminDemoPage() {
 
   // Simple demo metrics
   const totalPermissions = 25
-  const enabledModules = 8  return (
+  const enabledModules = 8
+
+  return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="text-center space-y-4">
@@ -85,7 +87,7 @@ export default function SuperAdminDemoPage() {
         <AlertTitle className="text-green-800">System Status</AlertTitle>
         <AlertDescription className="text-green-700">
           Logged in as <strong>{user?.name}</strong> ({user?.role?.replace('_', ' ')}) • 
-          Permission system active with {totalPermissions} total permissions across {Object.keys(rolePermissions).length} roles
+          Granular permission system active with 10+ permission categories across dashboard, users, products, and system access
         </AlertDescription>
       </Alert>
 
@@ -97,7 +99,7 @@ export default function SuperAdminDemoPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{Object.keys(rolePermissions).length}</div>
+            <div className="text-2xl font-bold">5</div>
             <p className="text-xs text-muted-foreground">Configured roles</p>
           </CardContent>
         </Card>
@@ -120,7 +122,7 @@ export default function SuperAdminDemoPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {user?.role === 'super_admin' ? 'Full' : 'Limited'}
+              {permissions.canViewAdminFeatures ? 'Full' : 'Limited'}
             </div>
             <p className="text-xs text-muted-foreground">System access level</p>
           </CardContent>
@@ -167,51 +169,286 @@ export default function SuperAdminDemoPage() {
         </div>
       </div>
 
-      {/* Role Breakdown */}
+      {/* Permission Breakdown */}
       <Card>
         <CardHeader>
-          <CardTitle>Role Permission Breakdown</CardTitle>
+          <CardTitle>Complete Granular Permission System</CardTitle>
           <CardDescription>
-            Overview of permissions assigned to each user role
+            Live permission breakdown showing ALL modules and capabilities per role
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {Object.entries(rolePermissions).map(([role, config]) => (
-              <div key={role} className="flex items-center justify-between p-4 border rounded-lg">
-                <div>
-                  <h4 className="font-medium capitalize">{role.replace('_', ' ')}</h4>
-                  <p className="text-sm text-muted-foreground">{config.description}</p>
+          <div className="space-y-6">
+            {/* Dashboard Permissions */}
+            <div>
+              <h4 className="font-medium mb-3 flex items-center">
+                <Home className="h-4 w-4 mr-2" />
+                Dashboard Permissions
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Overview</p>
+                  <p className="text-xs text-green-600">✓ All Roles</p>
                 </div>
-                <div className="text-right">
-                  <Badge variant="outline">
-                    {config.permissions.length} permissions
-                  </Badge>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {Object.values(config.modules).filter(m => m?.enabled).length} modules enabled
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Business</p>
+                  <p className="text-xs text-green-600">✓ Manager+</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Network</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Admin Stats</p>
+                  <p className="text-xs text-green-600">✓ Admin+</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Workflow Modules */}
+            <div>
+              <h4 className="font-medium mb-3 flex items-center">
+                <CheckSquare className="h-4 w-4 mr-2" />
+                Main Workflow
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Contacts</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View/Create</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Edit/Delete</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Tasks</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View/Create</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Edit/Assign</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Pipeline</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Manage</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Network Modules */}
+            <div>
+              <h4 className="font-medium mb-3 flex items-center">
+                <TrendingUp className="h-4 w-4 mr-2" />
+                Network & MLM
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Genealogy</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Manage</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Commission</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Calculate</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Ranks</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Promote</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Affiliates</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Manage</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Business Modules */}
+            <div>
+              <h4 className="font-medium mb-3 flex items-center">
+                <Building2 className="h-4 w-4 mr-2" />
+                Business & Commerce
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Customers</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View/Create</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Edit</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Products</p>
+                  <p className="text-xs text-green-600">✓ All View</p>
+                  <p className="text-xs text-blue-600">◆ Customer Purchase</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Orders</p>
+                  <p className="text-xs text-green-600">✓ All View</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Process</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Payments</p>
+                  <p className="text-xs text-green-600">✓ All View</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Refund</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm mt-2">
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Wallet</p>
+                  <p className="text-xs text-green-600">✓ All View</p>
+                  <p className="text-xs text-blue-600">◆ Affiliate+ Transfer</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Marketing</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Create</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Reports</p>
+                  <p className="text-xs text-green-600">✓ Affiliate+ View</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Export</p>
+                </div>
+              </div>
+            </div>
+
+            {/* System Modules */}
+            <div>
+              <h4 className="font-medium mb-3 flex items-center">
+                <Shield className="h-4 w-4 mr-2" />
+                System & Support
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Training</p>
+                  <p className="text-xs text-green-600">✓ All View</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Create</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Support</p>
+                  <p className="text-xs text-green-600">✓ All Create Tickets</p>
+                  <p className="text-xs text-orange-600">△ Manager+ Respond</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Communication</p>
+                  <p className="text-xs text-green-600">✓ All View</p>
+                  <p className="text-xs text-orange-600">△ Affiliate+ Send</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Settings</p>
+                  <p className="text-xs text-green-600">✓ All View</p>
+                  <p className="text-xs text-orange-600">△ Affiliate+ Edit</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-2 gap-2 text-sm mt-2">
+                <div className="p-2 border rounded">
+                  <p className="font-medium">User Management</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Only</p>
+                </div>
+                <div className="p-2 border rounded">
+                  <p className="font-medium">Invitations</p>
+                  <p className="text-xs text-red-600">✗ Admin+ Only</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="font-medium mb-2">Permission Legend</h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                <div className="flex items-center">
+                  <span className="text-green-600 mr-1">✓</span>
+                  <span>Available</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-orange-600 mr-1">△</span>
+                  <span>Limited Access</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-red-600 mr-1">✗</span>
+                  <span>Admin Required</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-blue-600 mr-1">◆</span>
+                  <span>Special Access</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Current User Permissions - showing actual values */}
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-medium mb-3 flex items-center">
+                <Crown className="h-4 w-4 mr-2 text-blue-600" />
+                Your Current Permissions ({user?.role?.replace('_', ' ')})
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                <div className={`p-2 border rounded ${permissions.permissions.dashboard.canViewBusiness ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">Business Dashboard</p>
+                  <p className={`text-xs ${permissions.permissions.dashboard.canViewBusiness ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.dashboard.canViewBusiness ? '✓ Enabled' : '✗ Disabled'}
+                  </p>
+                </div>
+                <div className={`p-2 border rounded ${permissions.permissions.admin.canManageUsers ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">User Management</p>
+                  <p className={`text-xs ${permissions.permissions.admin.canManageUsers ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.admin.canManageUsers ? '✓ Enabled' : '✗ Disabled'}
+                  </p>
+                </div>
+                <div className={`p-2 border rounded ${permissions.permissions.products.canPurchase ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">Product Purchase</p>
+                  <p className={`text-xs ${permissions.permissions.products.canPurchase ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.products.canPurchase ? '✓ Enabled' : '✗ Disabled'}
+                  </p>
+                </div>
+                <div className={`p-2 border rounded ${permissions.permissions.admin.canViewFullAccess ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">Admin Features</p>
+                  <p className={`text-xs ${permissions.permissions.admin.canViewFullAccess ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.admin.canViewFullAccess ? '✓ Enabled' : '✗ Disabled'}
+                  </p>
+                </div>
+                <div className={`p-2 border rounded ${permissions.permissions.commission.canView ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">Commission View</p>
+                  <p className={`text-xs ${permissions.permissions.commission.canView ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.commission.canView ? '✓ Enabled' : '✗ Disabled'}
+                  </p>
+                </div>
+                <div className={`p-2 border rounded ${permissions.permissions.marketing.canCreate ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">Marketing Create</p>
+                  <p className={`text-xs ${permissions.permissions.marketing.canCreate ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.marketing.canCreate ? '✓ Enabled' : '✗ Disabled'}
+                  </p>
+                </div>
+                <div className={`p-2 border rounded ${permissions.permissions.wallet.canTransfer ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">Wallet Transfer</p>
+                  <p className={`text-xs ${permissions.permissions.wallet.canTransfer ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.wallet.canTransfer ? '✓ Enabled' : '✗ Disabled'}
+                  </p>
+                </div>
+                <div className={`p-2 border rounded ${permissions.permissions.training.canManage ? 'bg-green-100 border-green-200' : 'bg-gray-100'}`}>
+                  <p className="font-medium">Training Manage</p>
+                  <p className={`text-xs ${permissions.permissions.training.canManage ? 'text-green-600' : 'text-gray-500'}`}>
+                    {permissions.permissions.training.canManage ? '✓ Enabled' : '✗ Disabled'}
                   </p>
                 </div>
               </div>
-            ))}
+              <div className="mt-3 text-xs text-blue-600">
+                Total Modules: 15 | Available to {user?.role?.replace('_', ' ')}: {Object.values(permissions.permissions).filter(module => Object.values(module).some(perm => perm === true)).length}
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Action Buttons */}
       <div className="flex justify-center space-x-4">
-        <PermissionGate fallback={
-          <Button disabled>
-            <Crown className="h-4 w-4 mr-2" />
-            Super Admin Required
-          </Button>
-        }>
+        {permissions.canViewAdminFeatures ? (
           <Button asChild>
             <Link href="/dashboard/super-admin">
               <Crown className="h-4 w-4 mr-2" />
               Access Super Admin Dashboard
             </Link>
           </Button>
-        </PermissionGate>
+        ) : (
+          <Button disabled>
+            <Crown className="h-4 w-4 mr-2" />
+            Super Admin Required
+          </Button>
+        )}
         
         <Button variant="outline" asChild>
           <Link href="/dashboard">

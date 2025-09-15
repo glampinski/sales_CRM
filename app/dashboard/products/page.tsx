@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
+import { usePermissions } from "@/contexts/PermissionContext-simple"
 import { Package, Search, Plus, Filter, Download, Eye, Edit, Trash2, Star, TrendingUp, ShoppingCart, DollarSign, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -131,6 +132,7 @@ const categories = ["All", "Timeshare"]
 
 export default function ProductsPage() {
   const { user } = useAuth()
+  const { canPurchaseProducts, canManageProducts } = usePermissions()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("All")
@@ -140,7 +142,7 @@ export default function ProductsPage() {
   const isCustomer = user?.role === 'customer'
 
   const handleProductPurchase = (product: any) => {
-    if (isCustomer || user?.role === 'affiliate') {
+    if (canPurchaseProducts) {
       // Redirect existing customers to internal purchase flow
       const shareLevel = product.sku.toLowerCase().includes('full') ? 'full' :
                         product.sku.toLowerCase().includes('half') ? 'half' :
@@ -265,7 +267,7 @@ export default function ProductsPage() {
             {product.sales} sold this month
           </span>
           <div className="flex items-center gap-2">
-            {(isCustomer || user?.role === 'affiliate') && (
+            {canPurchaseProducts && (
               <Button 
                 onClick={() => handleProductPurchase(product)}
                 size="sm"
@@ -484,7 +486,7 @@ export default function ProductsPage() {
                       <TableCell>{product.sales}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-2">
-                          {(isCustomer || user?.role === 'affiliate') && (
+                          {canPurchaseProducts && (
                             <Button 
                               onClick={() => handleProductPurchase(product)}
                               size="sm"

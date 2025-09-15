@@ -60,6 +60,7 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/contexts/AuthContext"
+import { usePermissions } from "@/contexts/PermissionContext-simple"
 
 interface TimeshareProperty {
   id: string
@@ -364,6 +365,7 @@ const getShareDisplay = (level: string) => {
 
 export function TimesharePropertyCatalog() {
   const { user } = useAuth()
+  const { canPurchaseProducts, canManageProperties } = usePermissions()
   const router = useRouter()
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [searchTerm, setSearchTerm] = useState("")
@@ -376,10 +378,9 @@ export function TimesharePropertyCatalog() {
   const [cart, setCart] = useState<Array<{propertyId: string, shareLevel: string, price: number}>>([])
   const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null)
 
-  // Role-based feature flags
+  // Permission-based feature flags
   const isCustomer = user?.role === 'customer'
-  const isSalesTeam = user?.role === 'affiliate' || user?.role === 'admin' || user?.role === 'super_admin'
-  const canManageProperties = user?.role === 'admin' || user?.role === 'super_admin'
+  const isSalesTeam = canManageProperties || user?.role === 'affiliate'
 
   const filteredProperties = mockProperties.filter(property => {
     const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -440,7 +441,7 @@ export function TimesharePropertyCatalog() {
     if (mappedShareLevel) {
       // Redirect to embedded purchase flow with pre-selected share level
       const currentUser = user
-      if (currentUser?.role === 'customer') {
+      if (isCustomer && currentUser) {
         // For customers, go to purchase with their customer ID
         router.push(`/purchase?customerId=${currentUser.id}&shareLevel=${mappedShareLevel}`)
       } else {

@@ -3,11 +3,149 @@
 import React, { createContext, useContext } from 'react'
 import { useAuth } from './AuthContext'
 
-// Simple permission context for compatibility
+// Enhanced permission context with granular permissions for ALL modules
+interface Permission {
+  dashboard: {
+    canViewOverview: boolean
+    canViewBusiness: boolean  
+    canViewNetwork: boolean
+    canViewAdminStats: boolean
+  }
+  // Main workflow modules
+  contacts: {
+    canView: boolean
+    canCreate: boolean
+    canEdit: boolean
+    canDelete: boolean
+  }
+  tasks: {
+    canView: boolean
+    canCreate: boolean
+    canEdit: boolean
+    canAssign: boolean
+  }
+  pipeline: {
+    canView: boolean
+    canManage: boolean
+    canEdit: boolean
+  }
+  // Network modules
+  network: {
+    canView: boolean
+    canManage: boolean
+    canViewGenealogy: boolean
+  }
+  commission: {
+    canView: boolean
+    canCalculate: boolean
+    canPayout: boolean
+  }
+  ranks: {
+    canView: boolean
+    canManage: boolean
+    canPromote: boolean
+  }
+  affiliates: {
+    canView: boolean
+    canManage: boolean
+    canViewDetails: boolean
+    canEdit: boolean
+  }
+  // Business modules
+  customers: {
+    canView: boolean
+    canCreate: boolean
+    canEdit: boolean
+    canManage: boolean
+  }
+  products: {
+    canView: boolean
+    canPurchase: boolean
+    canManage: boolean
+    canCreate: boolean
+  }
+  orders: {
+    canView: boolean
+    canCreate: boolean
+    canProcess: boolean
+    canManage: boolean
+  }
+  payments: {
+    canView: boolean
+    canProcess: boolean
+    canRefund: boolean
+    canManage: boolean
+  }
+  wallet: {
+    canView: boolean
+    canTransfer: boolean
+    canWithdraw: boolean
+    canManage: boolean
+  }
+  marketing: {
+    canView: boolean
+    canCreate: boolean
+    canManage: boolean
+    canAnalyze: boolean
+  }
+  reports: {
+    canView: boolean
+    canGenerate: boolean
+    canExport: boolean
+    canCustomize: boolean
+  }
+  // System modules
+  training: {
+    canView: boolean
+    canCreate: boolean
+    canManage: boolean
+    canAssign: boolean
+  }
+  support: {
+    canView: boolean
+    canCreate: boolean
+    canRespond: boolean
+    canManage: boolean
+  }
+  communication: {
+    canView: boolean
+    canSend: boolean
+    canBroadcast: boolean
+    canManage: boolean
+  }
+  admin: {
+    canManageUsers: boolean
+    canViewFullAccess: boolean
+    canManageSystem: boolean
+    canManageInvitations: boolean
+  }
+  settings: {
+    canView: boolean
+    canEdit: boolean
+    canManageSystem: boolean
+  }
+  // UI permissions
+  ui: {
+    canSearchAdvanced: boolean
+    canImpersonate: boolean
+    canManageProperties: boolean
+  }
+}
+
 interface SimplePermissionContextType {
   hasPermission: (permission: string) => boolean
   hasModuleAccess: (module: string) => boolean
   hasModuleAction: (module: string, action: string) => boolean
+  permissions: Permission
+  canViewBusinessDashboard: boolean
+  canManageUsers: boolean
+  canViewAdminFeatures: boolean
+  canAccessAffiliateFeatures: boolean
+  canPurchaseProducts: boolean
+  canManageProducts: boolean
+  canSearchAdvanced: boolean
+  canImpersonate: boolean
+  canManageProperties: boolean
 }
 
 const SimplePermissionContext = createContext<SimplePermissionContextType | undefined>(undefined)
@@ -15,9 +153,138 @@ const SimplePermissionContext = createContext<SimplePermissionContextType | unde
 export function PermissionProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
 
+  // Generate permissions object based on user role for ALL modules
+  const permissions: Permission = {
+    dashboard: {
+      canViewOverview: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canViewBusiness: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canViewNetwork: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canViewAdminStats: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    // Main workflow modules
+    contacts: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canEdit: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canDelete: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    tasks: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canEdit: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canAssign: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager'
+    },
+    pipeline: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canEdit: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager'
+    },
+    // Network modules
+    network: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin',
+      canViewGenealogy: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate'
+    },
+    commission: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canCalculate: user?.role === 'super_admin' || user?.role === 'admin',
+      canPayout: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    ranks: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin',
+      canPromote: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    affiliates: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin',
+      canViewDetails: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canEdit: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    // Business modules
+    customers: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canEdit: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    products: {
+      canView: true, // All users can view products
+      canPurchase: user?.role === 'customer' || user?.role === 'affiliate',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    orders: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canProcess: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    payments: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canProcess: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canRefund: user?.role === 'super_admin' || user?.role === 'admin',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    wallet: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canTransfer: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'affiliate',
+      canWithdraw: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'affiliate',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    marketing: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin',
+      canAnalyze: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager'
+    },
+    reports: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canGenerate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canExport: user?.role === 'super_admin' || user?.role === 'admin',
+      canCustomize: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    // System modules
+    training: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin',
+      canAssign: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager'
+    },
+    support: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canCreate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canRespond: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    communication: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canSend: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canBroadcast: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    admin: {
+      canManageUsers: user?.role === 'super_admin' || user?.role === 'admin',
+      canViewFullAccess: user?.role === 'super_admin',
+      canManageSystem: user?.role === 'super_admin',
+      canManageInvitations: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    settings: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate' || user?.role === 'customer',
+      canEdit: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canManageSystem: user?.role === 'super_admin' || user?.role === 'admin'
+    },
+    ui: {
+      canSearchAdvanced: user?.role !== 'customer',
+      canImpersonate: user?.role === 'super_admin' || user?.role === 'admin',
+      canManageProperties: user?.role === 'super_admin' || user?.role === 'admin'
+    }
+  }
+
   // Enhanced permission checks based on role
   const hasPermission = (permission: string): boolean => {
     if (!user) return false
+    
     // Super admin has all permissions
     if (user.role === 'super_admin') return true
     
@@ -34,11 +301,15 @@ export function PermissionProvider({ children }: { children: React.ReactNode }) 
 
   const hasModuleAccess = (module: string): boolean => {
     if (!user) return false
-    // Super admin has access to all modules
-    if (user.role === 'super_admin') return true
     
     // Define module access based on roles
     const roleModules: Record<string, string[]> = {
+      'super_admin': [
+        'overview', 'contacts', 'tasks', 'pipeline', 'network', 'commission', 
+        'ranks', 'affiliates', 'customers', 'products', 'orders', 'payments', 
+        'wallet', 'marketing', 'reports', 'training', 'support', 'communication', 
+        'admin', 'settings'
+      ],
       'admin': [
         'overview', 'contacts', 'tasks', 'pipeline', 'network', 'commission', 
         'ranks', 'affiliates', 'customers', 'products', 'orders', 'payments', 
@@ -64,16 +335,35 @@ export function PermissionProvider({ children }: { children: React.ReactNode }) 
 
   const hasModuleAction = (module: string, action: string): boolean => {
     if (!user) return false
-    // Super admin can perform all actions
-    if (user.role === 'super_admin') return true
-    // Add other simple role-based logic as needed
+    // Add granular action-based permissions as needed
     return true // Default to allowing actions for now
   }
+
+  // Convenience permission getters
+  const canViewBusinessDashboard = permissions.dashboard.canViewBusiness
+  const canManageUsers = permissions.admin.canManageUsers
+  const canViewAdminFeatures = permissions.admin.canViewFullAccess
+  const canAccessAffiliateFeatures = permissions.affiliates.canView
+  const canPurchaseProducts = permissions.products.canPurchase
+  const canManageProducts = permissions.products.canManage
+  const canSearchAdvanced = permissions.ui.canSearchAdvanced
+  const canImpersonate = permissions.ui.canImpersonate
+  const canManageProperties = permissions.ui.canManageProperties
 
   const value: SimplePermissionContextType = {
     hasPermission,
     hasModuleAccess,
     hasModuleAction,
+    permissions,
+    canViewBusinessDashboard,
+    canManageUsers,
+    canViewAdminFeatures,
+    canAccessAffiliateFeatures,
+    canPurchaseProducts,
+    canManageProducts,
+    canSearchAdvanced,
+    canImpersonate,
+    canManageProperties,
   }
 
   return (

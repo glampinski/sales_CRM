@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/contexts/AuthContext"
+import { usePermissions } from "@/contexts/PermissionContext-simple"
 
 // Mock users for role switching (development only)
 const TEST_USERS = [
@@ -26,6 +27,7 @@ const TEST_USERS = [
 
 export function DashboardHeader() {
   const { user, logout } = useAuth()
+  const { canSearchAdvanced, canImpersonate } = usePermissions()
 
   const switchUser = (testUser: typeof TEST_USERS[0]) => {
     localStorage.setItem('auth_user', JSON.stringify({
@@ -46,7 +48,7 @@ export function DashboardHeader() {
           <div className="relative w-64">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={user.role === 'customer' ? "Search products, orders..." : "Search contacts, tasks, orders..."}
+              placeholder={canSearchAdvanced ? "Search contacts, tasks, orders..." : "Search products, orders..."}
               className="pl-8"
             />
           </div>
@@ -55,7 +57,7 @@ export function DashboardHeader() {
         {/* Right side */}
         <div className="ml-auto flex items-center space-x-4">
           {/* Notifications - Only for non-customers */}
-          {user.role !== 'customer' && (
+          {canSearchAdvanced && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative">
@@ -130,22 +132,26 @@ export function DashboardHeader() {
               <DropdownMenuSeparator />
               
               {/* Development: User Role Switcher */}
-              <DropdownMenuLabel className="text-xs text-muted-foreground">
-                Switch User Role (Dev)
-              </DropdownMenuLabel>
-              {TEST_USERS.map((testUser) => (
-                <DropdownMenuItem 
-                  key={testUser.id}
-                  onClick={() => switchUser(testUser)}
-                  className={user.role === testUser.role ? "bg-accent" : ""}
-                >
-                  <Users className="mr-2 h-4 w-4" />
-                  <span>{testUser.name} ({testUser.role})</span>
-                  {user.role === testUser.role && (
-                    <Badge variant="secondary" className="ml-auto text-xs">Current</Badge>
-                  )}
-                </DropdownMenuItem>
-              ))}
+              {canImpersonate && (
+                <>
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">
+                    Switch User Role (Dev)
+                  </DropdownMenuLabel>
+                  {TEST_USERS.map((testUser) => (
+                    <DropdownMenuItem 
+                      key={testUser.id}
+                      onClick={() => switchUser(testUser)}
+                      className={user.role === testUser.role ? "bg-accent" : ""}
+                    >
+                      <Users className="mr-2 h-4 w-4" />
+                      <span>{testUser.name} ({testUser.role})</span>
+                      {user.role === testUser.role && (
+                        <Badge variant="secondary" className="ml-auto text-xs">Current</Badge>
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </>
+              )}
               <DropdownMenuSeparator />
               
               <DropdownMenuItem onClick={logout}>

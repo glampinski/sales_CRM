@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/form"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 import { useAuth } from "@/contexts/AuthContext"
+import { usePermissions } from "@/contexts/PermissionContext-simple"
 import { InviteUserForm } from "@/components/invite-user-form"
 import { InvitationManagement } from "@/components/invitation-management"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -113,6 +114,7 @@ const roleColors = {
 
 export default function UsersPage() {
   const { canImpersonate, startImpersonation } = useAuth()
+  const { canManageUsers } = usePermissions()
   const [searchTerm, setSearchTerm] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("all")
   const [users, setUsers] = useState(mockUsers)
@@ -569,7 +571,7 @@ export default function UsersPage() {
                                   handleDeleteUser(user.id);
                                 }
                               }}
-                              disabled={user.role === 'super_admin'}
+                              disabled={user.role === 'super_admin' || !canManageUsers}
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete User

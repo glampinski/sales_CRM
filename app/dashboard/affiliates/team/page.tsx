@@ -1,6 +1,6 @@
 "use client"
 
-import { DistributorTeamHierarchy } from "@/components/affiliate-team-hierarchy"
+import { TeamHierarchy } from "@/components/team-hierarchy"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 
 export default function DistributorTeamPage() {
@@ -16,7 +16,7 @@ export default function DistributorTeamPage() {
         </div>
       }
     >
-      <DistributorTeamHierarchy />
+      <TeamHierarchy />
     </ProtectedRoute>
   )
 }

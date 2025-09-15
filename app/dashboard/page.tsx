@@ -42,6 +42,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { SuperAdminDashboard } from "@/components/super-admin-dashboard"
 import { SimpleGroupPermissions } from "@/components/simple-group-permissions"
 import { CompactReferralSection } from "@/components/compact-referral-section"
+import { usePermissions } from "@/contexts/PermissionContext-simple"
 
 // Business Analytics Data
 const businessStats = [
@@ -144,12 +145,9 @@ const regionalData = [
 
 export default function Dashboard() {
   const { user } = useAuth()
+  const permissions = usePermissions()
   const [timeRange, setTimeRange] = useState("30d")
   const [activeView, setActiveView] = useState("overview")
-
-  // Simple role-based check
-  const isSuperAdmin = user?.role === 'super_admin'
-  const isAffiliate = user?.role === 'affiliate'
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -162,57 +160,7 @@ export default function Dashboard() {
     return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`
   }
 
-  if (isSuperAdmin) {
-    return (
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline">
-              <Calendar className="mr-2 h-4 w-4" />
-              Jan 20 - Feb 09
-            </Button>
-          </div>
-        </div>
-
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="permissions">Group Permissions</TabsTrigger>
-            <TabsTrigger value="preview">User Preview</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-4">
-            <SuperAdminDashboard />
-          </TabsContent>
-
-          <TabsContent value="permissions" className="space-y-4">
-            <SimpleGroupPermissions />
-          </TabsContent>
-
-          <TabsContent value="preview" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
-                  User View Preview
-                </CardTitle>
-                <CardDescription>
-                  See how different user groups will see the dashboard
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Select a user group to preview their dashboard view...
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    )
-  }
-
+  // Unified Dashboard for All Users with Permission-Based Visibility
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
       {/* Header */}
@@ -242,36 +190,39 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Navigation Submenu */}
-      <div className="flex items-center space-x-1 bg-muted p-1 rounded-lg w-fit">
-        <Button
-          variant={activeView === "overview" ? "default" : "ghost"}
-          size="sm"
-          onClick={() => setActiveView("overview")}
-        >
-          Overview
-        </Button>
-        <Button
-          variant={activeView === "business" ? "default" : "ghost"}
-          size="sm"
-          onClick={() => setActiveView("business")}
-        >
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          Business
-        </Button>
-        <Button
-          variant={activeView === "network" ? "default" : "ghost"}
-          size="sm"
-          onClick={() => setActiveView("network")}
-        >
-          <Building2 className="h-4 w-4 mr-2" />
-          Network
-        </Button>
-      </div>
+      {/* Unified Navigation with All Tabs */}
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          
+          {/* Business Tab - Show for all users who can view business data */}
+          {permissions.hasModuleAccess('business') && (
+            <TabsTrigger value="business">
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              Business
+            </TabsTrigger>
+          )}
+          
+          {/* Network Tab - Show for users who can view network data */}
+          {permissions.hasModuleAccess('network') && (
+            <TabsTrigger value="network">
+              <Building2 className="h-4 w-4 mr-2" />
+              Network
+            </TabsTrigger>
+          )}
+          
+          {/* Admin Tabs - Show for users with admin permissions */}
+          {permissions.hasModuleAccess('admin') && (
+            <>
+              <TabsTrigger value="admin">Admin Overview</TabsTrigger>
+              <TabsTrigger value="permissions">Group Permissions</TabsTrigger>
+              <TabsTrigger value="preview">User Preview</TabsTrigger>
+            </>
+          )}
+        </TabsList>
 
-      {/* Overview Section */}
-      {activeView === "overview" && (
-        <div className="space-y-6">
+        {/* Overview Tab Content */}
+        <TabsContent value="overview" className="space-y-6">
           {/* Quick Stats Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -378,20 +329,18 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* Referral Dashboard Section - Only for Affiliates */}
-          {isAffiliate && (
+          {/* Referral Dashboard Section - Permission-based instead of role-based */}
+          {permissions.hasModuleAccess('referrals') && (
             <CompactReferralSection 
               userId={user?.id || 'user_123'} 
               userEmail={user?.email || 'user@example.com'}
               userRole={user?.role}
             />
           )}
-        </div>
-      )}
+        </TabsContent>
 
-      {/* Business Analytics Section */}
-      {activeView === "business" && (
-        <div className="space-y-6">
+        {/* Business Tab Content */}
+        <TabsContent value="business" className="space-y-6">
           {/* Business Stats */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {businessStats.map((stat, index) => (
@@ -508,12 +457,10 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-        </div>
-      )}
+        </TabsContent>
 
-      {/* Network Analytics Section */}
-      {activeView === "network" && (
-        <div className="space-y-6">
+        {/* Network Tab Content */}
+        <TabsContent value="network" className="space-y-6">
           {/* Network Stats */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {networkStats.map((stat, index) => (
@@ -635,8 +582,39 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-        </div>
-      )}
+        </TabsContent>
+
+        {/* Admin Overview Tab Content */}
+        <TabsContent value="admin" className="space-y-4">
+          <SuperAdminDashboard />
+        </TabsContent>
+
+        {/* Group Permissions Tab Content */}
+        <TabsContent value="permissions" className="space-y-4">
+          <SimpleGroupPermissions />
+        </TabsContent>
+
+        {/* User Preview Tab Content */}
+        <TabsContent value="preview" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Eye className="h-5 w-5" />
+                User View Preview
+              </CardTitle>
+              <CardDescription>
+                See how different user groups will see the dashboard
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Select a user group to preview their dashboard view...
+              </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+      </Tabs>
     </div>
   )
 }

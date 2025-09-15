@@ -334,7 +334,7 @@ function TeamMemberCard({ member, onViewProfile, level }: TeamMemberCardProps) {
   )
 }
 
-export function DistributorTeamHierarchy() {
+export function TeamHierarchy() {
   const [searchTerm, setSearchTerm] = useState("")
   const [levelFilter, setLevelFilter] = useState("all")
   const [rankFilter, setRankFilter] = useState("all")

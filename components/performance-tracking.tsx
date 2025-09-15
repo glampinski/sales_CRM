@@ -151,7 +151,7 @@ const getGrowthColor = (growth: number) => {
   return "text-gray-600"
 }
 
-export function DistributorPerformanceTracking() {
+export function PerformanceTracking() {
   const [selectedPeriod, setSelectedPeriod] = useState("2025-09")
   const [selectedRank, setSelectedRank] = useState("all")
   const [sortBy, setSortBy] = useState("performance")

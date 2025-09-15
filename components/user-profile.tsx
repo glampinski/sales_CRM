@@ -234,7 +234,7 @@ const getDocumentStatusIcon = (status: string) => {
   }
 }
 
-export function DistributorProfile({ distributorId }: { distributorId?: string }) {
+export function UserProfile({ userId }: { userId?: string }) {
   const [distributor] = useState<Distributor>(mockDistributor)
   const [activeTab, setActiveTab] = useState("overview")
 

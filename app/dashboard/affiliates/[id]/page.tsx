@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { DistributorProfile } from "@/components/affiliate-profile"
+import { UserProfile } from "@/components/user-profile"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 
 export default function DistributorDetailPage() {
@@ -20,7 +20,7 @@ export default function DistributorDetailPage() {
         </div>
       }
     >
-      <DistributorProfile distributorId={distributorId} />
+      <UserProfile userId={distributorId} />
     </ProtectedRoute>
   )
 }

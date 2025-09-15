@@ -15,21 +15,37 @@ const SimplePermissionContext = createContext<SimplePermissionContextType | unde
 export function PermissionProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
 
-  // Simple permission checks based on role
+  // Enhanced permission checks based on role
   const hasPermission = (permission: string): boolean => {
     if (!user) return false
     // Super admin has all permissions
     if (user.role === 'super_admin') return true
-    // Add other simple role-based logic as needed
-    return false
+    
+    // Define permission mappings for other roles
+    const rolePermissions: Record<string, string[]> = {
+      'admin': ['dashboard.overview', 'dashboard.business', 'dashboard.network', 'admin.overview'],
+      'manager': ['dashboard.overview', 'dashboard.business', 'dashboard.network'],
+      'affiliate': ['dashboard.overview', 'referrals.view', 'referrals.generate'],
+      'customer': ['dashboard.overview']
+    }
+    
+    return rolePermissions[user.role]?.includes(permission) || false
   }
 
   const hasModuleAccess = (module: string): boolean => {
     if (!user) return false
     // Super admin has access to all modules
     if (user.role === 'super_admin') return true
-    // Add other simple role-based logic as needed
-    return true // Default to allowing access for now
+    
+    // Define module access based on roles
+    const roleModules: Record<string, string[]> = {
+      'admin': ['overview', 'business', 'network', 'admin'],
+      'manager': ['overview', 'business', 'network'],
+      'affiliate': ['overview', 'referrals'],
+      'customer': ['overview']
+    }
+    
+    return roleModules[user.role]?.includes(module) || false
   }
 
   const hasModuleAction = (module: string, action: string): boolean => {

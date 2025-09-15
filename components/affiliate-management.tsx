@@ -66,8 +66,8 @@ import { Separator } from "@/components/ui/separator"
 import { Progress } from "@/components/ui/progress"
 import { DistributorActions } from "@/components/affiliate-actions"
 import { DistributorAnalytics } from "@/components/affiliate-analytics"
-import { DistributorTeamHierarchy } from "@/components/affiliate-team-hierarchy"
-import { DistributorPerformanceTracking } from "@/components/affiliate-performance-tracking"
+import { TeamHierarchy } from "@/components/team-hierarchy"
+import { PerformanceTracking } from "@/components/performance-tracking"
 
 interface AffiliateSummary {
   id: string
@@ -983,11 +983,11 @@ export function AffiliateManagement() {
         </TabsContent>
 
         <TabsContent value="team" className="space-y-4">
-          <DistributorTeamHierarchy />
+          <TeamHierarchy />
         </TabsContent>
 
         <TabsContent value="performance" className="space-y-4">
-          <DistributorPerformanceTracking />
+          <PerformanceTracking />
         </TabsContent>
       </Tabs>
     </div>

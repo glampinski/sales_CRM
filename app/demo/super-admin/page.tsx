@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Crown, CheckCircle, Users, Shield, Settings, Eye } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { usePermissions } from '@/contexts/PermissionContext-simple'
 
 const DEMO_FEATURES = [
   {
@@ -61,14 +62,11 @@ const DEMO_FEATURES = [
 
 export default function SuperAdminDemoPage() {
   const { user } = useAuth()
-  const { rolePermissions, hasPermission } = usePermissions()
+  const permissions = usePermissions()
 
-  const totalPermissions = Object.values(rolePermissions).reduce(
-    (total, role) => total + role.permissions.length, 
-    0
-  )
-
-  return (
+  // Simple demo metrics
+  const totalPermissions = 25
+  const enabledModules = 8  return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="text-center space-y-4">

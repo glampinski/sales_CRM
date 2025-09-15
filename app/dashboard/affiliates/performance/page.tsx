@@ -1,6 +1,6 @@
 "use client"
 
-import { DistributorPerformanceTracking } from "@/components/affiliate-performance-tracking"
+import { PerformanceTracking } from "@/components/performance-tracking"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 
 export default function DistributorPerformancePage() {
@@ -16,7 +16,7 @@ export default function DistributorPerformancePage() {
         </div>
       }
     >
-      <DistributorPerformanceTracking />
+      <PerformanceTracking />
     </ProtectedRoute>
   )
 }

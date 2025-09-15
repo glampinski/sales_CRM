@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -327,6 +328,7 @@ const defaultColumns: TableColumn[] = [
 
 export function CustomerManagement() {
   const { canImpersonate, startImpersonation } = useAuth()
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [tierFilter, setTierFilter] = useState("all")
@@ -485,6 +487,16 @@ export function CustomerManagement() {
     )
   }
 
+  const handleStartPurchase = (customer: Customer) => {
+    // Redirect to embedded purchase flow with customer ID
+    router.push(`/purchase?customerId=${customer.id}`)
+  }
+
+  const handleCreateNewCustomer = () => {
+    // For new external customers, redirect to standalone onboarding flow
+    window.open('/onboarding', '_blank')
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -508,7 +520,7 @@ export function CustomerManagement() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button size="sm">
+          <Button size="sm" onClick={handleCreateNewCustomer}>
             <UserPlus className="h-4 w-4 mr-2" />
             Add Customer
           </Button>
@@ -802,6 +814,17 @@ export function CustomerManagement() {
                                 <Edit className="mr-2 h-4 w-4" />
                                 Edit Details
                               </button>
+                              <button 
+                                className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-green-600"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenDropdown(null);
+                                  handleStartPurchase(customer);
+                                }}
+                              >
+                                <Building2 className="mr-2 h-4 w-4" />
+                                Start Purchase
+                              </button>
                               {canImpersonate() && (
                                 <>
                                   <div className="border-t my-1"></div>
@@ -911,6 +934,17 @@ export function CustomerManagement() {
                             >
                               <Edit className="mr-2 h-4 w-4" />
                               Edit Details
+                            </button>
+                            <button 
+                              className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-100 rounded flex items-center text-green-600"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenDropdown(null);
+                                handleStartPurchase(customer);
+                              }}
+                            >
+                              <Building2 className="mr-2 h-4 w-4" />
+                              Start Purchase
                             </button>
                             {canImpersonate() && (
                               <>

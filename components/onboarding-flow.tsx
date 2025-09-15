@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Progress } from "@/components/ui/progress"
 import { CheckCircle, FileText, CreditCard, Shield, Building2, User } from "lucide-react"
 import { ShareSelection } from "./share-selection"
@@ -39,7 +39,9 @@ const steps = [
 ]
 
 export function OnboardingFlow({ isReferralFlow = false, referralUserId }: OnboardingFlowProps) {
-  const [currentStep, setCurrentStep] = useState(1)
+  const searchParams = useSearchParams()
+  const startStep = searchParams.get('step') ? parseInt(searchParams.get('step')!) : 1
+  const [currentStep, setCurrentStep] = useState(startStep)
   const router = useRouter()
   const [data, setData] = useState<OnboardingData>({
     shareLevel: null,
@@ -49,6 +51,17 @@ export function OnboardingFlow({ isReferralFlow = false, referralUserId }: Onboa
     paymentMethod: null,
     completed: false,
   })
+
+  // If starting from step 3 (docs), prefill share selection
+  useEffect(() => {
+    if (startStep === 3) {
+      // For existing customers jumping to docs, set a default share level
+      const selectedShare = searchParams.get('share') as ShareLevel
+      if (selectedShare) {
+        setData(prev => ({ ...prev, shareLevel: selectedShare }))
+      }
+    }
+  }, [startStep, searchParams])
 
   const updateData = (updates: Partial<OnboardingData>) => {
     setData((prev) => ({ ...prev, ...updates }))

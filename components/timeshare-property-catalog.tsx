@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -363,6 +364,7 @@ const getShareDisplay = (level: string) => {
 
 export function TimesharePropertyCatalog() {
   const { user } = useAuth()
+  const router = useRouter()
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [searchTerm, setSearchTerm] = useState("")
   const [locationFilter, setLocationFilter] = useState("all")
@@ -376,7 +378,7 @@ export function TimesharePropertyCatalog() {
 
   // Role-based feature flags
   const isCustomer = user?.role === 'customer'
-  const isSalesTeam = user?.role === 'salesperson' || user?.role === 'admin' || user?.role === 'super_admin'
+  const isSalesTeam = user?.role === 'affiliate' || user?.role === 'admin' || user?.role === 'super_admin'
   const canManageProperties = user?.role === 'admin' || user?.role === 'super_admin'
 
   const filteredProperties = mockProperties.filter(property => {
@@ -425,8 +427,30 @@ export function TimesharePropertyCatalog() {
   }
 
   const addToCart = (propertyId: string, shareLevel: string, price: number) => {
-    setCart(prev => [...prev, { propertyId, shareLevel, price }])
-    console.log(`Added to cart: ${propertyId} - ${shareLevel} share for ${formatPrice(price)}`)
+    // Convert shareLevel to the format expected by the purchase flow
+    const shareLevelMap: Record<string, "full" | "half" | "quarter" | "eighth"> = {
+      "full": "full",
+      "half": "half", 
+      "quarter": "quarter",
+      "eighth": "eighth"
+    }
+    
+    const mappedShareLevel = shareLevelMap[shareLevel]
+    
+    if (mappedShareLevel) {
+      // Redirect to embedded purchase flow with pre-selected share level
+      const currentUser = user
+      if (currentUser?.role === 'customer') {
+        // For customers, go to purchase with their customer ID
+        router.push(`/purchase?customerId=${currentUser.id}&shareLevel=${mappedShareLevel}`)
+      } else {
+        // For others, go to purchase without customer ID (will prompt for customer selection or new customer)
+        router.push(`/purchase?shareLevel=${mappedShareLevel}`)
+      }
+    } else {
+      console.log(`Added to cart: ${propertyId} - ${shareLevel} share for ${formatPrice(price)}`)
+      setCart(prev => [...prev, { propertyId, shareLevel, price }])
+    }
   }
 
   const createLeadFromProperty = (property: TimeshareProperty, shareLevel: string) => {

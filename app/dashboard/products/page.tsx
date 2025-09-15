@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
-import { Package, Search, Plus, Filter, Download, Eye, Edit, Trash2, Star, TrendingUp, ShoppingCart, DollarSign } from "lucide-react"
+import { Package, Search, Plus, Filter, Download, Eye, Edit, Trash2, Star, TrendingUp, ShoppingCart, DollarSign, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -140,9 +140,12 @@ export default function ProductsPage() {
   const isCustomer = user?.role === 'customer'
 
   const handleProductPurchase = (product: any) => {
-    if (isCustomer) {
-      // Redirect customers to onboarding flow for purchase
-      router.push('/onboarding')
+    if (isCustomer || user?.role === 'affiliate') {
+      // Redirect existing customers to internal purchase flow
+      const shareLevel = product.sku.toLowerCase().includes('full') ? 'full' :
+                        product.sku.toLowerCase().includes('half') ? 'half' :
+                        product.sku.toLowerCase().includes('quarter') ? 'quarter' : 'eighth'
+      router.push(`/dashboard/purchase?step=3&share=${shareLevel}`)
     } else {
       // For admin/sales team, add to order (existing functionality)
       console.log("Adding to order:", product.name)
@@ -261,43 +264,51 @@ export default function ProductsPage() {
           <span className="text-sm text-muted-foreground">
             {product.sales} sold this month
           </span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button 
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+          <div className="flex items-center gap-2">
+            {(isCustomer || user?.role === 'affiliate') && (
+              <Button 
+                onClick={() => handleProductPurchase(product)}
+                size="sm"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                <span className="sr-only">Open menu</span>
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3.625 7.5C3.625 8.12132 3.12132 8.625 2.5 8.625C1.87868 8.625 1.375 8.12132 1.375 7.5C1.375 6.87868 1.87868 6.375 2.5 6.375C3.12132 6.375 3.625 6.87868 3.625 7.5ZM8.625 7.5C8.625 8.12132 8.12132 8.625 7.5 8.625C6.87868 8.625 6.375 8.12132 6.375 7.5C6.375 6.87868 6.87868 6.375 7.5 6.375C8.12132 6.375 8.625 6.87868 8.625 7.5ZM13.625 7.5C13.625 8.12132 13.1213 8.625 12.5 8.625C11.8787 8.625 11.375 8.12132 11.375 7.5C11.375 6.87868 11.8787 6.375 12.5 6.375C13.1213 6.375 13.625 6.87868 13.625 7.5Z" fill="currentColor"/>
-                </svg>
-              </button>
-            </DropdownMenuTrigger>
+                <ShoppingCart className="h-3 w-3 mr-1" />
+                Buy This
+              </Button>
+            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 z-50">
               <DropdownMenuItem className="cursor-pointer">
                 <Eye className="h-4 w-4 mr-2" />
                 View Details
               </DropdownMenuItem>
-              {!isCustomer && (
-                <DropdownMenuItem className="cursor-pointer">
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit Product
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuItem 
-                className="cursor-pointer"
-                onClick={() => handleProductPurchase(product)}
-              >
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                {isCustomer ? "Purchase" : "Add to Order"}
-              </DropdownMenuItem>
-              {!isCustomer && (
-                <DropdownMenuItem className="text-red-600 cursor-pointer">
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
-                </DropdownMenuItem>
+              {!isCustomer && user?.role !== 'affiliate' && (
+                <>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit Product
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="cursor-pointer"
+                    onClick={() => handleProductPurchase(product)}
+                  >
+                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    Add to Order
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-red-600 cursor-pointer">
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -472,43 +483,51 @@ export default function ProductsPage() {
                       </TableCell>
                       <TableCell>{product.sales}</TableCell>
                       <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button 
-                              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+                        <div className="flex items-center justify-end gap-2">
+                          {(isCustomer || user?.role === 'affiliate') && (
+                            <Button 
+                              onClick={() => handleProductPurchase(product)}
+                              size="sm"
+                              className="bg-primary hover:bg-primary/90 text-primary-foreground"
                             >
-                              <span className="sr-only">Open menu</span>
-                              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.625 7.5C3.625 8.12132 3.12132 8.625 2.5 8.625C1.87868 8.625 1.375 8.12132 1.375 7.5C1.375 6.87868 1.87868 6.375 2.5 6.375C3.12132 6.375 3.625 6.87868 3.625 7.5ZM8.625 7.5C8.625 8.12132 8.12132 8.625 7.5 8.625C6.87868 8.625 6.375 8.12132 6.375 7.5C6.375 6.87868 6.87868 6.375 7.5 6.375C8.12132 6.375 8.625 6.87868 8.625 7.5ZM13.625 7.5C13.625 8.12132 13.1213 8.625 12.5 8.625C11.8787 8.625 11.375 8.12132 11.375 7.5C11.375 6.87868 11.8787 6.375 12.5 6.375C13.1213 6.375 13.625 6.87868 13.625 7.5Z" fill="currentColor"/>
-                              </svg>
-                            </button>
-                          </DropdownMenuTrigger>
+                              <ShoppingCart className="h-3 w-3 mr-1" />
+                              Buy This
+                            </Button>
+                          )}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-48 z-50">
                             <DropdownMenuItem className="cursor-pointer">
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
-                            {!isCustomer && (
-                              <DropdownMenuItem className="cursor-pointer">
-                                <Edit className="h-4 w-4 mr-2" />
-                                Edit Product
-                              </DropdownMenuItem>
-                            )}
-                            <DropdownMenuItem 
-                              className="cursor-pointer"
-                              onClick={() => handleProductPurchase(product)}
-                            >
-                              <ShoppingCart className="h-4 w-4 mr-2" />
-                              {isCustomer ? "Purchase" : "Add to Order"}
-                            </DropdownMenuItem>
-                            {!isCustomer && (
-                              <DropdownMenuItem className="text-red-600 cursor-pointer">
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Delete
-                              </DropdownMenuItem>
+                            {!isCustomer && user?.role !== 'affiliate' && (
+                              <>
+                                <DropdownMenuItem className="cursor-pointer">
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Edit Product
+                                </DropdownMenuItem>
+                                <DropdownMenuItem 
+                                  className="cursor-pointer"
+                                  onClick={() => handleProductPurchase(product)}
+                                >
+                                  <ShoppingCart className="h-4 w-4 mr-2" />
+                                  Add to Order
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="text-red-600 cursor-pointer">
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </>
                             )}
                           </DropdownMenuContent>
                         </DropdownMenu>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}

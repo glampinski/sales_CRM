@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { useSidebar } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
 import Image from "next/image"
@@ -30,6 +30,7 @@ const TEST_USERS = [
 export function DashboardHeader() {
   const { user, logout } = useAuth()
   const { canSearchAdvanced, canImpersonate } = usePermissions()
+  const { toggleSidebar } = useSidebar()
 
   const switchUser = (testUser: typeof TEST_USERS[0]) => {
     localStorage.setItem('auth_user', JSON.stringify({
@@ -47,11 +48,17 @@ export function DashboardHeader() {
       <div className="flex h-16 items-center px-4 sm:px-6">
         {/* Mobile hamburger menu and logo */}
         <div className="md:hidden flex items-center space-x-3 mr-auto">
-          <SidebarTrigger className="p-3 hover:bg-gray-100 rounded-md transition-colors flex flex-col space-y-1.5">
-            <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
-            <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
-            <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
-          </SidebarTrigger>
+          <button 
+            onClick={toggleSidebar}
+            className="p-3 hover:bg-gray-100 rounded-md transition-colors"
+            aria-label="Toggle sidebar"
+          >
+            <div className="flex flex-col space-y-1.5">
+              <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
+              <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
+              <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
+            </div>
+          </button>
           <Image 
             src="/images/glampinski-logo.jpg" 
             alt="Glampinski Logo" 

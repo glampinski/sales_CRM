@@ -28,7 +28,7 @@ import {
   TrendingDown
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
-import { usePermissions } from '@/contexts/PermissionContext'
+import { usePermissions } from '@/contexts/PermissionContext-simple'
 
 // Mock data for comprehensive dashboard
 const DASHBOARD_STATS = {
@@ -167,16 +167,14 @@ function ActivityItem({ activity }: { activity: typeof RECENT_ACTIVITIES[0] }) {
 
 export function SuperAdminDashboard() {
   const { user } = useAuth()
-  const { rolePermissions, dashboardWidgets } = usePermissions()
+  const { permissions, canViewAdminFeatures } = usePermissions()
+  const [selectedTimeframe, setSelectedTimeframe] = useState('30d')
+  const [selectedMetric, setSelectedMetric] = useState('revenue')
 
-  if (user?.role !== 'super_admin') {
+  if (!user || !canViewAdminFeatures) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold">Access Denied</h3>
-          <p className="text-muted-foreground">This dashboard is only available to super administrators.</p>
-        </div>
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">You don't have permission to view this content.</p>
       </div>
     )
   }
@@ -308,12 +306,26 @@ export function SuperAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {Object.entries(rolePermissions).map(([role, config]) => (
-                    <div key={role} className="flex items-center justify-between">
-                      <span className="capitalize">{role.replace('_', ' ')}</span>
-                      <Badge variant="outline">{config.permissions.length} permissions</Badge>
-                    </div>
-                  ))}
+                  <div className="flex items-center justify-between">
+                    <span>Super Admin</span>
+                    <Badge variant="outline">Full Access</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Admin</span>
+                    <Badge variant="outline">Business Access</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Manager</span>
+                    <Badge variant="outline">Limited Access</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Affiliate</span>
+                    <Badge variant="outline">Network Access</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Customer</span>
+                    <Badge variant="outline">Basic Access</Badge>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -324,14 +336,22 @@ export function SuperAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {dashboardWidgets.map((widget) => (
-                    <div key={widget.id} className="flex items-center justify-between">
-                      <span className="text-sm">{widget.name}</span>
-                      <Badge variant={widget.enabled ? "default" : "secondary"}>
-                        {widget.enabled ? "Enabled" : "Disabled"}
-                      </Badge>
-                    </div>
-                  ))}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Revenue Analytics</span>
+                    <Badge variant="default">Enabled</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">User Management</span>
+                    <Badge variant="default">Enabled</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Network Overview</span>
+                    <Badge variant="default">Enabled</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Commission Tracking</span>
+                    <Badge variant="default">Enabled</Badge>
+                  </div>
                 </div>
               </CardContent>
             </Card>

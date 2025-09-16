@@ -194,27 +194,37 @@ export default function PipelinePage() {
   }
 
   const LeadCard = ({ lead }: { lead: typeof leads[0] }) => (
-    <Card className="mb-3 hover:shadow-md transition-shadow cursor-pointer">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start space-x-3">
-            <Avatar className="h-8 w-8">
+    <Card className="group hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500 bg-white">
+      <CardContent className="p-4">
+        {/* Header with avatar and actions */}
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-start space-x-3 min-w-0 flex-1">
+            <Avatar className="h-10 w-10 flex-shrink-0 ring-2 ring-blue-100">
               <AvatarImage src={lead.avatar} />
-              <AvatarFallback>
+              <AvatarFallback className="text-sm font-medium bg-blue-50">
                 {lead.name.split(' ').map(n => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
-              <h4 className="text-sm font-medium truncate">{lead.name}</h4>
-              <p className="text-xs text-muted-foreground truncate">
-                {lead.title} at {lead.company}
+              <h4 className="font-semibold text-sm leading-tight truncate text-gray-900">
+                {lead.name}
+              </h4>
+              <p className="text-xs text-gray-600 truncate font-medium">
+                {lead.title}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {lead.company}
               </p>
             </div>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="icon" variant="ghost" className="h-6 w-6">
-                <MoreHorizontal className="h-3 w-3" />
+              <Button 
+                size="icon" 
+                variant="ghost" 
+                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -238,47 +248,64 @@ export default function PipelinePage() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-lg font-semibold text-green-600">
-            {formatCurrency(lead.value)}
-          </span>
-          <Badge variant="outline" className="text-xs">
-            {lead.probability}%
-          </Badge>
-        </div>
-        
-        <div className="space-y-1">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground">Next action:</span>
+
+        {/* Value and Probability */}
+        <div className="flex items-center justify-between mb-3 p-2 bg-gray-50 rounded-lg">
+          <div>
+            <p className="text-xs text-gray-500 mb-1">Deal Value</p>
+            <span className="text-lg font-bold text-green-600">
+              {formatCurrency(lead.value)}
+            </span>
           </div>
-          <p className="text-xs font-medium">{lead.nextAction}</p>
+          <div className="text-right">
+            <p className="text-xs text-gray-500 mb-1">Probability</p>
+            <Badge variant="outline" className="text-sm font-semibold">
+              {lead.probability}%
+            </Badge>
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-1">
+        {/* Next Action */}
+        <div className="bg-orange-50 border border-orange-200 rounded-md p-3 mb-3">
+          <div className="flex items-center mb-1">
+            <Calendar className="h-3 w-3 mr-2 text-orange-600" />
+            <p className="text-xs font-semibold text-orange-700">Next Action</p>
+          </div>
+          <p className="text-sm text-orange-800 font-medium line-clamp-2">{lead.nextAction}</p>
+        </div>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1 mb-3">
           {lead.tags.slice(0, 2).map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+            <Badge 
+              key={tag} 
+              variant="secondary" 
+              className="text-xs px-2 py-1 bg-blue-50 text-blue-700 border-blue-200"
+            >
               {tag}
             </Badge>
           ))}
           {lead.tags.length > 2 && (
-            <Badge variant="secondary" className="text-xs">
-              +{lead.tags.length - 2}
+            <Badge variant="outline" className="text-xs px-2 py-1">
+              +{lead.tags.length - 2} more
             </Badge>
           )}
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Contact Actions & Footer */}
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <div className="flex space-x-1">
-            <Button size="icon" variant="ghost" className="h-6 w-6">
-              <Phone className="h-3 w-3" />
+            <Button size="icon" variant="ghost" className="h-7 w-7 hover:bg-blue-50">
+              <Phone className="h-3 w-3 text-blue-600" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-6 w-6">
-              <Mail className="h-3 w-3" />
+            <Button size="icon" variant="ghost" className="h-7 w-7 hover:bg-blue-50">
+              <Mail className="h-3 w-3 text-blue-600" />
             </Button>
           </div>
-          <span className="text-xs text-muted-foreground">{lead.lastActivity}</span>
+          <div className="text-right">
+            <p className="text-xs text-gray-500 font-medium">{lead.assignedTo}</p>
+            <p className="text-xs text-gray-400">{lead.lastActivity}</p>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -351,50 +378,56 @@ export default function PipelinePage() {
       </div>
 
       {/* Pipeline Kanban Board */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4 min-h-[600px]">
-        {pipelineStages.map((stage) => {
-          const stageLeads = getLeadsByStage(stage.id)
-          const stageValue = getTotalValueByStage(stage.id)
-          
-          return (
-            <div key={stage.id} className="flex flex-col">
-              <div className={`p-4 rounded-t-lg ${stage.color} border-b`}>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold text-sm">{stage.name}</h3>
-                  <Badge variant="secondary" className="text-xs">
-                    {stageLeads.length}
-                  </Badge>
+      <div className="overflow-x-auto pb-4">
+        <div className="flex gap-4 min-w-max">
+          {pipelineStages.map((stage) => {
+            const stageLeads = getLeadsByStage(stage.id)
+            const stageValue = getTotalValueByStage(stage.id)
+            
+            return (
+              <div key={stage.id} className="flex flex-col w-80 flex-shrink-0">
+                <div className={`p-4 rounded-t-lg ${stage.color} border-b-2 border-gray-200`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-bold text-sm text-gray-800">{stage.name}</h3>
+                    <Badge variant="secondary" className="text-xs font-semibold">
+                      {stageLeads.length}
+                    </Badge>
+                  </div>
+                  <p className="text-sm font-bold text-gray-700">
+                    {formatCurrency(stageValue)}
+                  </p>
                 </div>
-                <p className="text-xs font-medium text-muted-foreground">
-                  {formatCurrency(stageValue)}
-                </p>
-              </div>
-              
-              <div className="flex-1 p-3 bg-gray-50/50 rounded-b-lg min-h-[500px]">
-                <div className="space-y-3">
-                  {stageLeads.map((lead) => (
-                    <LeadCard key={lead.id} lead={lead} />
-                  ))}
-                  
-                  {stageLeads.length === 0 && (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <p className="text-sm">No leads in this stage</p>
-                    </div>
-                  )}
-                  
-                  <Button 
-                    variant="outline" 
-                    className="w-full mt-3 border-dashed border-2 border-muted-foreground/25"
-                    size="sm"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Lead
-                  </Button>
+                
+                <div className="flex-1 p-4 bg-gray-50/80 rounded-b-lg min-h-[500px] max-h-[700px] overflow-y-auto">
+                  <div className="space-y-4">
+                    {stageLeads.map((lead) => (
+                      <LeadCard key={lead.id} lead={lead} />
+                    ))}
+                    
+                    {stageLeads.length === 0 && (
+                      <div className="text-center py-12 text-muted-foreground">
+                        <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
+                          <Plus className="h-8 w-8 text-gray-400" />
+                        </div>
+                        <p className="text-sm">No leads in this stage</p>
+                        <p className="text-xs mt-1">Add a lead to get started</p>
+                      </div>
+                    )}
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-4 border-dashed border-2 border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                      size="sm"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Lead
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </div>
   )

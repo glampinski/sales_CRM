@@ -1,12 +1,12 @@
 "use client"
 
 import { CommissionDashboard } from "@/components/commission-dashboard"
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
+import PermissionGate from "@/components/permission-gate"
 
 export default function CommissionPage() {
   return (
-    <ProtectedRoute 
-      
+    <PermissionGate 
+      permission="commission"
       fallback={
         <div className="p-6">
           <div className="text-center">
@@ -19,6 +19,6 @@ export default function CommissionPage() {
       <div className="p-6">
         <CommissionDashboard />
       </div>
-    </ProtectedRoute>
+    </PermissionGate>
   )
 }

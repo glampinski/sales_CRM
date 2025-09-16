@@ -5,7 +5,7 @@ import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
+import PermissionGate from "@/components/permission-gate"
 import { PermissionProvider } from "@/contexts/PermissionContext-simple"
 
 export default function DashboardLayout({
@@ -14,7 +14,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <ProtectedRoute>
+    <PermissionGate permission="dashboard">
       <PermissionProvider>
         <SidebarProvider>
           <div className="flex min-h-screen w-full">
@@ -36,6 +36,6 @@ export default function DashboardLayout({
           </div>
         </SidebarProvider>
       </PermissionProvider>
-    </ProtectedRoute>
+    </PermissionGate>
   )
 }

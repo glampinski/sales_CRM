@@ -17,6 +17,7 @@ import { useSidebar } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useTheme } from "next-themes"
 import Image from "next/image"
 
 // Mock users for role switching (development only)
@@ -32,6 +33,10 @@ export function DashboardHeader() {
   const { user, logout } = useAuth()
   const { canSearchAdvanced, canImpersonate } = usePermissions()
   const { toggleSidebar } = useSidebar()
+  const { theme } = useTheme()
+
+  // Determine logo source based on theme
+  const logoSrc = theme === 'dark' ? '/Glampinski_logo_white.png' : '/images/glampinski-logo.jpg'
 
   const switchUser = (testUser: typeof TEST_USERS[0]) => {
     localStorage.setItem('auth_user', JSON.stringify({
@@ -51,23 +56,25 @@ export function DashboardHeader() {
         <div className="md:hidden flex items-center space-x-3 mr-auto">
           <button 
             onClick={toggleSidebar}
-            className="p-3 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
             aria-label="Toggle sidebar"
           >
             <div className="flex flex-col space-y-1.5">
-              <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
-              <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
-              <div className="w-6 h-0.5 bg-gray-800 rounded"></div>
+              <div className="w-6 h-0.5 bg-gray-800 dark:bg-white rounded"></div>
+              <div className="w-6 h-0.5 bg-gray-800 dark:bg-white rounded"></div>
+              <div className="w-6 h-0.5 bg-gray-800 dark:bg-white rounded"></div>
             </div>
           </button>
-          <Image 
-            src="/images/glampinski-logo.jpg" 
-            alt="Glampinski Logo" 
-            width={100} 
-            height={100}
-            className="object-contain mix-blend-multiply bg-transparent"
-            style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
-          />
+          <div className="flex items-center justify-center w-25 h-12">
+            <Image 
+              src={logoSrc}
+              alt="Glampinski Logo" 
+              width={100} 
+              height={100}
+              className={`object-contain bg-transparent max-w-full max-h-full ${theme === 'dark' ? '' : 'mix-blend-multiply'}`}
+              style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
+            />
+          </div>
         </div>
         
         {/* Desktop Search */}

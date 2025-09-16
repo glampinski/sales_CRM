@@ -42,6 +42,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useTheme } from "next-themes"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -90,8 +91,12 @@ const navigationItems = {
 export function AppSidebar() {
   const { user, logout } = useAuth()
   const { hasModuleAccess, hasPermission } = usePermissions()
+  const { theme } = useTheme()
   
   if (!user) return null
+
+  // Determine logo source based on theme
+  const logoSrc = theme === 'dark' ? '/Glampinski_logo_white.png' : '/images/glampinski-logo.jpg'
 
   // Filter navigation items based on permissions
   const getFilteredItems = (items: NavigationItem[]) => {
@@ -118,28 +123,32 @@ export function AppSidebar() {
       <SidebarHeader>
         {/* Desktop logo - hidden on mobile */}
         <div className="hidden md:flex items-start justify-between p-0">
-          <Image 
-            src="/images/glampinski-logo.jpg" 
-            alt="Glampinski Logo" 
-            width={160} 
-            height={160}
-            className="object-contain mix-blend-multiply bg-transparent"
-            style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
-          />
+          <div className="flex items-center justify-center w-40 h-20">
+            <Image 
+              src={logoSrc}
+              alt="Glampinski Logo" 
+              width={160} 
+              height={160}
+              className={`object-contain bg-transparent max-w-full max-h-full ${theme === 'dark' ? '' : 'mix-blend-multiply'}`}
+              style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
+            />
+          </div>
           <div className="mt-2">
             <ThemeToggle />
           </div>
         </div>
         {/* Mobile logo - larger, centered, visible only on mobile */}
         <div className="md:hidden flex items-center justify-between px-2 py-2">
-          <Image 
-            src="/images/glampinski-logo.jpg" 
-            alt="Glampinski Logo" 
-            width={120} 
-            height={120}
-            className="object-contain mix-blend-multiply bg-transparent"
-            style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
-          />
+          <div className="flex items-center justify-center w-30 h-16">
+            <Image 
+              src={logoSrc}
+              alt="Glampinski Logo" 
+              width={120} 
+              height={120}
+              className={`object-contain bg-transparent max-w-full max-h-full ${theme === 'dark' ? '' : 'mix-blend-multiply'}`}
+              style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
+            />
+          </div>
           <ThemeToggle />
         </div>
       </SidebarHeader>
@@ -154,7 +163,10 @@ export function AppSidebar() {
                 {filteredNavigation.main.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.href} className="flex items-center gap-2">
+                      <Link 
+                        href={item.href} 
+                        className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
+                      >
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
                       </Link>
@@ -175,7 +187,10 @@ export function AppSidebar() {
                 {filteredNavigation.network.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.href} className="flex items-center gap-2">
+                      <Link 
+                        href={item.href} 
+                        className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
+                      >
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
                       </Link>
@@ -196,7 +211,10 @@ export function AppSidebar() {
                 {filteredNavigation.business.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.href} className="flex items-center gap-2">
+                      <Link 
+                        href={item.href} 
+                        className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
+                      >
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
                       </Link>
@@ -217,7 +235,10 @@ export function AppSidebar() {
                 {filteredNavigation.system.map((item) => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.href} className="flex items-center gap-2">
+                      <Link 
+                        href={item.href} 
+                        className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
+                      >
                         <item.icon className="h-4 w-4" />
                         <span>{item.name}</span>
                       </Link>

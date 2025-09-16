@@ -2,15 +2,15 @@
 
 import { useParams } from "next/navigation"
 import { UserProfile } from "@/components/user-profile"
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
+import PermissionGate from "@/components/permission-gate"
 
 export default function DistributorDetailPage() {
   const params = useParams()
   const distributorId = params.id as string
 
   return (
-    <ProtectedRoute 
-      
+    <PermissionGate 
+      permission="affiliates.canView"
       fallback={
         <div className="p-6">
           <div className="text-center">
@@ -21,6 +21,6 @@ export default function DistributorDetailPage() {
       }
     >
       <UserProfile userId={distributorId} />
-    </ProtectedRoute>
+    </PermissionGate>
   )
 }

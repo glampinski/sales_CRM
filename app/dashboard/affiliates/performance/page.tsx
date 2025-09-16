@@ -1,12 +1,12 @@
 "use client"
 
 import { PerformanceTracking } from "@/components/performance-tracking"
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
+import PermissionGate from "@/components/permission-gate"
 
 export default function DistributorPerformancePage() {
   return (
-    <ProtectedRoute 
-      
+    <PermissionGate 
+      permission="affiliates.canView"
       fallback={
         <div className="p-6">
           <div className="text-center">
@@ -17,6 +17,6 @@ export default function DistributorPerformancePage() {
       }
     >
       <PerformanceTracking />
-    </ProtectedRoute>
+    </PermissionGate>
   )
 }

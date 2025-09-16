@@ -45,7 +45,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
+import PermissionGate from "@/components/permission-gate"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
 import { InviteUserForm } from "@/components/invite-user-form"
@@ -208,8 +208,8 @@ export default function UsersPage() {
   }
 
   return (
-    <ProtectedRoute 
-      
+    <PermissionGate 
+      permission="admin"
       fallback={
         <div className="p-6">
           <div className="text-center">
@@ -599,6 +599,6 @@ export default function UsersPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </ProtectedRoute>
+    </PermissionGate>
   )
 }

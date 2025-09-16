@@ -365,7 +365,7 @@ const getShareDisplay = (level: string) => {
 
 export function TimesharePropertyCatalog() {
   const { user } = useAuth()
-  const { canPurchaseProducts, canManageProperties } = usePermissions()
+  const { canPurchaseProducts, canManageProperties, hasModuleAccess } = usePermissions()
   const router = useRouter()
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [searchTerm, setSearchTerm] = useState("")
@@ -379,8 +379,8 @@ export function TimesharePropertyCatalog() {
   const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null)
 
   // Permission-based feature flags
-  const isCustomer = user?.role === 'customer'
-  const isSalesTeam = canManageProperties || user?.role === 'affiliate'
+  const isCustomer = hasModuleAccess('customers')
+  const isSalesTeam = canManageProperties || hasModuleAccess('affiliates')
 
   const filteredProperties = mockProperties.filter(property => {
     const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

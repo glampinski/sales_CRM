@@ -132,14 +132,14 @@ const categories = ["All", "Timeshare"]
 
 export default function ProductsPage() {
   const { user } = useAuth()
-  const { canPurchaseProducts, canManageProducts } = usePermissions()
+  const { canPurchaseProducts, canManageProducts, hasModuleAccess } = usePermissions()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("All")
   const [statusFilter, setStatusFilter] = useState("all")
   const [viewMode, setViewMode] = useState<"table" | "grid">("grid")
 
-  const isCustomer = user?.role === 'customer'
+  const isCustomer = hasModuleAccess('customers')
 
   const handleProductPurchase = (product: any) => {
     if (canPurchaseProducts) {

@@ -1,12 +1,12 @@
 "use client"
 
 import { TeamHierarchy } from "@/components/team-hierarchy"
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
+import PermissionGate from "@/components/permission-gate"
 
 export default function DistributorTeamPage() {
   return (
-    <ProtectedRoute 
-      
+    <PermissionGate 
+      permission="affiliates.canView"
       fallback={
         <div className="p-6">
           <div className="text-center">
@@ -17,6 +17,6 @@ export default function DistributorTeamPage() {
       }
     >
       <TeamHierarchy />
-    </ProtectedRoute>
+    </PermissionGate>
   )
 }

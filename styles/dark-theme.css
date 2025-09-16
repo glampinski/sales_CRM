@@ -1,0 +1,134 @@
+/* Dark mode enhancements for Twitter/X style */
+
+/* Make dark mode completely black with blue accents */
+.dark {
+  color-scheme: dark;
+}
+
+/* Custom scrollbar for dark mode */
+.dark::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark::-webkit-scrollbar-track {
+  background: rgb(0, 0, 0);
+}
+
+.dark::-webkit-scrollbar-thumb {
+  background: rgb(29, 161, 242);
+  border-radius: 4px;
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  background: rgb(26, 145, 218);
+}
+
+/* Enhanced button hover effects for dark mode */
+.dark .hover-twitter-blue:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+  color: rgb(29, 161, 242);
+}
+
+/* Glowing blue border effect for dark mode */
+.dark .border-twitter-glow {
+  border-color: rgba(29, 161, 242, 0.3);
+  box-shadow: 0 0 10px rgba(29, 161, 242, 0.2);
+}
+
+/* Dark mode card enhancements */
+.dark .card-dark-enhanced {
+  background: linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(16, 16, 16) 100%);
+  border: 1px solid rgba(29, 161, 242, 0.2);
+}
+
+.dark .card-dark-enhanced:hover {
+  border-color: rgba(29, 161, 242, 0.4);
+  box-shadow: 0 4px 20px rgba(29, 161, 242, 0.1);
+}
+
+/* Enhanced text selection for dark mode */
+.dark ::selection {
+  background-color: rgba(29, 161, 242, 0.3);
+  color: white;
+}
+
+/* Logo adjustments for dark mode */
+.dark img[alt*="Logo"] {
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Navigation active states for dark mode */
+.dark [data-sidebar] [data-active="true"] {
+  background-color: rgba(29, 161, 242, 0.15);
+  color: rgb(29, 161, 242);
+  border-left: 3px solid rgb(29, 161, 242);
+}
+
+/* Charts and data visualization improvements */
+.dark .chart-container {
+  background: radial-gradient(circle at center, rgba(29, 161, 242, 0.05) 0%, transparent 70%);
+}
+
+/* Input focus enhancements */
+.dark input:focus,
+.dark textarea:focus {
+  border-color: rgb(29, 161, 242);
+  box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.1);
+}
+
+/* Button primary dark mode */
+.dark .btn-primary-dark {
+  background: linear-gradient(135deg, rgb(29, 161, 242) 0%, rgb(26, 145, 218) 100%);
+  border: none;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.dark .btn-primary-dark:hover {
+  background: linear-gradient(135deg, rgb(26, 145, 218) 0%, rgb(21, 132, 199) 100%);
+  box-shadow: 0 4px 15px rgba(29, 161, 242, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Status indicators for dark mode */
+.dark .status-online {
+  background-color: rgb(29, 161, 242);
+  box-shadow: 0 0 8px rgba(29, 161, 242, 0.5);
+}
+
+.dark .status-offline {
+  background-color: rgb(113, 118, 123);
+}
+
+/* Pipeline card enhancements for dark mode */
+.dark .pipeline-card {
+  background: linear-gradient(135deg, rgb(5, 5, 5) 0%, rgb(15, 15, 15) 100%);
+  border: 1px solid rgba(29, 161, 242, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark .pipeline-card:hover {
+  border-color: rgba(29, 161, 242, 0.5);
+  box-shadow: 0 8px 25px rgba(29, 161, 242, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Enhanced modal/popover for dark mode */
+.dark .popover-dark,
+.dark .modal-dark {
+  background: rgb(0, 0, 0);
+  border: 1px solid rgba(29, 161, 242, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(29, 161, 242, 0.1);
+}
+
+/* Table row hover effects */
+.dark .table-row:hover {
+  background-color: rgba(29, 161, 242, 0.05);
+}
+
+/* Notification badge for dark mode */
+.dark .notification-badge {
+  background: linear-gradient(135deg, rgb(29, 161, 242) 0%, rgb(26, 145, 218) 100%);
+  color: white;
+  border: 2px solid rgb(0, 0, 0);
+}

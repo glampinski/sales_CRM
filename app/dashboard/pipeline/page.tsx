@@ -194,25 +194,25 @@ export default function PipelinePage() {
   }
 
   const LeadCard = ({ lead }: { lead: typeof leads[0] }) => (
-    <Card className="group hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500 bg-white">
+    <Card className="group hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500 bg-white pipeline-card">
       <CardContent className="p-4">
         {/* Header with avatar and actions */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-start space-x-3 min-w-0 flex-1">
-            <Avatar className="h-10 w-10 flex-shrink-0 ring-2 ring-blue-100">
+            <Avatar className="h-10 w-10 flex-shrink-0 ring-2 ring-blue-100 dark:ring-blue-500/30">
               <AvatarImage src={lead.avatar} />
-              <AvatarFallback className="text-sm font-medium bg-blue-50">
+              <AvatarFallback className="text-sm font-medium bg-blue-50 dark:bg-blue-900/50 dark:text-blue-300">
                 {lead.name.split(' ').map(n => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
-              <h4 className="font-semibold text-sm leading-tight truncate text-gray-900">
+              <h4 className="font-semibold text-sm leading-tight truncate text-gray-900 dark:text-white">
                 {lead.name}
               </h4>
-              <p className="text-xs text-gray-600 truncate font-medium">
+              <p className="text-xs text-gray-600 dark:text-gray-300 truncate font-medium">
                 {lead.title}
               </p>
-              <p className="text-xs text-gray-500 truncate">
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                 {lead.company}
               </p>
             </div>
@@ -222,12 +222,12 @@ export default function PipelinePage() {
               <Button 
                 size="icon" 
                 variant="ghost" 
-                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity hover-twitter-blue"
               >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="modal-dark">
               <DropdownMenuItem>
                 <Eye className="mr-2 h-4 w-4" />
                 View Details
@@ -250,28 +250,28 @@ export default function PipelinePage() {
         </div>
 
         {/* Value and Probability */}
-        <div className="flex items-center justify-between mb-3 p-2 bg-gray-50 rounded-lg">
+        <div className="flex items-center justify-between mb-3 p-2 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-twitter-glow dark:border-blue-500/20">
           <div>
-            <p className="text-xs text-gray-500 mb-1">Deal Value</p>
-            <span className="text-lg font-bold text-green-600">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Deal Value</p>
+            <span className="text-lg font-bold text-green-600 dark:text-green-400">
               {formatCurrency(lead.value)}
             </span>
           </div>
           <div className="text-right">
-            <p className="text-xs text-gray-500 mb-1">Probability</p>
-            <Badge variant="outline" className="text-sm font-semibold">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Probability</p>
+            <Badge variant="outline" className="text-sm font-semibold dark:border-blue-500/50 dark:text-blue-400">
               {lead.probability}%
             </Badge>
           </div>
         </div>
 
         {/* Next Action */}
-        <div className="bg-orange-50 border border-orange-200 rounded-md p-3 mb-3">
+        <div className="bg-orange-50 dark:bg-blue-900/30 border border-orange-200 dark:border-blue-500/30 rounded-md p-3 mb-3">
           <div className="flex items-center mb-1">
-            <Calendar className="h-3 w-3 mr-2 text-orange-600" />
-            <p className="text-xs font-semibold text-orange-700">Next Action</p>
+            <Calendar className="h-3 w-3 mr-2 text-orange-600 dark:text-blue-400" />
+            <p className="text-xs font-semibold text-orange-700 dark:text-blue-300">Next Action</p>
           </div>
-          <p className="text-sm text-orange-800 font-medium line-clamp-2">{lead.nextAction}</p>
+          <p className="text-sm text-orange-800 dark:text-blue-200 font-medium line-clamp-2">{lead.nextAction}</p>
         </div>
 
         {/* Tags */}
@@ -280,31 +280,31 @@ export default function PipelinePage() {
             <Badge 
               key={tag} 
               variant="secondary" 
-              className="text-xs px-2 py-1 bg-blue-50 text-blue-700 border-blue-200"
+              className="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-500/50"
             >
               {tag}
             </Badge>
           ))}
           {lead.tags.length > 2 && (
-            <Badge variant="outline" className="text-xs px-2 py-1">
+            <Badge variant="outline" className="text-xs px-2 py-1 dark:border-gray-600 dark:text-gray-300">
               +{lead.tags.length - 2} more
             </Badge>
           )}
         </div>
 
         {/* Contact Actions & Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
           <div className="flex space-x-1">
-            <Button size="icon" variant="ghost" className="h-7 w-7 hover:bg-blue-50">
-              <Phone className="h-3 w-3 text-blue-600" />
+            <Button size="icon" variant="ghost" className="h-7 w-7 hover:bg-blue-50 dark:hover:bg-blue-900/50 hover-twitter-blue">
+              <Phone className="h-3 w-3 text-blue-600 dark:text-blue-400" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-7 w-7 hover:bg-blue-50">
-              <Mail className="h-3 w-3 text-blue-600" />
+            <Button size="icon" variant="ghost" className="h-7 w-7 hover:bg-blue-50 dark:hover:bg-blue-900/50 hover-twitter-blue">
+              <Mail className="h-3 w-3 text-blue-600 dark:text-blue-400" />
             </Button>
           </div>
           <div className="text-right">
-            <p className="text-xs text-gray-500 font-medium">{lead.assignedTo}</p>
-            <p className="text-xs text-gray-400">{lead.lastActivity}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{lead.assignedTo}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">{lead.lastActivity}</p>
           </div>
         </div>
       </CardContent>
@@ -316,16 +316,16 @@ export default function PipelinePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Sales Pipeline</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight dark:text-white">Sales Pipeline</h1>
+          <p className="text-muted-foreground dark:text-gray-400">
             Track your opportunities through the sales process
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" className="hover-twitter-blue dark:border-blue-500/50">
             <Filter className="h-4 w-4" />
           </Button>
-          <Button>
+          <Button className="btn-primary-dark">
             <Plus className="h-4 w-4 mr-2" />
             Add Lead
           </Button>
@@ -335,15 +335,15 @@ export default function PipelinePage() {
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label}>
+          <Card key={stat.label} className="card-dark-enhanced">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium dark:text-white">{stat.label}</CardTitle>
+              <stat.icon className="h-4 w-4 text-muted-foreground dark:text-blue-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className="text-green-600">{stat.change}</span> from last month
+              <div className="text-2xl font-bold dark:text-white">{stat.value}</div>
+              <p className="text-xs text-muted-foreground dark:text-gray-400">
+                <span className="text-green-600 dark:text-green-400">{stat.change}</span> from last month
               </p>
             </CardContent>
           </Card>

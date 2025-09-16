@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge"
 import { useSidebar } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
+import { ThemeToggle } from "@/components/theme-toggle"
 import Image from "next/image"
 
 // Mock users for role switching (development only)
@@ -130,6 +131,9 @@ export function DashboardHeader() {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
 
           {/* User Menu */}
           <DropdownMenu>

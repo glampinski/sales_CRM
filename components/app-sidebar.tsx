@@ -41,6 +41,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
+import { ThemeToggle } from "@/components/theme-toggle"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -116,7 +117,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         {/* Desktop logo - hidden on mobile */}
-        <div className="hidden md:flex items-start justify-start p-0">
+        <div className="hidden md:flex items-start justify-between p-0">
           <Image 
             src="/images/glampinski-logo.jpg" 
             alt="Glampinski Logo" 
@@ -125,9 +126,12 @@ export function AppSidebar() {
             className="object-contain mix-blend-multiply bg-transparent"
             style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
           />
+          <div className="mt-2">
+            <ThemeToggle />
+          </div>
         </div>
         {/* Mobile logo - larger, centered, visible only on mobile */}
-        <div className="md:hidden flex items-center justify-center px-2 py-2">
+        <div className="md:hidden flex items-center justify-between px-2 py-2">
           <Image 
             src="/images/glampinski-logo.jpg" 
             alt="Glampinski Logo" 
@@ -136,6 +140,7 @@ export function AppSidebar() {
             className="object-contain mix-blend-multiply bg-transparent"
             style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
           />
+          <ThemeToggle />
         </div>
       </SidebarHeader>
 

@@ -113,6 +113,48 @@
   transform: translateY(-2px);
 }
 
+/* Pipeline stage column styling */
+.dark .pipeline-stage-column {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(29, 161, 242, 0.1);
+}
+
+/* Pipeline stage headers with enhanced dark mode colors */
+.dark .bg-gray-800\/50 {
+  background-color: rgba(31, 41, 55, 0.5);
+  border: 1px solid rgba(29, 161, 242, 0.2);
+}
+
+.dark .bg-blue-900\/30 {
+  background-color: rgba(30, 58, 138, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.dark .bg-yellow-900\/30 {
+  background-color: rgba(120, 53, 15, 0.3);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.dark .bg-orange-900\/30 {
+  background-color: rgba(154, 52, 18, 0.3);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.dark .bg-purple-900\/30 {
+  background-color: rgba(88, 28, 135, 0.3);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.dark .bg-green-900\/30 {
+  background-color: rgba(20, 83, 45, 0.3);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.dark .bg-red-900\/30 {
+  background-color: rgba(127, 29, 29, 0.3);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
 /* Enhanced modal/popover for dark mode */
 .dark .popover-dark,
 .dark .modal-dark {

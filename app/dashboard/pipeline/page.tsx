@@ -24,13 +24,13 @@ import {
 
 // Pipeline stages configuration
 const pipelineStages = [
-  { id: "new", name: "New Leads", color: "bg-gray-100" },
-  { id: "contacted", name: "Contacted", color: "bg-blue-100" },
-  { id: "qualified", name: "Qualified", color: "bg-yellow-100" },
-  { id: "proposal", name: "Proposal", color: "bg-orange-100" },
-  { id: "negotiation", name: "Negotiation", color: "bg-purple-100" },
-  { id: "won", name: "Won", color: "bg-green-100" },
-  { id: "lost", name: "Lost", color: "bg-red-100" },
+  { id: "new", name: "New Leads", color: "bg-gray-100 dark:bg-gray-800/50" },
+  { id: "contacted", name: "Contacted", color: "bg-blue-100 dark:bg-blue-900/30" },
+  { id: "qualified", name: "Qualified", color: "bg-yellow-100 dark:bg-yellow-900/30" },
+  { id: "proposal", name: "Proposal", color: "bg-orange-100 dark:bg-orange-900/30" },
+  { id: "negotiation", name: "Negotiation", color: "bg-purple-100 dark:bg-purple-900/30" },
+  { id: "won", name: "Won", color: "bg-green-100 dark:bg-green-900/30" },
+  { id: "lost", name: "Lost", color: "bg-red-100 dark:bg-red-900/30" },
 ]
 
 // Mock pipeline data
@@ -194,7 +194,7 @@ export default function PipelinePage() {
   }
 
   const LeadCard = ({ lead }: { lead: typeof leads[0] }) => (
-    <Card className="group hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500 bg-white pipeline-card">
+    <Card className="group hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500 dark:border-l-blue-400 card-dark-enhanced pipeline-card">
       <CardContent className="p-4">
         {/* Header with avatar and actions */}
         <div className="flex items-start justify-between mb-3">
@@ -386,19 +386,19 @@ export default function PipelinePage() {
             
             return (
               <div key={stage.id} className="flex flex-col w-80 flex-shrink-0">
-                <div className={`p-4 rounded-t-lg ${stage.color} border-b-2 border-gray-200`}>
+                <div className={`p-4 rounded-t-lg ${stage.color} border-b-2 border-gray-200 dark:border-gray-700`}>
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-bold text-sm text-gray-800">{stage.name}</h3>
+                    <h3 className="font-bold text-sm text-gray-800 dark:text-white">{stage.name}</h3>
                     <Badge variant="secondary" className="text-xs font-semibold">
                       {stageLeads.length}
                     </Badge>
                   </div>
-                  <p className="text-sm font-bold text-gray-700">
+                  <p className="text-sm font-bold text-gray-700 dark:text-gray-200">
                     {formatCurrency(stageValue)}
                   </p>
                 </div>
                 
-                <div className="flex-1 p-4 bg-gray-50/80 rounded-b-lg min-h-[500px] max-h-[700px] overflow-y-auto">
+                <div className="flex-1 p-4 bg-gray-50/80 dark:bg-gray-900/50 rounded-b-lg min-h-[500px] max-h-[700px] overflow-y-auto">
                   <div className="space-y-4">
                     {stageLeads.map((lead) => (
                       <LeadCard key={lead.id} lead={lead} />
@@ -406,8 +406,8 @@ export default function PipelinePage() {
                     
                     {stageLeads.length === 0 && (
                       <div className="text-center py-12 text-muted-foreground">
-                        <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
-                          <Plus className="h-8 w-8 text-gray-400" />
+                        <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                          <Plus className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                         </div>
                         <p className="text-sm">No leads in this stage</p>
                         <p className="text-xs mt-1">Add a lead to get started</p>
@@ -416,7 +416,7 @@ export default function PipelinePage() {
                     
                     <Button 
                       variant="outline" 
-                      className="w-full mt-4 border-dashed border-2 border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                      className="w-full mt-4 border-dashed border-2 border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                       size="sm"
                     >
                       <Plus className="h-4 w-4 mr-2" />

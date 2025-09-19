@@ -1,0 +1,14 @@
+{
+  "common": {
+    "welcome": "Benvenuto",
+    "dashboard": "Pannello di controllo", 
+    "logout": "Disconnetti",
+    "login": "Accedi",
+    "save": "Salva"
+  },
+  "navigation": {
+    "home": "Home",
+    "users": "Utenti",
+    "reports": "Rapporti"
+  }
+}

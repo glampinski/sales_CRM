@@ -1,0 +1,14 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "dashboard": "Dashboard", 
+    "logout": "Logout",
+    "login": "Login",
+    "save": "Save"
+  },
+  "navigation": {
+    "home": "Home",
+    "users": "Users",
+    "reports": "Reports"
+  }
+}

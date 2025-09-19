@@ -21,6 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 import { 
   Users, 
   TrendingUp, 
@@ -143,9 +145,12 @@ const regionalData = [
   { region: "South America", customers: 67, revenue: 3456.78, growth: 5.3, teamMembers: 23 },
 ]
 
-export default function Dashboard() {
+export default function Dashboard({ params }: { params: { locale: string } }) {
   const { user } = useAuth()
   const permissions = usePermissions()
+  const tDashboard = useTranslations('dashboard')
+  const t = useTranslations('dashboard')
+  const tCommon = useTranslations('common')
   const [timeRange, setTimeRange] = useState("30d")
   const [activeView, setActiveView] = useState("overview")
 
@@ -166,9 +171,11 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+          <h2 className="text-3xl font-bold tracking-tight">
+            {tCommon('dashboard')}
+          </h2>
           <p className="text-muted-foreground">
-            Complete business overview and analytics
+            {tCommon('businessOverview')}
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -193,13 +200,13 @@ export default function Dashboard() {
       {/* Unified Navigation with All Tabs */}
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="overview">{tDashboard('tabs.overview')}</TabsTrigger>
           
           {/* Business Tab - Show for all users who can view business data */}
           {permissions.hasModuleAccess('business') && (
             <TabsTrigger value="business">
               <ShoppingCart className="h-4 w-4 mr-2" />
-              Business
+              {tDashboard('tabs.business')}
             </TabsTrigger>
           )}
           
@@ -207,16 +214,16 @@ export default function Dashboard() {
           {permissions.hasModuleAccess('network') && (
             <TabsTrigger value="network">
               <Building2 className="h-4 w-4 mr-2" />
-              Network
+              {tDashboard('tabs.network')}
             </TabsTrigger>
           )}
           
           {/* Admin Tabs - Show for users with admin permissions */}
           {permissions.hasModuleAccess('admin') && (
             <>
-              <TabsTrigger value="admin">Admin Overview</TabsTrigger>
-              <TabsTrigger value="permissions">Group Permissions</TabsTrigger>
-              <TabsTrigger value="preview">User Preview</TabsTrigger>
+              <TabsTrigger value="admin">{tDashboard('tabs.adminOverview')}</TabsTrigger>
+              <TabsTrigger value="permissions">{tDashboard('tabs.groupPermissions')}</TabsTrigger>
+              <TabsTrigger value="preview">{tDashboard('tabs.userPreview')}</TabsTrigger>
             </>
           )}
         </TabsList>
@@ -227,49 +234,49 @@ export default function Dashboard() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                <CardTitle className="text-sm font-medium">{tDashboard('overview.metrics.totalRevenue')}</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$45,678</div>
                 <p className="text-xs text-muted-foreground">
-                  <span className="text-green-600">+18.2%</span> from last month
+                  <span className="text-green-600">+18.2%</span> {tDashboard('overview.metrics.fromLastMonth')}
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Team Members</CardTitle>
+                <CardTitle className="text-sm font-medium">{tDashboard('teamMembers')}</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">2,847</div>
                 <p className="text-xs text-muted-foreground">
-                  <span className="text-green-600">+12.5%</span> from last month
+                  <span className="text-green-600">+12.5%</span> {tDashboard('overview.metrics.fromLastMonth')}
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Customers</CardTitle>
+                <CardTitle className="text-sm font-medium">{tDashboard('overview.metrics.activeCustomers')}</CardTitle>
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">1,247</div>
                 <p className="text-xs text-muted-foreground">
-                  <span className="text-green-600">+12.5%</span> from last month
+                  <span className="text-green-600">+12.5%</span> {tDashboard('overview.metrics.fromLastMonth')}
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Commission</CardTitle>
+                <CardTitle className="text-sm font-medium">{tDashboard('totalCommission')}</CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$23,381</div>
                 <p className="text-xs text-muted-foreground">
-                  <span className="text-green-600">+15.8%</span> from last month
+                  <span className="text-green-600">+15.8%</span> {tDashboard('overview.metrics.fromLastMonth')}
                 </p>
               </CardContent>
             </Card>
@@ -279,7 +286,7 @@ export default function Dashboard() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle>{tDashboard('overview.activity.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -307,21 +314,21 @@ export default function Dashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Quick Insights</CardTitle>
+                <CardTitle>{tDashboard('overview.insights.title')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-3 bg-muted/50 rounded-lg">
-                  <p className="font-medium">Best Performing Day</p>
+                  <p className="font-medium">{tDashboard('overview.insights.bestPerformingDay')}</p>
                   <p className="text-2xl font-bold">Tuesday</p>
                   <p className="text-sm text-muted-foreground">Average: $1,847 in sales</p>
                 </div>
                 <div className="p-3 bg-muted/50 rounded-lg">
-                  <p className="font-medium">Average Order Value</p>
+                  <p className="font-medium">{tDashboard('overview.insights.averageOrderValue')}</p>
                   <p className="text-2xl font-bold">$156.78</p>
                   <p className="text-sm text-green-600">+12.3% from last month</p>
                 </div>
                 <div className="p-3 bg-muted/50 rounded-lg">
-                  <p className="font-medium">Customer Retention</p>
+                  <p className="font-medium">{tDashboard('overview.insights.customerRetention')}</p>
                   <p className="text-2xl font-bold">84.5%</p>
                   <p className="text-sm text-green-600">+2.1% improvement</p>
                 </div>
@@ -365,18 +372,18 @@ export default function Dashboard() {
           {/* Product Performance */}
           <Card>
             <CardHeader>
-              <CardTitle>Top Performing Products</CardTitle>
-              <CardDescription>Best-selling products and revenue contributors</CardDescription>
+              <CardTitle>{tDashboard('business.products.title')}</CardTitle>
+              <CardDescription>{tDashboard('business.products.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Product</TableHead>
-                    <TableHead>Units Sold</TableHead>
-                    <TableHead>Revenue</TableHead>
-                    <TableHead>Growth</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{tDashboard('business.products.headers.product')}</TableHead>
+                    <TableHead>{tDashboard('business.products.headers.unitsSold')}</TableHead>
+                    <TableHead>{tDashboard('business.products.headers.revenue')}</TableHead>
+                    <TableHead>{tDashboard('business.products.headers.growth')}</TableHead>
+                    <TableHead>{tDashboard('business.products.headers.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -392,7 +399,7 @@ export default function Dashboard() {
                       </TableCell>
                       <TableCell>
                         <Badge variant={product.growth >= 0 ? "default" : "secondary"}>
-                          {product.growth >= 0 ? "Growing" : "Declining"}
+                          {product.growth >= 0 ? tDashboard('business.products.status.growing') : tDashboard('business.products.status.declining')}
                         </Badge>
                       </TableCell>
                     </TableRow>
@@ -406,8 +413,8 @@ export default function Dashboard() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Customer Segments</CardTitle>
-                <CardDescription>Customer distribution by tier</CardDescription>
+                <CardTitle>{tDashboard('business.customers.segments.title')}</CardTitle>
+                <CardDescription>{tDashboard('business.customers.segments.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -436,8 +443,8 @@ export default function Dashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Regional Performance</CardTitle>
-                <CardDescription>Sales by geographic region</CardDescription>
+                <CardTitle>{tDashboard('business.customers.regional.title')}</CardTitle>
+                <CardDescription>{tDashboard('business.customers.regional.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -485,8 +492,8 @@ export default function Dashboard() {
           {/* Commission Breakdown */}
           <Card>
             <CardHeader>
-              <CardTitle>Commission Breakdown</CardTitle>
-              <CardDescription>Commission distribution by type</CardDescription>
+              <CardTitle>{tDashboard('network.commission.title')}</CardTitle>
+              <CardDescription>{tDashboard('network.commission.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -505,7 +512,7 @@ export default function Dashboard() {
                 ))}
                 <div className="border-t pt-3 mt-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold">Total Commission</span>
+                    <span className="font-semibold">{tDashboard('network.commission.totalCommission')}</span>
                     <span className="text-lg font-bold text-green-600">
                       {formatCurrency(commissionMetrics.reduce((sum, metric) => sum + metric.amount, 0))}
                     </span>
@@ -519,8 +526,8 @@ export default function Dashboard() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Top Team Performers</CardTitle>
-                <CardDescription>Highest earning team members</CardDescription>
+                <CardTitle>{tDashboard('network.team.performers.title')}</CardTitle>
+                <CardDescription>{tDashboard('network.team.performers.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -554,8 +561,8 @@ export default function Dashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Network Distribution</CardTitle>
-                <CardDescription>Team members by region</CardDescription>
+                <CardTitle>{tDashboard('network.team.distribution.title')}</CardTitle>
+                <CardDescription>{tDashboard('network.team.distribution.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -600,15 +607,15 @@ export default function Dashboard() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Eye className="h-5 w-5" />
-                User View Preview
+                {tDashboard('admin.userPreview.title')}
               </CardTitle>
               <CardDescription>
-                See how different user groups will see the dashboard
+                {tDashboard('admin.userPreview.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Select a user group to preview their dashboard view...
+                {tDashboard('admin.userPreview.selectGroup')}
               </p>
             </CardContent>
           </Card>

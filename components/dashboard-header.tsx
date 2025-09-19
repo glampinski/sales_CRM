@@ -17,7 +17,9 @@ import { useSidebar } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/AuthContext"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { useTheme } from "next-themes"
+import { useTranslations } from 'next-intl'
 import Image from "next/image"
 
 // Mock users for role switching (development only)
@@ -31,6 +33,8 @@ const TEST_USERS = [
 
 export function DashboardHeader() {
   const { user, logout } = useAuth()
+  const t = useTranslations('dashboard')
+  const tCommon = useTranslations('common')
   const { canSearchAdvanced, canImpersonate } = usePermissions()
   const { toggleSidebar } = useSidebar()
   const { theme } = useTheme()
@@ -94,7 +98,7 @@ export function DashboardHeader() {
           <div className="md:hidden relative w-32">
             <Search className="absolute left-2 top-2.5 h-3 w-3 text-muted-foreground" />
             <Input
-              placeholder="Search..."
+              placeholder={t('searchPlaceholder')}
               className="pl-7 text-xs h-8"
             />
           </div>
@@ -138,6 +142,9 @@ export function DashboardHeader() {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+
+          {/* Language Switcher */}
+          <LanguageSwitcher />
 
           {/* Theme Toggle */}
           <ThemeToggle />
@@ -202,7 +209,7 @@ export function DashboardHeader() {
               
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <span>{t('logOut')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

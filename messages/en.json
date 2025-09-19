@@ -4,11 +4,151 @@
     "dashboard": "Dashboard", 
     "logout": "Logout",
     "login": "Login",
-    "save": "Save"
+    "save": "Save",
+    "search": "Search",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "businessOverview": "Complete business overview and analytics"
   },
   "navigation": {
-    "home": "Home",
-    "users": "Users",
-    "reports": "Reports"
+    "groups": {
+      "main": "Main",
+      "network": "Network", 
+      "business": "Business",
+      "system": "System"
+    },
+    "items": {
+      "dashboard": "Dashboard",
+      "contacts": "Contacts",
+      "tasks": "Tasks",
+      "pipeline": "Pipeline",
+      "genealogy": "Genealogy",
+      "commission": "Commission",
+      "ranks": "Ranks",
+      "affiliates": "Affiliates",
+      "customers": "Customers",
+      "products": "Products",
+      "orders": "Orders",
+      "payments": "Payments",
+      "wallet": "Wallet",
+      "marketing": "Marketing",
+      "reports": "Reports",
+      "training": "Training",
+      "support": "Support",
+      "communication": "Communication",
+      "userManagement": "User Management",
+      "invitations": "Invitations",
+      "settings": "Settings",
+      "signOut": "Sign out"
+    }
+  },
+  "dashboard": {
+    "searchPlaceholder": "Search...",
+    "welcomeBack": "Welcome back",
+    "viewProfile": "View Profile",
+    "accountSettings": "Account Settings",
+    "logOut": "Log Out",
+    "ordersProcessed": "Orders Processed",
+    "productsSold": "Products Sold",
+    "teamMembers": "Team Members",
+    "totalCommission": "Total Commission",
+    "personalVolume": "Personal Volume",
+    "tabs": {
+      "overview": "Overview",
+      "business": "Business",
+      "network": "Network",
+      "adminOverview": "Admin Overview",
+      "groupPermissions": "Group Permissions",
+      "userPreview": "User Preview"
+    },
+    "overview": {
+      "metrics": {
+        "totalRevenue": "Total Revenue",
+        "activeCustomers": "Active Customers",
+        "fromLastMonth": "from last month"
+      },
+      "activity": {
+        "title": "Recent Activity",
+        "actions": {
+          "newCustomerRegistered": "New customer registered",
+          "orderCompleted": "Order completed",
+          "commissionEarned": "Commission earned",
+          "newTeamMember": "New team member"
+        },
+        "types": {
+          "registration": "registration",
+          "order": "order",
+          "commission": "commission",
+          "team": "team"
+        }
+      },
+      "insights": {
+        "title": "Quick Insights",
+        "bestPerformingDay": "Best Performing Day",
+        "averageOrderValue": "Average Order Value",
+        "customerRetention": "Customer Retention",
+        "averageSales": "Average: {{amount}} in sales",
+        "improvement": "{{percent}} improvement"
+      }
+    },
+    "business": {
+      "products": {
+        "title": "Top Performing Products",
+        "description": "Best-selling products and revenue contributors",
+        "headers": {
+          "product": "Product",
+          "unitsSold": "Units Sold",
+          "revenue": "Revenue",
+          "growth": "Growth",
+          "status": "Status"
+        },
+        "status": {
+          "growing": "Growing",
+          "declining": "Declining"
+        }
+      },
+      "customers": {
+        "segments": {
+          "title": "Customer Segments",
+          "description": "Customer distribution by tier",
+          "revenue": "Revenue: {{amount}}"
+        },
+        "regional": {
+          "title": "Regional Performance",
+          "description": "Sales by geographic region",
+          "customers": "{{count}} customers"
+        }
+      }
+    },
+    "network": {
+      "commission": {
+        "title": "Commission Breakdown",
+        "description": "Commission distribution by type",
+        "totalCommission": "Total Commission",
+        "percentOfTotal": "{{percent}}% of total"
+      },
+      "team": {
+        "performers": {
+          "title": "Top Team Performers",
+          "description": "Highest earning team members",
+          "teamSize": "{{count}} team",
+          "volume": "{{amount}} volume"
+        },
+        "distribution": {
+          "title": "Network Distribution",
+          "description": "Team members by region",
+          "members": "{{count}} members",
+          "revenue": "Revenue: {{amount}}"
+        }
+      }
+    },
+    "admin": {
+      "userPreview": {
+        "title": "User View Preview",
+        "description": "See how different user groups will see the dashboard",
+        "selectGroup": "Select a user group to preview their dashboard view..."
+      }
+    }
   }
 }

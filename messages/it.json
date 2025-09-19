@@ -4,11 +4,151 @@
     "dashboard": "Pannello di controllo", 
     "logout": "Disconnetti",
     "login": "Accedi",
-    "save": "Salva"
+    "save": "Salva",
+    "search": "Cerca",
+    "settings": "Impostazioni",
+    "notifications": "Notifiche",
+    "profile": "Profilo",
+    "businessOverview": "Panoramica completa delle attività e analisi"
   },
   "navigation": {
-    "home": "Home",
-    "users": "Utenti",
-    "reports": "Rapporti"
+    "groups": {
+      "main": "Principale",
+      "network": "Rete", 
+      "business": "Business",
+      "system": "Sistema"
+    },
+    "items": {
+      "dashboard": "Pannello di controllo",
+      "contacts": "Contatti",
+      "tasks": "Attività",
+      "pipeline": "Pipeline",
+      "genealogy": "Genealogia",
+      "commission": "Commissioni",
+      "ranks": "Gradi",
+      "affiliates": "Affiliati",
+      "customers": "Clienti",
+      "products": "Prodotti",
+      "orders": "Ordini",
+      "payments": "Pagamenti",
+      "wallet": "Portafoglio",
+      "marketing": "Marketing",
+      "reports": "Rapporti",
+      "training": "Formazione",
+      "support": "Supporto",
+      "communication": "Comunicazione",
+      "userManagement": "Gestione Utenti",
+      "invitations": "Inviti",
+      "settings": "Impostazioni",
+      "signOut": "Disconnetti"
+    }
+  },
+  "dashboard": {
+    "searchPlaceholder": "Cerca...",
+    "welcomeBack": "Bentornato",
+    "viewProfile": "Visualizza Profilo",
+    "accountSettings": "Impostazioni Account",
+    "logOut": "Esci",
+    "ordersProcessed": "Ordini Elaborati",
+    "productsSold": "Prodotti Venduti",
+    "teamMembers": "Membri del Team",
+    "totalCommission": "Commissione Totale",
+    "personalVolume": "Volume Personale",
+    "tabs": {
+      "overview": "Panoramica",
+      "business": "Business",
+      "network": "Rete",
+      "adminOverview": "Panoramica Admin",
+      "groupPermissions": "Permessi Gruppi",
+      "userPreview": "Anteprima Utente"
+    },
+    "overview": {
+      "metrics": {
+        "totalRevenue": "Ricavi Totali",
+        "activeCustomers": "Clienti Attivi",
+        "fromLastMonth": "rispetto al mese scorso"
+      },
+      "activity": {
+        "title": "Attività Recenti",
+        "actions": {
+          "newCustomerRegistered": "Nuovo cliente registrato",
+          "orderCompleted": "Ordine completato",
+          "commissionEarned": "Commissione guadagnata",
+          "newTeamMember": "Nuovo membro del team"
+        },
+        "types": {
+          "registration": "registrazione",
+          "order": "ordine",
+          "commission": "commissione",
+          "team": "team"
+        }
+      },
+      "insights": {
+        "title": "Insights Rapidi",
+        "bestPerformingDay": "Giorno con Migliori Performance",
+        "averageOrderValue": "Valore Medio Ordine",
+        "customerRetention": "Fidelizzazione Cliente",
+        "averageSales": "Media: {{amount}} in vendite",
+        "improvement": "{{percent}} miglioramento"
+      }
+    },
+    "business": {
+      "products": {
+        "title": "Prodotti Top Performance",
+        "description": "Prodotti più venduti e contributori ai ricavi",
+        "headers": {
+          "product": "Prodotto",
+          "unitsSold": "Unità Vendute",
+          "revenue": "Ricavi",
+          "growth": "Crescita",
+          "status": "Stato"
+        },
+        "status": {
+          "growing": "In Crescita",
+          "declining": "In Calo"
+        }
+      },
+      "customers": {
+        "segments": {
+          "title": "Segmenti Clienti",
+          "description": "Distribuzione clienti per livello",
+          "revenue": "Ricavi: {{amount}}"
+        },
+        "regional": {
+          "title": "Performance Regionali",
+          "description": "Vendite per regione geografica",
+          "customers": "{{count}} clienti"
+        }
+      }
+    },
+    "network": {
+      "commission": {
+        "title": "Ripartizione Commissioni",
+        "description": "Distribuzione commissioni per tipo",
+        "totalCommission": "Commissione Totale",
+        "percentOfTotal": "{{percent}}% del totale"
+      },
+      "team": {
+        "performers": {
+          "title": "Top Performer del Team",
+          "description": "Membri del team con i guadagni più alti",
+          "teamSize": "{{count}} team",
+          "volume": "{{amount}} volume"
+        },
+        "distribution": {
+          "title": "Distribuzione Rete",
+          "description": "Membri del team per regione",
+          "members": "{{count}} membri",
+          "revenue": "Ricavi: {{amount}}"
+        }
+      }
+    },
+    "admin": {
+      "userPreview": {
+        "title": "Anteprima Vista Utente",
+        "description": "Vedi come i diversi gruppi utente vedranno la dashboard",
+        "selectGroup": "Seleziona un gruppo utente per visualizzare la loro dashboard..."
+      }
+    }
   }
 }

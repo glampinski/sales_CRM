@@ -7,7 +7,7 @@ import { getMessages } from 'next-intl/server'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { PermissionProvider } from '@/contexts/PermissionContext-simple'
 import { ThemeProvider } from '@/components/theme-provider'
-import '../globals.css'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Glampinski CRM',
@@ -24,7 +24,7 @@ export default async function RootLayout({
 }>) {
   // Providing all messages to the client
   // side is the easiest way to get started
-  const messages = await getMessages({ locale });
+  const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from 'next-intl'
 import { 
   Users, 
   Building2, 
@@ -48,7 +49,7 @@ import Link from "next/link"
 
 // Navigation item type with permission requirement
 type NavigationItem = {
-  name: string
+  nameKey: string  // Translation key instead of hardcoded name
   href: string
   icon: any
   permission?: string
@@ -58,33 +59,33 @@ type NavigationItem = {
 // Universal navigation - all possible links with permission requirements
 const navigationItems = {
   main: [
-    { name: "Dashboard", href: "/dashboard", icon: Home, permission: "dashboard.overview" },
-    { name: "Contacts", href: "/dashboard/contacts", icon: Users, module: "contacts" },
-    { name: "Tasks", href: "/dashboard/tasks", icon: CheckSquare, module: "tasks" },
-    { name: "Pipeline", href: "/dashboard/pipeline", icon: TrendingUp, module: "pipeline" },
+    { nameKey: "dashboard", href: "/dashboard", icon: Home, permission: "dashboard.overview" },
+    { nameKey: "contacts", href: "/dashboard/contacts", icon: Users, module: "contacts" },
+    { nameKey: "tasks", href: "/dashboard/tasks", icon: CheckSquare, module: "tasks" },
+    { nameKey: "pipeline", href: "/dashboard/pipeline", icon: TrendingUp, module: "pipeline" },
   ],
   network: [
-    { name: "Genealogy", href: "/dashboard/genealogy", icon: Building2, module: "network" },
-    { name: "Commission", href: "/dashboard/commission", icon: DollarSign, module: "commission" },
-    { name: "Ranks", href: "/dashboard/ranks", icon: Crown, module: "ranks" },
-    { name: "Affiliates", href: "/dashboard/affiliates", icon: Shield, module: "affiliates" },
+    { nameKey: "genealogy", href: "/dashboard/genealogy", icon: Building2, module: "network" },
+    { nameKey: "commission", href: "/dashboard/commission", icon: DollarSign, module: "commission" },
+    { nameKey: "ranks", href: "/dashboard/ranks", icon: Crown, module: "ranks" },
+    { nameKey: "affiliates", href: "/dashboard/affiliates", icon: Shield, module: "affiliates" },
   ],
   business: [
-    { name: "Customers", href: "/dashboard/customers", icon: Users, module: "customers" },
-    { name: "Products", href: "/dashboard/products", icon: Building2, module: "products" },
-    { name: "Orders", href: "/dashboard/orders", icon: FileText, module: "orders" },
-    { name: "Payments", href: "/dashboard/payments", icon: CreditCard, module: "payments" },
-    { name: "Wallet", href: "/dashboard/wallet", icon: Wallet, module: "wallet" },
-    { name: "Marketing", href: "/dashboard/marketing", icon: Megaphone, module: "marketing" },
-    { name: "Reports", href: "/dashboard/reports", icon: PieChart, module: "reports" },
+    { nameKey: "customers", href: "/dashboard/customers", icon: Users, module: "customers" },
+    { nameKey: "products", href: "/dashboard/products", icon: Building2, module: "products" },
+    { nameKey: "orders", href: "/dashboard/orders", icon: FileText, module: "orders" },
+    { nameKey: "payments", href: "/dashboard/payments", icon: CreditCard, module: "payments" },
+    { nameKey: "wallet", href: "/dashboard/wallet", icon: Wallet, module: "wallet" },
+    { nameKey: "marketing", href: "/dashboard/marketing", icon: Megaphone, module: "marketing" },
+    { nameKey: "reports", href: "/dashboard/reports", icon: PieChart, module: "reports" },
   ],
   system: [
-    { name: "Training", href: "/dashboard/training", icon: BookOpen, module: "training" },
-    { name: "Support", href: "/dashboard/support", icon: HeadphonesIcon, module: "support" },
-    { name: "Communication", href: "/dashboard/communication", icon: MessageSquare, module: "communication" },
-    { name: "User Management", href: "/dashboard/users", icon: UserCog, module: "admin" },
-    { name: "Invitations", href: "/dashboard/invitations", icon: Bell, module: "admin" },
-    { name: "Settings", href: "/dashboard/settings", icon: Settings, module: "settings" },
+    { nameKey: "training", href: "/dashboard/training", icon: BookOpen, module: "training" },
+    { nameKey: "support", href: "/dashboard/support", icon: HeadphonesIcon, module: "support" },
+    { nameKey: "communication", href: "/dashboard/communication", icon: MessageSquare, module: "communication" },
+    { nameKey: "userManagement", href: "/dashboard/users", icon: UserCog, module: "admin" },
+    { nameKey: "invitations", href: "/dashboard/invitations", icon: Bell, module: "admin" },
+    { nameKey: "settings", href: "/dashboard/settings", icon: Settings, module: "settings" },
   ],
 }
 
@@ -92,6 +93,7 @@ export function AppSidebar() {
   const { user, logout } = useAuth()
   const { hasModuleAccess, hasPermission } = usePermissions()
   const { theme } = useTheme()
+  const tNav = useTranslations('navigation')
   
   if (!user) return null
 
@@ -157,18 +159,18 @@ export function AppSidebar() {
         {/* Main Navigation */}
         {filteredNavigation.main.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel>Main</SidebarGroupLabel>
+            <SidebarGroupLabel>{tNav('groups.main')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {filteredNavigation.main.map((item) => (
-                  <SidebarMenuItem key={item.name}>
+                  <SidebarMenuItem key={item.nameKey}>
                     <SidebarMenuButton asChild>
                       <Link 
                         href={item.href} 
                         className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
                       >
                         <item.icon className="h-4 w-4" />
-                        <span>{item.name}</span>
+                        <span>{tNav(`items.${item.nameKey}`)}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -181,18 +183,18 @@ export function AppSidebar() {
         {/* Network Features */}
         {filteredNavigation.network.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel>Network</SidebarGroupLabel>
+            <SidebarGroupLabel>{tNav('groups.network')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {filteredNavigation.network.map((item) => (
-                  <SidebarMenuItem key={item.name}>
+                  <SidebarMenuItem key={item.nameKey}>
                     <SidebarMenuButton asChild>
                       <Link 
                         href={item.href} 
                         className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
                       >
                         <item.icon className="h-4 w-4" />
-                        <span>{item.name}</span>
+                        <span>{tNav(`items.${item.nameKey}`)}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -205,18 +207,18 @@ export function AppSidebar() {
         {/* Business Features */}
         {filteredNavigation.business.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel>Business</SidebarGroupLabel>
+            <SidebarGroupLabel>{tNav('groups.business')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {filteredNavigation.business.map((item) => (
-                  <SidebarMenuItem key={item.name}>
+                  <SidebarMenuItem key={item.nameKey}>
                     <SidebarMenuButton asChild>
                       <Link 
                         href={item.href} 
                         className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
                       >
                         <item.icon className="h-4 w-4" />
-                        <span>{item.name}</span>
+                        <span>{tNav(`items.${item.nameKey}`)}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -229,18 +231,18 @@ export function AppSidebar() {
         {/* System Features */}
         {filteredNavigation.system.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel>System</SidebarGroupLabel>
+            <SidebarGroupLabel>{tNav('groups.system')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {filteredNavigation.system.map((item) => (
-                  <SidebarMenuItem key={item.name}>
+                  <SidebarMenuItem key={item.nameKey}>
                     <SidebarMenuButton asChild>
                       <Link 
                         href={item.href} 
                         className="flex items-center gap-2 text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors"
                       >
                         <item.icon className="h-4 w-4" />
-                        <span>{item.name}</span>
+                        <span>{tNav(`items.${item.nameKey}`)}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -272,7 +274,7 @@ export function AppSidebar() {
             className="w-full justify-start gap-2"
           >
             <LogOut className="h-4 w-4" />
-            Sign out
+            {tNav('items.signOut')}
           </Button>
         </div>
       </SidebarFooter>

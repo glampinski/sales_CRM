@@ -78,11 +78,11 @@ const DASHBOARD_STATS = {
 }
 
 const RECENT_ACTIVITIES = [
-  { id: 1, type: 'user_registration', user: 'john.doe@email.com', timestamp: '2 minutes ago', severity: 'info' },
-  { id: 2, type: 'large_order', user: 'distributor_premium', amount: '$15,432', timestamp: '15 minutes ago', severity: 'success' },
-  { id: 3, type: 'permission_change', user: 'admin_sarah', action: 'Updated role permissions', timestamp: '1 hour ago', severity: 'warning' },
-  { id: 4, type: 'system_alert', message: 'High server load detected', timestamp: '2 hours ago', severity: 'error' },
-  { id: 5, type: 'commission_payout', amount: '$45,678', distributors: 234, timestamp: '4 hours ago', severity: 'success' }
+  { id: 1, type: 'user_registration', user: 'Sarah Wilson', timestamp: '2 ore fa', severity: 'info' },
+  { id: 2, type: 'large_order', user: 'John Smith', amount: '$299', timestamp: '4 ore fa', severity: 'success' },
+  { id: 3, type: 'commission_earned', amount: '$45.50', timestamp: '6 ore fa', severity: 'success' },
+  { id: 4, type: 'new_team_member', user: 'Emma Davis', timestamp: '1 giorno fa', severity: 'info' },
+  { id: 5, type: 'commission_payout', amount: '$45,678', distributors: 234, timestamp: '4 ore fa', severity: 'success' }
 ]
 
 const TOP_DISTRIBUTORS = [
@@ -126,6 +126,8 @@ function StatCard({ title, value, subtitle, icon: Icon, trend, className = "" }:
 }
 
 function ActivityItem({ activity }: { activity: typeof RECENT_ACTIVITIES[0] }) {
+  const tAdmin = useTranslations('dashboard.admin.overview')
+  
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case 'success': return <CheckCircle className="h-4 w-4 text-green-500" />
@@ -144,13 +146,30 @@ function ActivityItem({ activity }: { activity: typeof RECENT_ACTIVITIES[0] }) {
     }
   }
 
+  const getActivityTypeLabel = (type: string) => {
+    try {
+      return tAdmin(`recentActivity.types.${type}`)
+    } catch {
+      // Fallback to formatted English if translation is missing
+      return type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
+    }
+  }
+
+  const getActionLabel = (action: string) => {
+    try {
+      return tAdmin(`recentActivity.actions.${action.toLowerCase().replace(/\s+/g, '_')}`)
+    } catch {
+      return action
+    }
+  }
+
   return (
     <div className={`flex items-start space-x-3 p-3 border-l-4 ${getSeverityColor(activity.severity)} bg-muted/30 rounded-r-lg`}>
       {getSeverityIcon(activity.severity)}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium truncate">
-            {activity.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+            {getActivityTypeLabel(activity.type)}
           </p>
           <span className="text-xs text-muted-foreground flex items-center">
             <Clock className="h-3 w-3 mr-1" />
@@ -158,10 +177,8 @@ function ActivityItem({ activity }: { activity: typeof RECENT_ACTIVITIES[0] }) {
           </span>
         </div>
         <p className="text-xs text-muted-foreground">
-          {activity.user && `User: ${activity.user}`}
-          {activity.amount && ` • Amount: ${activity.amount}`}
-          {activity.action && ` • ${activity.action}`}
-          {activity.message && activity.message}
+          {activity.user && `${tAdmin('recentActivity.labels.user')}: ${activity.user}`}
+          {activity.amount && ` • ${tAdmin('recentActivity.labels.amount')}: ${activity.amount}`}
         </p>
       </div>
     </div>

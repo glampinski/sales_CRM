@@ -291,21 +291,21 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
               <CardContent>
                 <div className="space-y-4">
                   {[
-                    { action: "New customer registered", customer: "Sarah Wilson", time: "2 hours ago", type: "registration" },
-                    { action: "Order completed", customer: "John Smith", amount: "$299", time: "4 hours ago", type: "order" },
-                    { action: "Commission earned", amount: "$45.50", time: "6 hours ago", type: "commission" },
-                    { action: "New team member", customer: "Emma Davis", time: "1 day ago", type: "team" },
+                    { actionKey: "newCustomerRegistered", customer: "Sarah Wilson", time: "2 ore fa", type: "registration" },
+                    { actionKey: "orderCompleted", customer: "John Smith", amount: "$299", time: "4 ore fa", type: "order" },
+                    { actionKey: "commissionEarned", amount: "$45.50", time: "6 ore fa", type: "commission" },
+                    { actionKey: "newTeamMember", customer: "Emma Davis", time: "1 giorno fa", type: "team" },
                   ].map((activity, index) => (
                     <div key={index} className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium">{activity.action}</p>
+                        <p className="text-sm font-medium">{tDashboard(`overview.activity.actions.${activity.actionKey}`)}</p>
                         <p className="text-sm text-muted-foreground">
                           {activity.customer && `${activity.customer} • `}
                           {activity.amount && `${activity.amount} • `}
                           {activity.time}
                         </p>
                       </div>
-                      <Badge variant="outline">{activity.type}</Badge>
+                      <Badge variant="outline">{tDashboard(`overview.activity.types.${activity.type}`)}</Badge>
                     </div>
                   ))}
                 </div>

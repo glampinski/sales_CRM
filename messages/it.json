@@ -81,6 +81,11 @@
           "order": "ordine",
           "commission": "commissione",
           "team": "team"
+        },
+        "timeLabels": {
+          "hoursAgo": "ore fa",
+          "minutesAgo": "minuti fa",
+          "daysAgo": "giorni fa"
         }
       },
       "insights": {
@@ -172,7 +177,34 @@
         },
         "recentActivity": {
           "title": "Attività Recenti",
-          "description": "Ultimi eventi di sistema e azioni utente"
+          "description": "Ultimi eventi di sistema e azioni utente",
+          "types": {
+            "user_registration": "Registrazione Utente",
+            "large_order": "Ordine Importante",
+            "permission_change": "Modifica Permessi",
+            "system_alert": "Avviso Sistema",
+            "commission_payout": "Pagamento Commissioni",
+            "new_customer_registered": "Nuovo cliente registrato",
+            "order_completed": "Ordine completato",
+            "commission_earned": "Commissione guadagnata",
+            "new_team_member": "Nuovo membro del team"
+          },
+          "actions": {
+            "updated_role_permissions": "Permessi ruolo aggiornati",
+            "high_server_load": "Carico server elevato rilevato"
+          },
+          "labels": {
+            "user": "Utente",
+            "amount": "Importo"
+          },
+          "timeAgo": {
+            "minutes": "{{count}} minuti fa",
+            "hours": "{{count}} ore fa",
+            "days": "{{count}} giorni fa",
+            "hoursAgo": "ore fa",
+            "minutesAgo": "minuti fa",
+            "daysAgo": "giorni fa"
+          }
         },
         "topDistributors": {
           "title": "Top Distributori",

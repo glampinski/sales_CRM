@@ -81,6 +81,11 @@
           "order": "order",
           "commission": "commission",
           "team": "team"
+        },
+        "timeLabels": {
+          "hoursAgo": "hours ago",
+          "minutesAgo": "minutes ago",
+          "daysAgo": "days ago"
         }
       },
       "insights": {
@@ -172,7 +177,34 @@
         },
         "recentActivity": {
           "title": "Recent Activity",
-          "description": "Latest system events and user actions"
+          "description": "Latest system events and user actions",
+          "types": {
+            "user_registration": "User Registration",
+            "large_order": "Large Order",
+            "permission_change": "Permission Change",
+            "system_alert": "System Alert",
+            "commission_payout": "Commission Payout",
+            "new_customer_registered": "New customer registered",
+            "order_completed": "Order completed",
+            "commission_earned": "Commission earned",
+            "new_team_member": "New team member"
+          },
+          "actions": {
+            "updated_role_permissions": "Updated role permissions",
+            "high_server_load": "High server load detected"
+          },
+          "labels": {
+            "user": "User",
+            "amount": "Amount"
+          },
+          "timeAgo": {
+            "minutes": "{{count}} minutes ago",
+            "hours": "{{count}} hours ago",
+            "days": "{{count}} days ago",
+            "hoursAgo": "hours ago",
+            "minutesAgo": "minutes ago",
+            "daysAgo": "days ago"
+          }
         },
         "topDistributors": {
           "title": "Top Distributors",

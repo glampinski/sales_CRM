@@ -78,31 +78,31 @@ const businessStats = [
   },
 ]
 
-// Network Analytics Data
-const networkStats = [
+// Network Analytics Data - moved to component to access translations
+const getNetworkStats = (t: any) => [
   {
-    title: "Team Members",
+    titleKey: "teamMembers",
     value: "2,847", 
     change: "+12.5%",
     trend: "up",
     icon: Users,
   },
   {
-    title: "Total Commission",
+    titleKey: "totalCommission",
     value: "$23,381",
     change: "+15.8%", 
     trend: "up",
     icon: DollarSign,
   },
   {
-    title: "Personal Volume",
+    titleKey: "personalVolume",
     value: "1,245",
     change: "+15.3%",
     trend: "up",
     icon: Target,
   },
   {
-    title: "Team Volume",
+    titleKey: "teamVolume",
     value: "8,932",
     change: "+23.1%",
     trend: "up", 
@@ -125,24 +125,24 @@ const customerSegments = [
 ]
 
 const commissionMetrics = [
-  { type: "Retail Profit", amount: 8234.56, percentage: 35.2 },
-  { type: "Team Bonus", amount: 6789.12, percentage: 29.1 },
-  { type: "Leadership Bonus", amount: 4567.89, percentage: 19.5 },
-  { type: "Rank Bonus", amount: 3789.45, percentage: 16.2 },
+  { type: "retailProfit", amount: 8234.56, percentage: 35.2 },
+  { type: "teamBonus", amount: 6789.12, percentage: 29.1 },
+  { type: "leadershipBonus", amount: 4567.89, percentage: 19.5 },
+  { type: "rankBonus", amount: 3789.45, percentage: 16.2 },
 ]
 
 const teamPerformance = [
-  { name: "Sarah Johnson", rank: "Gold", commission: 2345.67, teamSize: 45, volume: 12500 },
-  { name: "David Wilson", rank: "Silver", commission: 1789.23, teamSize: 32, volume: 8900 },
-  { name: "Mike Chen", rank: "Bronze", commission: 1234.56, teamSize: 28, volume: 7200 },
-  { name: "Emily Rodriguez", rank: "Bronze", commission: 987.65, teamSize: 19, volume: 5400 },
+  { name: "Sarah Johnson", rank: "gold", commission: 2345.67, teamSize: 45, volume: 12500 },
+  { name: "David Wilson", rank: "silver", commission: 1789.23, teamSize: 32, volume: 8900 },
+  { name: "Mike Chen", rank: "bronze", commission: 1234.56, teamSize: 28, volume: 7200 },
+  { name: "Emily Rodriguez", rank: "bronze", commission: 987.65, teamSize: 19, volume: 5400 },
 ]
 
 const regionalData = [
-  { region: "North America", customers: 456, revenue: 23456.78, growth: 15.2, teamMembers: 89 },
-  { region: "Europe", customers: 234, revenue: 12345.67, growth: 8.7, teamMembers: 54 },
-  { region: "Asia Pacific", customers: 189, revenue: 8901.23, growth: 22.1, teamMembers: 67 },
-  { region: "South America", customers: 67, revenue: 3456.78, growth: 5.3, teamMembers: 23 },
+  { region: "northAmerica", customers: 456, revenue: 23456.78, growth: 15.2, teamMembers: 89 },
+  { region: "europe", customers: 234, revenue: 12345.67, growth: 8.7, teamMembers: 54 },
+  { region: "asiaPacific", customers: 189, revenue: 8901.23, growth: 22.1, teamMembers: 67 },
+  { region: "southAmerica", customers: 67, revenue: 3456.78, growth: 5.3, teamMembers: 23 },
 ]
 
 export default function Dashboard({ params }: { params: { locale: string } }) {
@@ -166,6 +166,8 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
   }
 
   // Unified Dashboard for All Users with Permission-Based Visibility
+  const networkStats = getNetworkStats(tDashboard)
+  
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
       {/* Header */}
@@ -470,7 +472,7 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
             {networkStats.map((stat, index) => (
               <Card key={index}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                  <CardTitle className="text-sm font-medium">{tDashboard(`network.stats.${stat.titleKey}`)}</CardTitle>
                   <stat.icon className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
@@ -479,7 +481,7 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
                     <span className={stat.trend === 'up' ? 'text-green-600' : 'text-red-600'}>
                       {stat.change}
                     </span>
-                    {' '}from last month
+                    {params.locale === 'it' ? ' rispetto al mese scorso' : ' from last month'}
                   </p>
                 </CardContent>
               </Card>
@@ -497,8 +499,10 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
                 {commissionMetrics.map((metric, index) => (
                   <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div>
-                      <p className="font-medium">{metric.type}</p>
-                      <p className="text-sm text-muted-foreground">{metric.percentage}% of total</p>
+                      <p className="font-medium">{tDashboard(`network.commission.types.${metric.type}`)}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {params.locale === 'it' ? `${metric.percentage}% del totale` : `${metric.percentage}% of total`}
+                      </p>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-semibold text-green-600">
@@ -539,10 +543,10 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
                           <div className="flex items-center space-x-2">
                             <Badge variant="outline" className="text-xs">
                               <Crown className="h-3 w-3 mr-1" />
-                              {member.rank}
+                              {tDashboard(`network.team.performers.ranks.${member.rank}`)}
                             </Badge>
                             <span className="text-xs text-muted-foreground">
-                              {member.teamSize} team • {formatCurrency(member.volume)} volume
+                              {member.teamSize} {tDashboard('network.team.performers.labels.team')} • {formatCurrency(member.volume)} {tDashboard('network.team.performers.labels.volume')}
                             </span>
                           </div>
                         </div>
@@ -566,9 +570,9 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
                   {regionalData.map((region, index) => (
                     <div key={index} className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{region.region}</span>
+                        <span className="text-sm font-medium">{tDashboard(`network.team.distribution.regions.${region.region}`)}</span>
                         <span className="text-sm text-muted-foreground">
-                          {region.teamMembers} members
+                          {region.teamMembers} {params.locale === 'it' ? 'membri' : 'members'}
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
@@ -578,7 +582,7 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
                         />
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        Revenue: {formatCurrency(region.revenue)}
+                        {params.locale === 'it' ? 'Ricavi:' : 'Revenue:'} {formatCurrency(region.revenue)}
                       </div>
                     </div>
                   ))}

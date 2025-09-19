@@ -134,24 +134,51 @@
       }
     },
     "network": {
+      "stats": {
+        "teamMembers": "Team Members",
+        "totalCommission": "Total Commission",
+        "personalVolume": "Personal Volume",
+        "teamVolume": "Team Volume"
+      },
       "commission": {
         "title": "Commission Breakdown",
         "description": "Commission distribution by type",
         "totalCommission": "Total Commission",
-        "percentOfTotal": "{{percent}}% of total"
+        "percentOfTotal": "{{percent}}% of total",
+        "types": {
+          "retailProfit": "Retail Profit",
+          "teamBonus": "Team Bonus",
+          "leadershipBonus": "Leadership Bonus",
+          "rankBonus": "Rank Bonus"
+        }
       },
       "team": {
         "performers": {
           "title": "Top Team Performers",
           "description": "Highest earning team members",
           "teamSize": "{{count}} team",
-          "volume": "{{amount}} volume"
+          "volume": "{{amount}} volume",
+          "labels": {
+            "team": "team",
+            "volume": "volume"
+          },
+          "ranks": {
+            "gold": "Gold",
+            "silver": "Silver", 
+            "bronze": "Bronze"
+          }
         },
         "distribution": {
           "title": "Network Distribution",
           "description": "Team members by region",
           "members": "{{count}} members",
-          "revenue": "Revenue: {{amount}}"
+          "revenue": "Revenue: {{amount}}",
+          "regions": {
+            "northAmerica": "North America",
+            "europe": "Europe",
+            "asiaPacific": "Asia Pacific",
+            "southAmerica": "South America"
+          }
         }
       }
     },

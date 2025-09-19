@@ -319,18 +319,15 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
               <CardContent className="space-y-4">
                 <div className="p-3 bg-muted/50 rounded-lg">
                   <p className="font-medium">{tDashboard('overview.insights.bestPerformingDay')}</p>
-                  <p className="text-2xl font-bold">Tuesday</p>
-                  <p className="text-sm text-muted-foreground">Average: $1,847 in sales</p>
+                  <p className="text-2xl font-bold">{tDashboard('overview.insights.daysOfWeek.tuesday')}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {params.locale === 'it' ? 'Media: $1.847 in vendite' : 'Average: $1,847 in sales'}
+                  </p>
                 </div>
                 <div className="p-3 bg-muted/50 rounded-lg">
                   <p className="font-medium">{tDashboard('overview.insights.averageOrderValue')}</p>
                   <p className="text-2xl font-bold">$156.78</p>
-                  <p className="text-sm text-green-600">+12.3% from last month</p>
-                </div>
-                <div className="p-3 bg-muted/50 rounded-lg">
-                  <p className="font-medium">{tDashboard('overview.insights.customerRetention')}</p>
-                  <p className="text-2xl font-bold">84.5%</p>
-                  <p className="text-sm text-green-600">+2.1% improvement</p>
+                  <p className="text-sm text-green-600">+12.3% {tDashboard('overview.insights.fromLastMonth')}</p>
                 </div>
               </CardContent>
             </Card>

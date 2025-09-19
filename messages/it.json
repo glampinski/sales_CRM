@@ -89,12 +89,19 @@
         }
       },
       "insights": {
-        "title": "Insights Rapidi",
+        "title": "Visioni Rapide",
         "bestPerformingDay": "Giorno con Migliori Performance",
         "averageOrderValue": "Valore Medio Ordine",
-        "customerRetention": "Fidelizzazione Cliente",
-        "averageSales": "Media: {{amount}} in vendite",
-        "improvement": "{{percent}} miglioramento"
+        "fromLastMonth": "rispetto al mese scorso",
+        "daysOfWeek": {
+          "monday": "Lunedì",
+          "tuesday": "Martedì",
+          "wednesday": "Mercoledì",
+          "thursday": "Giovedì",
+          "friday": "Venerdì",
+          "saturday": "Sabato",
+          "sunday": "Domenica"
+        }
       }
     },
     "business": {

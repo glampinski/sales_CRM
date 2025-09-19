@@ -92,9 +92,16 @@
         "title": "Quick Insights",
         "bestPerformingDay": "Best Performing Day",
         "averageOrderValue": "Average Order Value",
-        "customerRetention": "Customer Retention",
-        "averageSales": "Average: {{amount}} in sales",
-        "improvement": "{{percent}} improvement"
+        "fromLastMonth": "from last month",
+        "daysOfWeek": {
+          "monday": "Monday",
+          "tuesday": "Tuesday",
+          "wednesday": "Wednesday",
+          "thursday": "Thursday",
+          "friday": "Friday",
+          "saturday": "Saturday",
+          "sunday": "Sunday"
+        }
       }
     },
     "business": {

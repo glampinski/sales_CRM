@@ -148,6 +148,70 @@
         "title": "Anteprima Vista Utente",
         "description": "Vedi come i diversi gruppi utente vedranno la dashboard",
         "selectGroup": "Seleziona un gruppo utente per visualizzare la loro dashboard..."
+      },
+      "overview": {
+        "title": "Panoramica Admin",
+        "noPermission": "Non hai i permessi per visualizzare questo contenuto.",
+        "metrics": {
+          "totalUsers": "Utenti Totali",
+          "activeUsers": "{{count}} utenti attivi",
+          "revenue": "Ricavi",
+          "thisMonth": "{{amount}}€ questo mese",
+          "orders": "Ordini",
+          "pending": "{{count}} in attesa",
+          "activeDistributors": "Distributori Attivi",
+          "totalDistributors": "{{count}} distributori totali",
+          "fromLastMonth": "rispetto al mese scorso"
+        },
+        "tabs": {
+          "overview": "Panoramica",
+          "users": "Utenti",
+          "revenue": "Ricavi",
+          "distributors": "Distributori",
+          "system": "Sistema"
+        },
+        "recentActivity": {
+          "title": "Attività Recenti",
+          "description": "Ultimi eventi di sistema e azioni utente"
+        },
+        "topDistributors": {
+          "title": "Top Distributori",
+          "description": "Distributori con le migliori performance questo mese"
+        },
+        "userDistribution": {
+          "title": "Distribuzione Utenti",
+          "superAdmin": "Super Admin",
+          "admin": "Admin", 
+          "manager": "Manager",
+          "distributor": "Distributore",
+          "user": "Utente"
+        },
+        "permissions": {
+          "title": "Panoramica Permessi",
+          "fullAccess": "Accesso Completo",
+          "businessAccess": "Accesso Business", 
+          "limitedAccess": "Accesso Limitato",
+          "networkAccess": "Accesso Rete",
+          "basicAccess": "Accesso Base",
+          "affiliate": "Affiliato",
+          "customer": "Cliente"
+        },
+        "widgets": {
+          "title": "Widget Dashboard",
+          "revenueAnalytics": "Analisi Ricavi",
+          "userManagement": "Gestione Utenti",
+          "commissionTracking": "Tracciamento Commissioni",
+          "networkAnalytics": "Analisi Rete",
+          "enabled": "Attivato",
+          "disabled": "Disattivato"
+        },
+        "revenue": {
+          "directSales": "Vendite Dirette",
+          "distributorSales": "Vendite Distributori",
+          "affiliateSales": "Vendite Affiliati",
+          "recurringRevenue": "Ricavi Ricorrenti",
+          "ofTotalRevenue": "del totale ricavi"
+        }
       }
     }
   }

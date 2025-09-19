@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -100,6 +101,8 @@ function StatCard({ title, value, subtitle, icon: Icon, trend, className = "" }:
   trend?: number
   className?: string
 }) {
+  const tAdmin = useTranslations('dashboard.admin.overview')
+  
   return (
     <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -114,7 +117,7 @@ function StatCard({ title, value, subtitle, icon: Icon, trend, className = "" }:
         {trend && (
           <div className={`text-xs flex items-center mt-1 ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
             <TrendingUp className="h-3 w-3 mr-1" />
-            {trend > 0 ? '+' : ''}{trend}% from last month
+            {trend > 0 ? '+' : ''}{trend}% {tAdmin('metrics.fromLastMonth')}
           </div>
         )}
       </CardContent>
@@ -168,13 +171,14 @@ function ActivityItem({ activity }: { activity: typeof RECENT_ACTIVITIES[0] }) {
 export function SuperAdminDashboard() {
   const { user } = useAuth()
   const { permissions, canViewAdminFeatures } = usePermissions()
+  const tAdmin = useTranslations('dashboard.admin.overview')
   const [selectedTimeframe, setSelectedTimeframe] = useState('30d')
   const [selectedMetric, setSelectedMetric] = useState('revenue')
 
   if (!user || !canViewAdminFeatures) {
     return (
       <div className="text-center py-8">
-        <p className="text-muted-foreground">You don't have permission to view this content.</p>
+        <p className="text-muted-foreground">{tAdmin('noPermission')}</p>
       </div>
     )
   }
@@ -185,30 +189,30 @@ export function SuperAdminDashboard() {
       {/* Key Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          title="Total Users"
+          title={tAdmin('metrics.totalUsers')}
           value={DASHBOARD_STATS.users.total}
-          subtitle={`${DASHBOARD_STATS.users.active} active users`}
+          subtitle={tAdmin('metrics.activeUsers', { count: DASHBOARD_STATS.users.active })}
           icon={Users}
           trend={DASHBOARD_STATS.users.growth}
         />
         <StatCard
-          title="Revenue"
+          title={tAdmin('metrics.revenue')}
           value={`$${DASHBOARD_STATS.revenue.total.toLocaleString()}`}
-          subtitle={`$${DASHBOARD_STATS.revenue.thisMonth.toLocaleString()} this month`}
+          subtitle={tAdmin('metrics.thisMonth', { amount: DASHBOARD_STATS.revenue.thisMonth.toLocaleString() })}
           icon={DollarSign}
           trend={DASHBOARD_STATS.revenue.growth}
         />
         <StatCard
-          title="Orders"
+          title={tAdmin('metrics.orders')}
           value={DASHBOARD_STATS.orders.total}
-          subtitle={`${DASHBOARD_STATS.orders.pending} pending`}
+          subtitle={tAdmin('metrics.pending', { count: DASHBOARD_STATS.orders.pending })}
           icon={ShoppingCart}
           trend={DASHBOARD_STATS.orders.growth}
         />
         <StatCard
-          title="Active Distributors"
+          title={tAdmin('metrics.activeDistributors')}
           value={DASHBOARD_STATS.distributors.active}
-          subtitle={`${DASHBOARD_STATS.distributors.total} total distributors`}
+          subtitle={tAdmin('metrics.totalDistributors', { count: DASHBOARD_STATS.distributors.total })}
           icon={UserCheck}
           trend={8.2}
         />
@@ -217,11 +221,11 @@ export function SuperAdminDashboard() {
       {/* Detailed Analytics */}
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="revenue">Revenue</TabsTrigger>
-          <TabsTrigger value="distributors">Distributors</TabsTrigger>
-          <TabsTrigger value="system">System</TabsTrigger>
+          <TabsTrigger value="overview">{tAdmin('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="users">{tAdmin('tabs.users')}</TabsTrigger>
+          <TabsTrigger value="revenue">{tAdmin('tabs.revenue')}</TabsTrigger>
+          <TabsTrigger value="distributors">{tAdmin('tabs.distributors')}</TabsTrigger>
+          <TabsTrigger value="system">{tAdmin('tabs.system')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -231,10 +235,10 @@ export function SuperAdminDashboard() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Activity className="h-5 w-5 mr-2" />
-                  Recent Activity
+                  {tAdmin('recentActivity.title')}
                 </CardTitle>
                 <CardDescription>
-                  Latest system events and user actions
+                  {tAdmin('recentActivity.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -249,10 +253,10 @@ export function SuperAdminDashboard() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <TrendingUp className="h-5 w-5 mr-2" />
-                  Top Distributors
+                  {tAdmin('topDistributors.title')}
                 </CardTitle>
                 <CardDescription>
-                  Highest performing distributors this month
+                  {tAdmin('topDistributors.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -286,7 +290,7 @@ export function SuperAdminDashboard() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>User Distribution by Role</CardTitle>
+                <CardTitle>{tAdmin('userDistribution.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
@@ -302,29 +306,29 @@ export function SuperAdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Permission Overview</CardTitle>
+                <CardTitle>{tAdmin('permissions.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span>Super Admin</span>
-                    <Badge variant="outline">Full Access</Badge>
+                    <span>{tAdmin('userDistribution.superAdmin')}</span>
+                    <Badge variant="outline">{tAdmin('permissions.fullAccess')}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Admin</span>
-                    <Badge variant="outline">Business Access</Badge>
+                    <span>{tAdmin('userDistribution.admin')}</span>
+                    <Badge variant="outline">{tAdmin('permissions.businessAccess')}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Manager</span>
-                    <Badge variant="outline">Limited Access</Badge>
+                    <span>{tAdmin('userDistribution.manager')}</span>
+                    <Badge variant="outline">{tAdmin('permissions.limitedAccess')}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Affiliate</span>
-                    <Badge variant="outline">Network Access</Badge>
+                    <span>{tAdmin('permissions.affiliate')}</span>
+                    <Badge variant="outline">{tAdmin('permissions.networkAccess')}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Customer</span>
-                    <Badge variant="outline">Basic Access</Badge>
+                    <span>{tAdmin('permissions.customer')}</span>
+                    <Badge variant="outline">{tAdmin('permissions.basicAccess')}</Badge>
                   </div>
                 </div>
               </CardContent>
@@ -332,25 +336,25 @@ export function SuperAdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Dashboard Widgets</CardTitle>
+                <CardTitle>{tAdmin('widgets.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">Revenue Analytics</span>
-                    <Badge variant="default">Enabled</Badge>
+                    <span className="text-sm">{tAdmin('widgets.revenueAnalytics')}</span>
+                    <Badge variant="default">{tAdmin('widgets.enabled')}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">User Management</span>
-                    <Badge variant="default">Enabled</Badge>
+                    <span className="text-sm">{tAdmin('widgets.userManagement')}</span>
+                    <Badge variant="default">{tAdmin('widgets.enabled')}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">Network Overview</span>
-                    <Badge variant="default">Enabled</Badge>
+                    <span className="text-sm">{tAdmin('widgets.networkAnalytics')}</span>
+                    <Badge variant="default">{tAdmin('widgets.enabled')}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">Commission Tracking</span>
-                    <Badge variant="default">Enabled</Badge>
+                    <span className="text-sm">{tAdmin('widgets.commissionTracking')}</span>
+                    <Badge variant="default">{tAdmin('widgets.enabled')}</Badge>
                   </div>
                 </div>
               </CardContent>
@@ -361,23 +365,23 @@ export function SuperAdminDashboard() {
         <TabsContent value="revenue" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-3">
             <StatCard
-              title="Direct Sales"
+              title={tAdmin('revenue.directSales')}
               value={`$${DASHBOARD_STATS.revenue.bySource.direct.toLocaleString()}`}
-              subtitle="50.2% of total revenue"
+              subtitle={`50.2% ${tAdmin('revenue.ofTotalRevenue')}`}
               icon={DollarSign}
               className="bg-green-50 border-green-200"
             />
             <StatCard
-              title="Distributor Sales"
+              title={tAdmin('revenue.distributorSales')}
               value={`$${DASHBOARD_STATS.revenue.bySource.distributor.toLocaleString()}`}
-              subtitle="36.3% of total revenue"
+              subtitle={`36.3% ${tAdmin('revenue.ofTotalRevenue')}`}
               icon={Users}
               className="bg-blue-50 border-blue-200"
             />
             <StatCard
-              title="Recurring Revenue"
+              title={tAdmin('revenue.recurringRevenue')}
               value={`$${DASHBOARD_STATS.revenue.bySource.recurring.toLocaleString()}`}
-              subtitle="13.5% of total revenue"
+              subtitle={`13.5% ${tAdmin('revenue.ofTotalRevenue')}`}
               icon={BarChart3}
               className="bg-purple-50 border-purple-200"
             />

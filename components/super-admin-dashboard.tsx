@@ -409,23 +409,23 @@ export function SuperAdminDashboard() {
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Distributor Statistics</CardTitle>
+                <CardTitle>{tAdmin('distributorStats.title')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span>Total Distributors</span>
+                  <span>{tAdmin('distributorStats.totalDistributors')}</span>
                   <Badge variant="outline">{DASHBOARD_STATS.distributors.total}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Active This Month</span>
+                  <span>{tAdmin('distributorStats.activeThisMonth')}</span>
                   <Badge variant="outline">{DASHBOARD_STATS.distributors.active}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Top Performers</span>
+                  <span>{tAdmin('distributorStats.topPerformers')}</span>
                   <Badge variant="outline">{DASHBOARD_STATS.distributors.topPerformers}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Total Commissions Paid</span>
+                  <span>{tAdmin('distributorStats.totalCommissionsPaid')}</span>
                   <Badge variant="outline">${DASHBOARD_STATS.distributors.totalCommissions.toLocaleString()}</Badge>
                 </div>
               </CardContent>
@@ -433,7 +433,7 @@ export function SuperAdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Commission Breakdown</CardTitle>
+                <CardTitle>{tAdmin('commissionBreakdown.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -452,30 +452,30 @@ export function SuperAdminDashboard() {
         <TabsContent value="system" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-4">
             <StatCard
-              title="System Uptime"
+              title={tAdmin('systemHealth.systemUptime')}
               value={`${DASHBOARD_STATS.systemHealth.uptime}%`}
-              subtitle="Last 30 days"
+              subtitle={tAdmin('systemHealth.subtitles.last30Days')}
               icon={CheckCircle}
               className="bg-green-50 border-green-200"
             />
             <StatCard
-              title="Active Errors"
+              title={tAdmin('systemHealth.activeErrors')}
               value={DASHBOARD_STATS.systemHealth.errors}
-              subtitle="Requires attention"
+              subtitle={tAdmin('systemHealth.subtitles.requiresAttention')}
               icon={AlertTriangle}
               className="bg-red-50 border-red-200"
             />
             <StatCard
-              title="Warnings"
+              title={tAdmin('systemHealth.warnings')}
               value={DASHBOARD_STATS.systemHealth.warnings}
-              subtitle="Monitoring required"
+              subtitle={tAdmin('systemHealth.subtitles.monitoringRequired')}
               icon={Eye}
               className="bg-yellow-50 border-yellow-200"
             />
             <StatCard
-              title="Last Incident"
+              title={tAdmin('systemHealth.lastIncident')}
               value={DASHBOARD_STATS.systemHealth.lastIncident}
-              subtitle="System status"
+              subtitle={tAdmin('systemHealth.subtitles.systemStatus')}
               icon={Clock}
               className="bg-blue-50 border-blue-200"
             />

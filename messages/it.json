@@ -245,6 +245,16 @@
           "title": "Top Distributori",
           "description": "Distributori con le migliori performance questo mese"
         },
+        "distributorStats": {
+          "title": "Statistiche Distributori",
+          "totalDistributors": "Distributori Totali",
+          "activeThisMonth": "Attivi Questo Mese",
+          "topPerformers": "Top Performer",
+          "totalCommissionsPaid": "Commissioni Totali Pagate"
+        },
+        "commissionBreakdown": {
+          "title": "Ripartizione Commissioni"
+        },
         "userDistribution": {
           "title": "Distribuzione Utenti",
           "superAdmin": "Super Admin",
@@ -278,6 +288,18 @@
           "affiliateSales": "Vendite Affiliati",
           "recurringRevenue": "Ricavi Ricorrenti",
           "ofTotalRevenue": "del totale ricavi"
+        },
+        "systemHealth": {
+          "systemUptime": "Tempo di Attività Sistema",
+          "activeErrors": "Errori Attivi",
+          "warnings": "Avvisi",
+          "lastIncident": "Ultimo Incidente",
+          "subtitles": {
+            "last30Days": "Ultimi 30 giorni",
+            "requiresAttention": "Richiede attenzione",
+            "monitoringRequired": "Monitoraggio richiesto",
+            "systemStatus": "Stato del sistema"
+          }
         }
       }
     }

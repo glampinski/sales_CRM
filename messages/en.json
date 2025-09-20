@@ -245,6 +245,16 @@
           "title": "Top Distributors",
           "description": "Highest performing distributors this month"
         },
+        "distributorStats": {
+          "title": "Distributor Statistics",
+          "totalDistributors": "Total Distributors",
+          "activeThisMonth": "Active This Month",
+          "topPerformers": "Top Performers",
+          "totalCommissionsPaid": "Total Commissions Paid"
+        },
+        "commissionBreakdown": {
+          "title": "Commission Breakdown"
+        },
         "userDistribution": {
           "title": "User Distribution",
           "superAdmin": "Super Admin",
@@ -278,6 +288,18 @@
           "affiliateSales": "Affiliate Sales",
           "recurringRevenue": "Recurring Revenue",
           "ofTotalRevenue": "of total revenue"
+        },
+        "systemHealth": {
+          "systemUptime": "System Uptime",
+          "activeErrors": "Active Errors",
+          "warnings": "Warnings",
+          "lastIncident": "Last Incident",
+          "subtitles": {
+            "last30Days": "Last 30 days",
+            "requiresAttention": "Requires attention",
+            "monitoringRequired": "Monitoring required",
+            "systemStatus": "System status"
+          }
         }
       }
     }

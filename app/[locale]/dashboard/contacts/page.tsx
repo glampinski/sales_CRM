@@ -36,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useTranslations } from 'next-intl'
 
 // Mock contact data
 const contacts = [
@@ -111,16 +112,17 @@ const statusColors = {
   lost: "destructive",
 } as const
 
-const stats = [
-  { label: "Total Contacts", value: "2,847", change: "+12.5%" },
-  { label: "Qualified Leads", value: "342", change: "+8.2%" },
-  { label: "This Month Added", value: "89", change: "+22.1%" },
-  { label: "Conversion Rate", value: "24.5%", change: "+2.1%" },
-]
-
 export default function ContactsPage() {
+  const t = useTranslations('contactsPage')
   const [viewMode, setViewMode] = useState<"table" | "cards">("table")
   const [statusFilter, setStatusFilter] = useState<string>("all")
+
+  const stats = [
+    { label: t('stats.totalContacts'), value: "2,847", change: "+12.5%" },
+    { label: t('stats.qualifiedLeads'), value: "342", change: "+8.2%" },
+    { label: t('stats.thisMonthAdded'), value: "89", change: "+22.1%" },
+    { label: t('stats.conversionRate'), value: "24.5%", change: "+2.1%" },
+  ]
 
   const filteredContacts = contacts.filter(contact => 
     statusFilter === "all" || contact.status === statusFilter
@@ -131,9 +133,9 @@ export default function ContactsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Contacts</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
           <p className="text-muted-foreground">
-            Manage your leads and customer relationships
+            {t('description')}
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -142,7 +144,7 @@ export default function ContactsPage() {
           </Button>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            Add Contact
+            {t('addContact')}
           </Button>
         </div>
       </div>
@@ -157,7 +159,7 @@ export default function ContactsPage() {
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
               <p className="text-xs text-muted-foreground">
-                <span className="text-green-600">{stat.change}</span> from last month
+                <span className="text-green-600">{stat.change}</span> {t('stats.fromLastMonth')}
               </p>
             </CardContent>
           </Card>
@@ -169,30 +171,30 @@ export default function ContactsPage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search contacts..."
+            placeholder={t('searchContacts')}
             className="pl-8"
           />
         </div>
         
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by status" />
+            <SelectValue placeholder={t('filterByStatus')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Contacts</SelectItem>
-            <SelectItem value="new">New</SelectItem>
-            <SelectItem value="contacted">Contacted</SelectItem>
-            <SelectItem value="qualified">Qualified</SelectItem>
-            <SelectItem value="proposal">Proposal</SelectItem>
-            <SelectItem value="won">Won</SelectItem>
-            <SelectItem value="lost">Lost</SelectItem>
+            <SelectItem value="all">{t('allContacts')}</SelectItem>
+            <SelectItem value="new">{t('status.new')}</SelectItem>
+            <SelectItem value="contacted">{t('status.contacted')}</SelectItem>
+            <SelectItem value="qualified">{t('status.qualified')}</SelectItem>
+            <SelectItem value="proposal">{t('status.proposal')}</SelectItem>
+            <SelectItem value="won">{t('status.won')}</SelectItem>
+            <SelectItem value="lost">{t('status.lost')}</SelectItem>
           </SelectContent>
         </Select>
 
         <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "table" | "cards")}>
           <TabsList>
-            <TabsTrigger value="table">Table</TabsTrigger>
-            <TabsTrigger value="cards">Cards</TabsTrigger>
+            <TabsTrigger value="table">{t('viewMode.table')}</TabsTrigger>
+            <TabsTrigger value="cards">{t('viewMode.cards')}</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -204,13 +206,13 @@ export default function ContactsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Lead Score</TableHead>
-                  <TableHead>Last Activity</TableHead>
-                  <TableHead>Next Follow-up</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('table.contact')}</TableHead>
+                  <TableHead>{t('table.company')}</TableHead>
+                  <TableHead>{t('table.status')}</TableHead>
+                  <TableHead>{t('table.leadScore')}</TableHead>
+                  <TableHead>{t('table.lastActivity')}</TableHead>
+                  <TableHead>{t('table.nextFollowup')}</TableHead>
+                  <TableHead className="text-right">{t('table.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -238,7 +240,7 @@ export default function ContactsPage() {
                     </TableCell>
                     <TableCell>
                       <Badge variant={statusColors[contact.status as keyof typeof statusColors]}>
-                        {contact.status}
+                        {t(`status.${contact.status}`)}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -273,20 +275,20 @@ export default function ContactsPage() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem>
                               <Eye className="mr-2 h-4 w-4" />
-                              View Details
+                              {t('actions.viewDetails')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                               <Edit className="mr-2 h-4 w-4" />
-                              Edit Contact
+                              {t('actions.editContact')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                               <Calendar className="mr-2 h-4 w-4" />
-                              Schedule Task
+                              {t('actions.scheduleTask')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-destructive">
                               <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
+                              {t('actions.delete')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -318,7 +320,7 @@ export default function ContactsPage() {
                       </CardDescription>
                     </div>
                     <Badge variant={statusColors[contact.status as keyof typeof statusColors]}>
-                      {contact.status}
+                      {t(`status.${contact.status}`)}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -336,7 +338,7 @@ export default function ContactsPage() {
                   
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <span className="text-sm text-muted-foreground">Lead Score:</span>
+                      <span className="text-sm text-muted-foreground">{t('leadScore')}:</span>
                       <div className="flex items-center">
                         <span className="text-sm font-medium">{contact.leadScore}</span>
                         <div className={`w-2 h-2 rounded-full ml-2 ${
@@ -368,7 +370,7 @@ export default function ContactsPage() {
                       </Button>
                     </div>
                     <Button variant="ghost" size="sm">
-                      View Details
+                      {t('actions.viewDetails')}
                     </Button>
                   </div>
                 </CardContent>

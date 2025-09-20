@@ -738,6 +738,50 @@
       }
     }
   },
+  "contactsPage": {
+    "title": "Contatti",
+    "description": "Gestisci i tuoi lead e le relazioni con i clienti",
+    "addContact": "Aggiungi Contatto",
+    "searchContacts": "Cerca contatti...",
+    "filterByStatus": "Filtra per stato",
+    "allContacts": "Tutti i Contatti",
+    "viewMode": {
+      "table": "Tabella",
+      "cards": "Schede"
+    },
+    "stats": {
+      "totalContacts": "Contatti Totali",
+      "qualifiedLeads": "Lead Qualificati",
+      "thisMonthAdded": "Aggiunti Questo Mese",
+      "conversionRate": "Tasso di Conversione",
+      "fromLastMonth": "rispetto al mese scorso"
+    },
+    "status": {
+      "new": "Nuovo",
+      "contacted": "Contattato",
+      "qualified": "Qualificato",
+      "proposal": "Proposta",
+      "negotiation": "Negoziazione",
+      "won": "Vinto",
+      "lost": "Perso"
+    },
+    "table": {
+      "contact": "Contatto",
+      "company": "Azienda",
+      "status": "Stato",
+      "leadScore": "Punteggio Lead",
+      "lastActivity": "Ultima Attività",
+      "nextFollowup": "Prossimo Follow-up",
+      "actions": "Azioni"
+    },
+    "actions": {
+      "viewDetails": "Visualizza Dettagli",
+      "editContact": "Modifica Contatto",
+      "scheduleTask": "Programma Attività",
+      "delete": "Elimina"
+    },
+    "leadScore": "Punteggio Lead"
+  },
   "referrals": {
     "title": "Centro Referral",
     "description": "Fai crescere la tua rete e guadagna commissioni riferendo nuovi membri",

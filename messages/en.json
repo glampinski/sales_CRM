@@ -738,6 +738,50 @@
       }
     }
   },
+  "contactsPage": {
+    "title": "Contacts",
+    "description": "Manage your leads and customer relationships",
+    "addContact": "Add Contact",
+    "searchContacts": "Search contacts...",
+    "filterByStatus": "Filter by status",
+    "allContacts": "All Contacts",
+    "viewMode": {
+      "table": "Table",
+      "cards": "Cards"
+    },
+    "stats": {
+      "totalContacts": "Total Contacts",
+      "qualifiedLeads": "Qualified Leads",
+      "thisMonthAdded": "This Month Added",
+      "conversionRate": "Conversion Rate",
+      "fromLastMonth": "from last month"
+    },
+    "status": {
+      "new": "New",
+      "contacted": "Contacted",
+      "qualified": "Qualified",
+      "proposal": "Proposal",
+      "negotiation": "Negotiation",
+      "won": "Won",
+      "lost": "Lost"
+    },
+    "table": {
+      "contact": "Contact",
+      "company": "Company",
+      "status": "Status",
+      "leadScore": "Lead Score",
+      "lastActivity": "Last Activity",
+      "nextFollowup": "Next Follow-up",
+      "actions": "Actions"
+    },
+    "actions": {
+      "viewDetails": "View Details",
+      "editContact": "Edit Contact",
+      "scheduleTask": "Schedule Task",
+      "delete": "Delete"
+    },
+    "leadScore": "Lead Score"
+  },
   "referrals": {
     "title": "Referral Center",
     "description": "Grow your network and earn commissions by referring new members",

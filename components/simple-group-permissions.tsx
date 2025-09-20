@@ -591,6 +591,514 @@ export function SimpleGroupPermissions() {
     return categoryNames[categoryKey] || categoryKey
   }
 
+  // Translate feature names and descriptions
+  const getFeatureTranslation = (featureName: string, description: string) => {
+    const featureTranslations: Record<string, { name: string; description: string }> = {
+      'View Dashboard': { 
+        name: t('features.dashboard.viewDashboard'), 
+        description: t('features.dashboard.descriptions.viewDashboard') 
+      },
+      'View Statistics': { 
+        name: t('features.dashboard.viewStatistics'), 
+        description: t('features.dashboard.descriptions.viewStatistics') 
+      },
+      'View Charts': { 
+        name: t('features.dashboard.viewCharts'), 
+        description: t('features.dashboard.descriptions.viewCharts') 
+      },
+      'Export Data': { 
+        name: t('features.dashboard.exportData'), 
+        description: t('features.dashboard.descriptions.exportData') 
+      },
+      'View Referrals': { 
+        name: t('features.referralSystem.viewReferrals'), 
+        description: t('features.referralSystem.descriptions.viewReferrals') 
+      },
+      'Generate Links': { 
+        name: t('features.referralSystem.generateLinks'), 
+        description: t('features.referralSystem.descriptions.generateLinks') 
+      },
+      'Manage System': { 
+        name: t('features.referralSystem.manageSystem'), 
+        description: t('features.referralSystem.descriptions.manageSystem') 
+      },
+      'View Analytics': { 
+        name: t('features.referralSystem.viewAnalytics'), 
+        description: t('features.referralSystem.descriptions.viewAnalytics') 
+      },
+      'Set Permissions': { 
+        name: t('features.referralSystem.setPermissions'), 
+        description: t('features.referralSystem.descriptions.setPermissions') 
+      },
+      'View Contacts': { 
+        name: t('features.contacts.viewContacts'), 
+        description: t('features.contacts.descriptions.viewContacts') 
+      },
+      'Add Contacts': { 
+        name: t('features.contacts.addContacts'), 
+        description: t('features.contacts.descriptions.addContacts') 
+      },
+      'Edit Contacts': { 
+        name: t('features.contacts.editContacts'), 
+        description: t('features.contacts.descriptions.editContacts') 
+      },
+      'Delete Contacts': { 
+        name: t('features.contacts.deleteContacts'), 
+        description: t('features.contacts.descriptions.deleteContacts') 
+      },
+      'Export Contacts': { 
+        name: t('features.contacts.exportContacts'), 
+        description: t('features.contacts.descriptions.exportContacts') 
+      },
+      'Import Contacts': { 
+        name: t('features.contacts.importContacts'), 
+        description: t('features.contacts.descriptions.importContacts') 
+      },
+      'View Tasks': { 
+        name: t('features.tasks.viewTasks'), 
+        description: t('features.tasks.descriptions.viewTasks') 
+      },
+      'Create Tasks': { 
+        name: t('features.tasks.createTasks'), 
+        description: t('features.tasks.descriptions.createTasks') 
+      },
+      'Edit Tasks': { 
+        name: t('features.tasks.editTasks'), 
+        description: t('features.tasks.descriptions.editTasks') 
+      },
+      'Delete Tasks': { 
+        name: t('features.tasks.deleteTasks'), 
+        description: t('features.tasks.descriptions.deleteTasks') 
+      },
+      'Assign Tasks': { 
+        name: t('features.tasks.assignTasks'), 
+        description: t('features.tasks.descriptions.assignTasks') 
+      },
+      'Track Progress': { 
+        name: t('features.tasks.trackProgress'), 
+        description: t('features.tasks.descriptions.trackProgress') 
+      },
+      'View Pipeline': { 
+        name: t('features.pipeline.viewPipeline'), 
+        description: t('features.pipeline.descriptions.viewPipeline') 
+      },
+      'Manage Pipeline': { 
+        name: t('features.pipeline.managePipeline'), 
+        description: t('features.pipeline.descriptions.managePipeline') 
+      },
+      'Create Deals': { 
+        name: t('features.pipeline.createDeals'), 
+        description: t('features.pipeline.descriptions.createDeals') 
+      },
+      'Edit Deals': { 
+        name: t('features.pipeline.editDeals'), 
+        description: t('features.pipeline.descriptions.editDeals') 
+      },
+      'Generate Reports': { 
+        name: t('features.pipeline.generateReports'), 
+        description: t('features.pipeline.descriptions.generateReports') 
+      },
+      'View Genealogy': { 
+        name: t('features.genealogy.viewGenealogy'), 
+        description: t('features.genealogy.descriptions.viewGenealogy') 
+      },
+      'Manage Structure': { 
+        name: t('features.genealogy.manageStructure'), 
+        description: t('features.genealogy.descriptions.manageStructure') 
+      },
+      'View Tree': { 
+        name: t('features.genealogy.viewTree'), 
+        description: t('features.genealogy.descriptions.viewTree') 
+      },
+      'Edit Structure': { 
+        name: t('features.genealogy.editStructure'), 
+        description: t('features.genealogy.descriptions.editStructure') 
+      },
+      'Manage Downlines': { 
+        name: t('features.genealogy.manageDownlines'), 
+        description: t('features.genealogy.descriptions.manageDownlines') 
+      },
+      'View Uplines': { 
+        name: t('features.genealogy.viewUplines'), 
+        description: t('features.genealogy.descriptions.viewUplines') 
+      },
+      'Export Tree': { 
+        name: t('features.genealogy.exportTree'), 
+        description: t('features.genealogy.descriptions.exportTree') 
+      },
+      'Track Performance': { 
+        name: t('features.genealogy.trackPerformance'), 
+        description: t('features.genealogy.descriptions.trackPerformance') 
+      },
+      'View Commission': { 
+        name: t('features.commission.viewCommission'), 
+        description: t('features.commission.descriptions.viewCommission') 
+      },
+      'Calculate Commission': { 
+        name: t('features.commission.calculateCommission'), 
+        description: t('features.commission.descriptions.calculateCommission') 
+      },
+      'View Commissions': { 
+        name: t('features.commission.viewCommissions'), 
+        description: t('features.commission.descriptions.viewCommissions') 
+      },
+      'Calculate Commissions': { 
+        name: t('features.commission.calculateCommissions'), 
+        description: t('features.commission.descriptions.calculateCommissions') 
+      },
+      'Process Payouts': { 
+        name: t('features.commission.processPayouts'), 
+        description: t('features.commission.descriptions.processPayouts') 
+      },
+      'View Reports': { 
+        name: t('features.commission.viewReports'), 
+        description: t('features.commission.descriptions.viewReports') 
+      },
+      'Adjust Commissions': { 
+        name: t('features.commission.adjustCommissions'), 
+        description: t('features.commission.descriptions.adjustCommissions') 
+      },
+      'Manage Rates': { 
+        name: t('features.commission.manageRates'), 
+        description: t('features.commission.descriptions.manageRates') 
+      },
+      'View Ranks': { 
+        name: t('features.ranks.viewRanks'), 
+        description: t('features.ranks.descriptions.viewRanks') 
+      },
+      'Manage Rankings': { 
+        name: t('features.ranks.manageRankings'), 
+        description: t('features.ranks.descriptions.manageRankings') 
+      },
+      'Set Requirements': { 
+        name: t('features.ranks.setRequirements'), 
+        description: t('features.ranks.descriptions.setRequirements') 
+      },
+      'Assign Ranks': { 
+        name: t('features.ranks.assignRanks'), 
+        description: t('features.ranks.descriptions.assignRanks') 
+      },
+      'View Affiliates': { 
+        name: t('features.affiliates.viewAffiliates'), 
+        description: t('features.affiliates.descriptions.viewAffiliates') 
+      },
+      'Manage Affiliates': { 
+        name: t('features.affiliates.manageAffiliates'), 
+        description: t('features.affiliates.descriptions.manageAffiliates') 
+      },
+      'Approve Applications': { 
+        name: t('features.affiliates.approveApplications'), 
+        description: t('features.affiliates.descriptions.approveApplications') 
+      },
+      'Set Commissions': { 
+        name: t('features.affiliates.setCommissions'), 
+        description: t('features.affiliates.descriptions.setCommissions') 
+      },
+      'View Users': { 
+        name: t('features.userManagement.viewUsers'), 
+        description: t('features.userManagement.descriptions.viewUsers') 
+      },
+      'Create Users': { 
+        name: t('features.userManagement.createUsers'), 
+        description: t('features.userManagement.descriptions.createUsers') 
+      },
+      'Edit Users': { 
+        name: t('features.userManagement.editUsers'), 
+        description: t('features.userManagement.descriptions.editUsers') 
+      },
+      'Delete Users': { 
+        name: t('features.userManagement.deleteUsers'), 
+        description: t('features.userManagement.descriptions.deleteUsers') 
+      },
+      'Manage Roles': { 
+        name: t('features.userManagement.manageRoles'), 
+        description: t('features.userManagement.descriptions.manageRoles') 
+      },
+      'Reset Passwords': { 
+        name: t('features.userManagement.resetPasswords'), 
+        description: t('features.userManagement.descriptions.resetPasswords') 
+      },
+      'View Invitations': { 
+        name: t('features.invitations.viewInvitations'), 
+        description: t('features.invitations.descriptions.viewInvitations') 
+      },
+      'Send Invitations': { 
+        name: t('features.invitations.sendInvitations'), 
+        description: t('features.invitations.descriptions.sendInvitations') 
+      },
+      'Manage Invitations': { 
+        name: t('features.invitations.manageInvitations'), 
+        description: t('features.invitations.descriptions.manageInvitations') 
+      },
+      'Track Status': { 
+        name: t('features.invitations.trackStatus'), 
+        description: t('features.invitations.descriptions.trackStatus') 
+      },
+      'Resend Invitations': { 
+        name: t('features.invitations.resendInvitations'), 
+        description: t('features.invitations.descriptions.resendInvitations') 
+      },
+      'View Settings': { 
+        name: t('features.settings.viewSettings'), 
+        description: t('features.settings.descriptions.viewSettings') 
+      },
+      'Edit Settings': { 
+        name: t('features.settings.editSettings'), 
+        description: t('features.settings.descriptions.editSettings') 
+      },
+      'Manage Integrations': { 
+        name: t('features.settings.manageIntegrations'), 
+        description: t('features.settings.descriptions.manageIntegrations') 
+      },
+      'Configure System': { 
+        name: t('features.settings.configureSystem'), 
+        description: t('features.settings.descriptions.configureSystem') 
+      },
+      'Backup & Restore': { 
+        name: t('features.settings.backupRestore'), 
+        description: t('features.settings.descriptions.backupRestore') 
+      },
+      'View Customers': { 
+        name: t('features.customers.viewCustomers'), 
+        description: t('features.customers.descriptions.viewCustomers') 
+      },
+      'Add Customers': { 
+        name: t('features.customers.addCustomers'), 
+        description: t('features.customers.descriptions.addCustomers') 
+      },
+      'Edit Customers': { 
+        name: t('features.customers.editCustomers'), 
+        description: t('features.customers.descriptions.editCustomers') 
+      },
+      'Delete Customers': { 
+        name: t('features.customers.deleteCustomers'), 
+        description: t('features.customers.descriptions.deleteCustomers') 
+      },
+      'Manage Orders': { 
+        name: t('features.customers.manageOrders'), 
+        description: t('features.customers.descriptions.manageOrders') 
+      },
+      'View History': { 
+        name: t('features.customers.viewHistory'), 
+        description: t('features.customers.descriptions.viewHistory') 
+      },
+      'View Products': { 
+        name: t('features.products.viewProducts'), 
+        description: t('features.products.descriptions.viewProducts') 
+      },
+      'Add Products': { 
+        name: t('features.products.addProducts'), 
+        description: t('features.products.descriptions.addProducts') 
+      },
+      'Edit Products': { 
+        name: t('features.products.editProducts'), 
+        description: t('features.products.descriptions.editProducts') 
+      },
+      'Delete Products': { 
+        name: t('features.products.deleteProducts'), 
+        description: t('features.products.descriptions.deleteProducts') 
+      },
+      'Manage Inventory': { 
+        name: t('features.products.manageInventory'), 
+        description: t('features.products.descriptions.manageInventory') 
+      },
+      'Set Pricing': { 
+        name: t('features.products.setPricing'), 
+        description: t('features.products.descriptions.setPricing') 
+      },
+      'View Orders': { 
+        name: t('features.orders.viewOrders'), 
+        description: t('features.orders.descriptions.viewOrders') 
+      },
+      'Process Orders': { 
+        name: t('features.orders.processOrders'), 
+        description: t('features.orders.descriptions.processOrders') 
+      },
+      'Edit Orders': { 
+        name: t('features.orders.editOrders'), 
+        description: t('features.orders.descriptions.editOrders') 
+      },
+      'Cancel Orders': { 
+        name: t('features.orders.cancelOrders'), 
+        description: t('features.orders.descriptions.cancelOrders') 
+      },
+      'Track Shipping': { 
+        name: t('features.orders.trackShipping'), 
+        description: t('features.orders.descriptions.trackShipping') 
+      },
+      'Generate Invoices': { 
+        name: t('features.orders.generateInvoices'), 
+        description: t('features.orders.descriptions.generateInvoices') 
+      },
+      'View Payments': { 
+        name: t('features.payments.viewPayments'), 
+        description: t('features.payments.descriptions.viewPayments') 
+      },
+      'Process Payments': { 
+        name: t('features.payments.processPayments'), 
+        description: t('features.payments.descriptions.processPayments') 
+      },
+      'Refund Payments': { 
+        name: t('features.payments.refundPayments'), 
+        description: t('features.payments.descriptions.refundPayments') 
+      },
+      'Manage Gateways': { 
+        name: t('features.payments.manageGateways'), 
+        description: t('features.payments.descriptions.manageGateways') 
+      },
+      'View Transactions': { 
+        name: t('features.payments.viewTransactions'), 
+        description: t('features.payments.descriptions.viewTransactions') 
+      },
+      'View Wallet': { 
+        name: t('features.wallet.viewWallet'), 
+        description: t('features.wallet.descriptions.viewWallet') 
+      },
+      'Manage Balance': { 
+        name: t('features.wallet.manageBalance'), 
+        description: t('features.wallet.descriptions.manageBalance') 
+      },
+      'Transfer Funds': { 
+        name: t('features.wallet.transferFunds'), 
+        description: t('features.wallet.descriptions.transferFunds') 
+      },
+      'Withdraw Funds': { 
+        name: t('features.wallet.withdrawFunds'), 
+        description: t('features.wallet.descriptions.withdrawFunds') 
+      },
+      'Add Funds': { 
+        name: t('features.wallet.addFunds'), 
+        description: t('features.wallet.descriptions.addFunds') 
+      },
+      'View Campaigns': { 
+        name: t('features.marketing.viewCampaigns'), 
+        description: t('features.marketing.descriptions.viewCampaigns') 
+      },
+      'Create Campaigns': { 
+        name: t('features.marketing.createCampaigns'), 
+        description: t('features.marketing.descriptions.createCampaigns') 
+      },
+      'Manage Campaigns': { 
+        name: t('features.marketing.manageCampaigns'), 
+        description: t('features.marketing.descriptions.manageCampaigns') 
+      },
+      'Manage Content': { 
+        name: t('features.marketing.manageContent'), 
+        description: t('features.marketing.descriptions.manageContent') 
+      },
+      'Schedule Reports': { 
+        name: t('features.reports.scheduleReports'), 
+        description: t('features.reports.descriptions.scheduleReports') 
+      },
+      'Export Reports': { 
+        name: t('features.reports.exportReports'), 
+        description: t('features.reports.descriptions.exportReports') 
+      },
+      'Custom Reports': { 
+        name: t('features.reports.customReports'), 
+        description: t('features.reports.descriptions.customReports') 
+      },
+      'Share Reports': { 
+        name: t('features.reports.shareReports'), 
+        description: t('features.reports.descriptions.shareReports') 
+      },
+      'View Training': { 
+        name: t('features.training.viewTraining'), 
+        description: t('features.training.descriptions.viewTraining') 
+      },
+      'Create Content': { 
+        name: t('features.training.createContent'), 
+        description: t('features.training.descriptions.createContent') 
+      },
+      'Assign Training': { 
+        name: t('features.training.assignTraining'), 
+        description: t('features.training.descriptions.assignTraining') 
+      },
+      'View Certificates': { 
+        name: t('features.training.viewCertificates'), 
+        description: t('features.training.descriptions.viewCertificates') 
+      },
+      'View Tickets': { 
+        name: t('features.support.viewTickets'), 
+        description: t('features.support.descriptions.viewTickets') 
+      },
+      'Create Tickets': { 
+        name: t('features.support.createTickets'), 
+        description: t('features.support.descriptions.createTickets') 
+      },
+      'Manage Tickets': { 
+        name: t('features.support.manageTickets'), 
+        description: t('features.support.descriptions.manageTickets') 
+      },
+      'Respond Tickets': { 
+        name: t('features.support.respondTickets'), 
+        description: t('features.support.descriptions.respondTickets') 
+      },
+      'Escalate Tickets': { 
+        name: t('features.support.escalateTickets'), 
+        description: t('features.support.descriptions.escalateTickets') 
+      },
+      'View Knowledge Base': { 
+        name: t('features.support.viewKnowledgeBase'), 
+        description: t('features.support.descriptions.viewKnowledgeBase') 
+      },
+      'View Messages': { 
+        name: t('features.communication.viewMessages'), 
+        description: t('features.communication.descriptions.viewMessages') 
+      },
+      'Send Messages': { 
+        name: t('features.communication.sendMessages'), 
+        description: t('features.communication.descriptions.sendMessages') 
+      },
+      'Manage Notifications': { 
+        name: t('features.communication.manageNotifications'), 
+        description: t('features.communication.descriptions.manageNotifications') 
+      },
+      'View Announcements': { 
+        name: t('features.communication.viewAnnouncements'), 
+        description: t('features.communication.descriptions.viewAnnouncements') 
+      },
+      'Create Announcements': { 
+        name: t('features.communication.createAnnouncements'), 
+        description: t('features.communication.descriptions.createAnnouncements') 
+      },
+      'Manage Channels': { 
+        name: t('features.communication.manageChannels'), 
+        description: t('features.communication.descriptions.manageChannels') 
+      }
+    }
+    return featureTranslations[featureName] || { name: featureName, description }
+  }
+
+  // Translate link names (section titles)
+  const getLinkName = (linkName: string) => {
+    const linkTranslations: Record<string, string> = {
+      'Dashboard': t('features.dashboard.title'),
+      'Referral System': t('features.referralSystem.title'),
+      'Contacts': t('features.contacts.title'),
+      'Tasks': t('features.tasks.title'),
+      'Pipeline': t('features.pipeline.title'),
+      'Genealogy': t('features.genealogy.title'),
+      'Commission': t('features.commission.title'),
+      'Ranks': t('features.ranks.title'),
+      'Affiliates': t('features.affiliates.title'),
+      'Customers': t('features.customers.title'),
+      'Products': t('features.products.title'),
+      'Orders': t('features.orders.title'),
+      'Payments': t('features.payments.title'),
+      'Wallet': t('features.wallet.title'),
+      'Marketing': t('features.marketing.title'),
+      'Reports': t('features.reports.title'),
+      'Training': t('features.training.title'),
+      'Support': t('features.support.title'),
+      'Communication': t('features.communication.title'),
+      'User Management': t('features.userManagement.title'),
+      'Invitations': t('features.invitations.title'),
+      'Settings': t('features.settings.title')
+    }
+    return linkTranslations[linkName] || linkName
+  }
+
   // Calculate totals
   const totalLinks = Object.values(navigationStructure).reduce((sum, category) => sum + category.links.length, 0)
   const totalModules = Object.values(navigationStructure).reduce(
@@ -772,9 +1280,9 @@ export function SimpleGroupPermissions() {
                         <div className="flex items-center space-x-3">
                           <link.icon className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <h4 className="font-medium text-foreground">{link.name}</h4>
+                            <h4 className="font-medium text-foreground">{getLinkName(link.name)}</h4>
                             <p className="text-sm text-muted-foreground">
-                              {link.modules.length} features and modules
+                              {link.modules.length} {t('features.common.featuresAndModules')}
                             </p>
                           </div>
                         </div>
@@ -798,11 +1306,14 @@ export function SimpleGroupPermissions() {
                         <div className="border-t bg-muted/20 p-4">
                           <div className="space-y-3">
                             {link.modules
-                              .filter(module => 
-                                searchTerm === '' || 
-                                module.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                module.description.toLowerCase().includes(searchTerm.toLowerCase())
-                              )
+                              .filter(module => {
+                                if (searchTerm === '') return true
+                                const translated = getFeatureTranslation(module.name, module.description)
+                                return module.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                       module.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                       translated.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                       translated.description.toLowerCase().includes(searchTerm.toLowerCase())
+                              })
                               .map((module) => (
                               <div key={module.id} className="flex items-center justify-between p-3 bg-card rounded border">
                                 <div className="flex items-center space-x-3">
@@ -810,8 +1321,8 @@ export function SimpleGroupPermissions() {
                                     getPermissionValue(link.id, module.id) ? 'bg-green-500' : 'bg-muted-foreground'
                                   }`} />
                                   <div>
-                                    <p className="font-medium text-sm text-foreground">{module.name}</p>
-                                    <p className="text-xs text-muted-foreground">{module.description}</p>
+                                    <p className="font-medium text-sm text-foreground">{getFeatureTranslation(module.name, module.description).name}</p>
+                                    <p className="text-xs text-muted-foreground">{getFeatureTranslation(module.name, module.description).description}</p>
                                   </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
@@ -823,7 +1334,7 @@ export function SimpleGroupPermissions() {
                                   ) : (
                                     <>
                                       <Badge variant={getPermissionValue(link.id, module.id) ? "default" : "secondary"}>
-                                        {getPermissionValue(link.id, module.id) ? "Enabled" : "Disabled"}
+                                        {getPermissionValue(link.id, module.id) ? t('features.common.enabled') : t('features.common.disabled')}
                                       </Badge>
                                       {getPermissionValue(link.id, module.id) ? (
                                         <CheckCircle className="h-4 w-4 text-green-500" />

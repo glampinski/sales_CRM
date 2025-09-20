@@ -321,6 +321,381 @@
       "search": {
         "placeholder": "Cerca link di navigazione e funzionalità..."
       },
+      "features": {
+        "dashboard": {
+          "title": "Dashboard",
+          "viewDashboard": "Visualizza Dashboard",
+          "viewStatistics": "Visualizza Statistiche", 
+          "viewCharts": "Visualizza Grafici",
+          "exportData": "Esporta Dati",
+          "descriptions": {
+            "viewDashboard": "Accedi alla pagina principale del dashboard",
+            "viewStatistics": "Visualizza widget statistiche del dashboard",
+            "viewCharts": "Accedi a grafici e diagrammi analitici",
+            "exportData": "Esporta dati del dashboard in file"
+          }
+        },
+        "referralSystem": {
+          "title": "Sistema Referral",
+          "viewReferrals": "Visualizza Referral",
+          "generateLinks": "Genera Link",
+          "manageSystem": "Gestisci Sistema",
+          "viewAnalytics": "Visualizza Analisi",
+          "setPermissions": "Imposta Permessi",
+          "descriptions": {
+            "viewReferrals": "Accedi al dashboard referral e alle statistiche",
+            "generateLinks": "Crea nuovi link e codici referral",
+            "manageSystem": "Configura le impostazioni del sistema referral", 
+            "viewAnalytics": "Accedi ai dati dettagliati delle performance referral",
+            "setPermissions": "Controlla chi può accedere alle funzioni referral"
+          }
+        },
+        "contacts": {
+          "title": "Contatti",
+          "viewContacts": "Visualizza Contatti",
+          "addContacts": "Aggiungi Contatti",
+          "editContacts": "Modifica Contatti",
+          "deleteContacts": "Elimina Contatti",
+          "exportContacts": "Esporta Contatti",
+          "importContacts": "Importa Contatti",
+          "descriptions": {
+            "viewContacts": "Accedi all'elenco contatti e ai dettagli",
+            "addContacts": "Crea nuove voci di contatto",
+            "editContacts": "Modifica informazioni contatto esistenti",
+            "deleteContacts": "Rimuovi contatti dal sistema",
+            "exportContacts": "Esporta dati contatti in file",
+            "importContacts": "Importa dati contatti da fonti esterne"
+          }
+        },
+        "tasks": {
+          "title": "Attività",
+          "viewTasks": "Visualizza Attività",
+          "createTasks": "Crea Attività",
+          "editTasks": "Modifica Attività",
+          "deleteTasks": "Elimina Attività",
+          "assignTasks": "Assegna Attività",
+          "trackProgress": "Monitora Progresso",
+          "descriptions": {
+            "viewTasks": "Accedi all'elenco attività e ai dettagli",
+            "createTasks": "Crea nuove attività e flussi di lavoro",
+            "editTasks": "Modifica informazioni attività esistenti",
+            "deleteTasks": "Rimuovi attività dal sistema",
+            "assignTasks": "Assegna attività ai membri del team",
+            "trackProgress": "Monitora completamento e progresso attività"
+          }
+        },
+        "pipeline": {
+          "title": "Pipeline",
+          "viewPipeline": "Visualizza Pipeline",
+          "managePipeline": "Gestisci Pipeline",
+          "createDeals": "Crea Opportunità",
+          "editDeals": "Modifica Opportunità",
+          "trackProgress": "Monitora Progresso",
+          "generateReports": "Genera Report",
+          "descriptions": {
+            "viewPipeline": "Accedi alla pipeline vendite e alle opportunità",
+            "managePipeline": "Configura fasi pipeline e flussi di lavoro",
+            "createDeals": "Crea nuove opportunità e affari",
+            "editDeals": "Modifica informazioni opportunità esistenti",
+            "trackProgress": "Monitora progresso opportunità attraverso le fasi",
+            "generateReports": "Crea report performance pipeline"
+          }
+        },
+        "genealogy": {
+          "title": "Genealogia",
+          "viewGenealogy": "Visualizza Genealogia",
+          "manageDownlines": "Gestisci Downline",
+          "viewUplines": "Visualizza Upline",
+          "trackPerformance": "Monitora Performance",
+          "exportTree": "Esporta Albero",
+          "manageStructure": "Gestisci Struttura",
+          "viewTree": "Visualizza Albero",
+          "editStructure": "Modifica Struttura",
+          "descriptions": {
+            "viewGenealogy": "Accedi all'albero genealogico e struttura del team",
+            "manageDownlines": "Gestisci membri del team downline",
+            "viewUplines": "Visualizza informazioni sponsor upline",
+            "trackPerformance": "Monitora metriche performance del team",
+            "exportTree": "Esporta dati albero genealogico",
+            "manageStructure": "Gestisci struttura organizzativa del team",
+            "viewTree": "Visualizza rappresentazione albero del team",
+            "editStructure": "Modifica struttura e organizzazione del team"
+          }
+        },
+        "commission": {
+          "title": "Commissioni",
+          "viewCommissions": "Visualizza Commissioni",
+          "calculateCommissions": "Calcola Commissioni",
+          "processPayouts": "Elabora Pagamenti",
+          "viewReports": "Visualizza Report",
+          "adjustCommissions": "Aggiusta Commissioni",
+          "viewCommission": "Visualizza Commissioni",
+          "calculateCommission": "Calcola Commissioni",
+          "manageRates": "Gestisci Tariffe",
+          "descriptions": {
+            "viewCommissions": "Accedi al dashboard commissioni e guadagni",
+            "calculateCommissions": "Calcola commissioni team e personali",
+            "processPayouts": "Elabora pagamenti commissioni",
+            "viewReports": "Genera report commissioni",
+            "adjustCommissions": "Apporta modifiche alle commissioni",
+            "viewCommission": "Accedi al dashboard commissioni e guadagni",
+            "calculateCommission": "Calcola commissioni team e personali",
+            "manageRates": "Gestisci tariffe e strutture commissioni"
+          }
+        },
+        "ranks": {
+          "title": "Gradi",
+          "viewRanks": "Visualizza Gradi",
+          "manageRankings": "Gestisci Classifiche",
+          "setRequirements": "Imposta Requisiti",
+          "trackProgress": "Monitora Progresso",
+          "assignRanks": "Assegna Gradi",
+          "descriptions": {
+            "viewRanks": "Visualizza struttura gradi e requisiti",
+            "manageRankings": "Gestisci classifiche membri del team",
+            "setRequirements": "Configura requisiti per i gradi",
+            "trackProgress": "Monitora progresso avanzamento gradi",
+            "assignRanks": "Assegna manualmente gradi ai membri"
+          }
+        },
+        "affiliates": {
+          "title": "Affiliati",
+          "viewAffiliates": "Visualizza Affiliati",
+          "manageAffiliates": "Gestisci Affiliati",
+          "approveApplications": "Approva Candidature",
+          "setCommissions": "Imposta Commissioni",
+          "trackPerformance": "Monitora Performance",
+          "descriptions": {
+            "viewAffiliates": "Accedi all'elenco membri affiliati e dettagli",
+            "manageAffiliates": "Gestisci account affiliati e impostazioni",
+            "approveApplications": "Rivedi e approva candidature affiliati",
+            "setCommissions": "Configura tassi commissione affiliati",
+            "trackPerformance": "Monitora metriche performance affiliati"
+          }
+        },
+        "userManagement": {
+          "title": "Gestione Utenti",
+          "viewUsers": "Visualizza Utenti",
+          "createUsers": "Crea Utenti",
+          "editUsers": "Modifica Utenti",
+          "deleteUsers": "Elimina Utenti",
+          "manageRoles": "Gestisci Ruoli",
+          "resetPasswords": "Resetta Password",
+          "descriptions": {
+            "viewUsers": "Accedi all'elenco utenti e dettagli account",
+            "createUsers": "Crea nuovi account utente",
+            "editUsers": "Modifica informazioni account utente",
+            "deleteUsers": "Rimuovi account utente dal sistema",
+            "manageRoles": "Assegna e gestisci ruoli utente",
+            "resetPasswords": "Resetta password utenti"
+          }
+        },
+        "invitations": {
+          "title": "Inviti",
+          "viewInvitations": "Visualizza Inviti",
+          "sendInvitations": "Invia Inviti",
+          "manageInvitations": "Gestisci Inviti",
+          "trackStatus": "Monitora Stato",
+          "resendInvitations": "Reinvia Inviti",
+          "descriptions": {
+            "viewInvitations": "Visualizza inviti inviati e in sospeso",
+            "sendInvitations": "Invia nuovi inviti utente",
+            "manageInvitations": "Gestisci impostazioni inviti",
+            "trackStatus": "Monitora stato consegna inviti",
+            "resendInvitations": "Reinvia inviti falliti o scaduti"
+          }
+        },
+        "settings": {
+          "title": "Impostazioni",
+          "viewSettings": "Visualizza Impostazioni",
+          "editSettings": "Modifica Impostazioni",
+          "manageIntegrations": "Gestisci Integrazioni",
+          "configureSystem": "Configura Sistema",
+          "backupRestore": "Backup e Ripristino",
+          "descriptions": {
+            "viewSettings": "Accedi alle impostazioni configurazione sistema",
+            "editSettings": "Modifica impostazioni sistema e applicazione",
+            "manageIntegrations": "Configura integrazioni di terze parti",
+            "configureSystem": "Configura parametri sistema principali",
+            "backupRestore": "Gestisci backup sistema e ripristino"
+          }
+        },
+        "customers": {
+          "title": "Clienti",
+          "viewCustomers": "Visualizza Clienti",
+          "addCustomers": "Aggiungi Clienti",
+          "editCustomers": "Modifica Clienti",
+          "deleteCustomers": "Elimina Clienti",
+          "manageOrders": "Gestisci Ordini",
+          "viewHistory": "Visualizza Storico",
+          "descriptions": {
+            "viewCustomers": "Accedi all'elenco clienti e profili",
+            "addCustomers": "Crea nuovi account cliente",
+            "editCustomers": "Modifica informazioni cliente",
+            "deleteCustomers": "Rimuovi account cliente",
+            "manageOrders": "Gestisci ordini e transazioni cliente",
+            "viewHistory": "Visualizza storico acquisti cliente"
+          }
+        },
+        "products": {
+          "title": "Prodotti",
+          "viewProducts": "Visualizza Prodotti",
+          "addProducts": "Aggiungi Prodotti",
+          "editProducts": "Modifica Prodotti",
+          "deleteProducts": "Elimina Prodotti",
+          "manageInventory": "Gestisci Inventario",
+          "setPricing": "Imposta Prezzi",
+          "descriptions": {
+            "viewProducts": "Accedi al catalogo prodotti e dettagli",
+            "addProducts": "Crea nuove schede prodotto",
+            "editProducts": "Modifica informazioni prodotto",
+            "deleteProducts": "Rimuovi prodotti dal catalogo",
+            "manageInventory": "Gestisci livelli inventario prodotti",
+            "setPricing": "Configura prezzi prodotti e sconti"
+          }
+        },
+        "orders": {
+          "title": "Ordini",
+          "viewOrders": "Visualizza Ordini",
+          "processOrders": "Elabora Ordini",
+          "editOrders": "Modifica Ordini",
+          "cancelOrders": "Annulla Ordini",
+          "trackShipping": "Traccia Spedizioni",
+          "generateInvoices": "Genera Fatture",
+          "descriptions": {
+            "viewOrders": "Accedi all'elenco ordini e dettagli",
+            "processOrders": "Elabora e evadi ordini",
+            "editOrders": "Modifica informazioni ordine",
+            "cancelOrders": "Annulla e rimborsa ordini",
+            "trackShipping": "Traccia stato spedizione ordini",
+            "generateInvoices": "Genera fatture e ricevute ordini"
+          }
+        },
+        "payments": {
+          "title": "Pagamenti",
+          "viewPayments": "Visualizza Pagamenti",
+          "processPayments": "Elabora Pagamenti",
+          "refundPayments": "Rimborsa Pagamenti",
+          "manageGateways": "Gestisci Gateway",
+          "viewTransactions": "Visualizza Transazioni",
+          "generateReports": "Genera Report",
+          "descriptions": {
+            "viewPayments": "Accedi allo storico pagamenti e dettagli",
+            "processPayments": "Elabora pagamenti cliente",
+            "refundPayments": "Emetti rimborsi pagamenti",
+            "manageGateways": "Configura gateway di pagamento",
+            "viewTransactions": "Visualizza log delle transazioni",
+            "generateReports": "Genera report pagamenti"
+          }
+        },
+        "wallet": {
+          "title": "Portafoglio",
+          "viewWallet": "Visualizza Portafoglio",
+          "manageBalance": "Gestisci Saldo",
+          "transferFunds": "Trasferisci Fondi",
+          "viewTransactions": "Visualizza Transazioni",
+          "withdrawFunds": "Preleva Fondi",
+          "addFunds": "Aggiungi Fondi",
+          "descriptions": {
+            "viewWallet": "Accedi al saldo portafoglio e panoramica",
+            "manageBalance": "Gestisci saldo portafoglio e crediti",
+            "transferFunds": "Trasferisci fondi tra portafogli",
+            "viewTransactions": "Visualizza storico transazioni portafoglio",
+            "withdrawFunds": "Preleva fondi su account esterni",
+            "addFunds": "Aggiungi fondi al saldo portafoglio"
+          }
+        },
+        "marketing": {
+          "title": "Marketing",
+          "viewCampaigns": "Visualizza Campagne",
+          "createCampaigns": "Crea Campagne",
+          "manageCampaigns": "Gestisci Campagne",
+          "viewAnalytics": "Visualizza Analisi",
+          "manageContent": "Gestisci Contenuti",
+          "trackPerformance": "Monitora Performance",
+          "descriptions": {
+            "viewCampaigns": "Accedi a campagne marketing e materiali",
+            "createCampaigns": "Crea nuove campagne marketing",
+            "manageCampaigns": "Gestisci campagne marketing esistenti",
+            "viewAnalytics": "Visualizza analisi e insights marketing",
+            "manageContent": "Gestisci contenuti e asset marketing",
+            "trackPerformance": "Monitora metriche performance campagne"
+          }
+        },
+        "reports": {
+          "title": "Report",
+          "viewReports": "Visualizza Report",
+          "generateReports": "Genera Report",
+          "scheduleReports": "Programma Report",
+          "exportReports": "Esporta Report",
+          "customReports": "Report Personalizzati",
+          "shareReports": "Condividi Report",
+          "descriptions": {
+            "viewReports": "Accedi a report esistenti e dashboard",
+            "generateReports": "Genera nuovi report e analisi",
+            "scheduleReports": "Programma generazione automatica report",
+            "exportReports": "Esporta report in vari formati",
+            "customReports": "Crea template report personalizzati",
+            "shareReports": "Condividi report con membri del team"
+          }
+        },
+        "training": {
+          "title": "Formazione",
+          "viewTraining": "Visualizza Formazione",
+          "createContent": "Crea Contenuti",
+          "manageContent": "Gestisci Contenuti",
+          "trackProgress": "Monitora Progresso",
+          "assignTraining": "Assegna Formazione",
+          "viewCertificates": "Visualizza Certificati",
+          "descriptions": {
+            "viewTraining": "Accedi a materiali formativi e corsi",
+            "createContent": "Crea nuovi contenuti formativi",
+            "manageContent": "Gestisci materiali formativi esistenti",
+            "trackProgress": "Monitora progresso e completamento formazione",
+            "assignTraining": "Assegna formazione ai membri del team",
+            "viewCertificates": "Visualizza e gestisci certificati formazione"
+          }
+        },
+        "support": {
+          "title": "Supporto",
+          "viewTickets": "Visualizza Ticket",
+          "createTickets": "Crea Ticket",
+          "manageTickets": "Gestisci Ticket",
+          "respondTickets": "Rispondi Ticket",
+          "escalateTickets": "Escalation Ticket",
+          "viewKnowledgeBase": "Visualizza Knowledge Base",
+          "descriptions": {
+            "viewTickets": "Accedi a ticket di supporto e richieste",
+            "createTickets": "Crea nuovi ticket di supporto",
+            "manageTickets": "Gestisci e organizza ticket di supporto",
+            "respondTickets": "Rispondi a richieste di supporto clienti",
+            "escalateTickets": "Escalation ticket a livelli superiori supporto",
+            "viewKnowledgeBase": "Accedi alla knowledge base di supporto"
+          }
+        },
+        "communication": {
+          "title": "Comunicazione",
+          "viewMessages": "Visualizza Messaggi",
+          "sendMessages": "Invia Messaggi",
+          "manageNotifications": "Gestisci Notifiche",
+          "viewAnnouncements": "Visualizza Annunci",
+          "createAnnouncements": "Crea Annunci",
+          "manageChannels": "Gestisci Canali",
+          "descriptions": {
+            "viewMessages": "Accedi a messaggi interni e comunicazioni",
+            "sendMessages": "Invia messaggi ai membri del team",
+            "manageNotifications": "Configura impostazioni notifiche",
+            "viewAnnouncements": "Visualizza annunci di sistema",
+            "createAnnouncements": "Crea nuovi annunci",
+            "manageChannels": "Gestisci canali di comunicazione"
+          }
+        },
+        "common": {
+          "featuresAndModules": "funzionalità e moduli",
+          "enabled": "Abilitato",
+          "disabled": "Disabilitato"
+        }
+      },
       "managingRole": {
         "title": "Gestione Ruolo",
         "superAdmin": "Super Admin",

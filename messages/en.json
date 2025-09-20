@@ -321,6 +321,381 @@
       "search": {
         "placeholder": "Search navigation links and features..."
       },
+      "features": {
+        "dashboard": {
+          "title": "Dashboard",
+          "viewDashboard": "View Dashboard",
+          "viewStatistics": "View Statistics",
+          "viewCharts": "View Charts", 
+          "exportData": "Export Data",
+          "descriptions": {
+            "viewDashboard": "Access main dashboard page",
+            "viewStatistics": "View dashboard statistics widgets",
+            "viewCharts": "Access analytics charts and graphs",
+            "exportData": "Export dashboard data to files"
+          }
+        },
+        "referralSystem": {
+          "title": "Referral System",
+          "viewReferrals": "View Referrals",
+          "generateLinks": "Generate Links",
+          "manageSystem": "Manage System",
+          "viewAnalytics": "View Analytics",
+          "setPermissions": "Set Permissions",
+          "descriptions": {
+            "viewReferrals": "Access referral dashboard and statistics",
+            "generateLinks": "Create new referral links and codes",
+            "manageSystem": "Configure referral system settings",
+            "viewAnalytics": "Access detailed referral performance data",
+            "setPermissions": "Control who can access referral features"
+          }
+        },
+        "contacts": {
+          "title": "Contacts",
+          "viewContacts": "View Contacts",
+          "addContacts": "Add Contacts",
+          "editContacts": "Edit Contacts",
+          "deleteContacts": "Delete Contacts",
+          "exportContacts": "Export Contacts",
+          "importContacts": "Import Contacts",
+          "descriptions": {
+            "viewContacts": "Access contact list and details",
+            "addContacts": "Create new contact entries",
+            "editContacts": "Modify existing contact information",
+            "deleteContacts": "Remove contacts from system",
+            "exportContacts": "Export contact data to files",
+            "importContacts": "Import contact data from external sources"
+          }
+        },
+        "tasks": {
+          "title": "Tasks",
+          "viewTasks": "View Tasks",
+          "createTasks": "Create Tasks",
+          "editTasks": "Edit Tasks",
+          "deleteTasks": "Delete Tasks",
+          "assignTasks": "Assign Tasks",
+          "trackProgress": "Track Progress",
+          "descriptions": {
+            "viewTasks": "Access task list and details",
+            "createTasks": "Create new tasks and workflows",
+            "editTasks": "Modify existing task information",
+            "deleteTasks": "Remove tasks from system",
+            "assignTasks": "Assign tasks to team members",
+            "trackProgress": "Monitor task completion and progress"
+          }
+        },
+        "pipeline": {
+          "title": "Pipeline",
+          "viewPipeline": "View Pipeline",
+          "managePipeline": "Manage Pipeline",
+          "createDeals": "Create Deals",
+          "editDeals": "Edit Deals",
+          "trackProgress": "Track Progress",
+          "generateReports": "Generate Reports",
+          "descriptions": {
+            "viewPipeline": "Access sales pipeline and deals",
+            "managePipeline": "Configure pipeline stages and workflows",
+            "createDeals": "Create new deals and opportunities",
+            "editDeals": "Modify existing deal information",
+            "trackProgress": "Monitor deal progress through stages",
+            "generateReports": "Create pipeline performance reports"
+          }
+        },
+        "genealogy": {
+          "title": "Genealogy",
+          "viewGenealogy": "View Genealogy",
+          "manageDownlines": "Manage Downlines",
+          "viewUplines": "View Uplines",
+          "trackPerformance": "Track Performance",
+          "exportTree": "Export Tree",
+          "manageStructure": "Manage Structure",
+          "viewTree": "View Tree",
+          "editStructure": "Edit Structure",
+          "descriptions": {
+            "viewGenealogy": "Access team genealogy tree and structure",
+            "manageDownlines": "Manage downline team members",
+            "viewUplines": "View upline sponsor information",
+            "trackPerformance": "Monitor team performance metrics",
+            "exportTree": "Export genealogy tree data",
+            "manageStructure": "Manage team organizational structure",
+            "viewTree": "Browse visual team tree representation",
+            "editStructure": "Reorganize team member positions"
+          }
+        },
+        "commission": {
+          "title": "Commission",
+          "viewCommissions": "View Commissions",
+          "calculateCommissions": "Calculate Commissions",
+          "processPayouts": "Process Payouts",
+          "viewReports": "View Reports",
+          "adjustCommissions": "Adjust Commissions",
+          "viewCommission": "View Commission",
+          "calculateCommission": "Calculate Commission",
+          "manageRates": "Manage Rates",
+          "descriptions": {
+            "viewCommissions": "Access commission dashboard and earnings",
+            "calculateCommissions": "Calculate team and personal commissions",
+            "processPayouts": "Process commission payments",
+            "viewReports": "Generate commission reports",
+            "adjustCommissions": "Make commission adjustments",
+            "viewCommission": "Access commission dashboard and earnings",
+            "calculateCommission": "Calculate team and personal commissions",
+            "manageRates": "Configure commission rates and structures"
+          }
+        },
+        "ranks": {
+          "title": "Ranks",
+          "viewRanks": "View Ranks",
+          "manageRankings": "Manage Rankings",
+          "setRequirements": "Set Requirements",
+          "trackProgress": "Track Progress",
+          "assignRanks": "Assign Ranks",
+          "descriptions": {
+            "viewRanks": "View rank structure and requirements",
+            "manageRankings": "Manage team member rankings",
+            "setRequirements": "Configure rank requirements",
+            "trackProgress": "Monitor rank advancement progress",
+            "assignRanks": "Manually assign ranks to members"
+          }
+        },
+        "affiliates": {
+          "title": "Affiliates",
+          "viewAffiliates": "View Affiliates",
+          "manageAffiliates": "Manage Affiliates",
+          "approveApplications": "Approve Applications",
+          "setCommissions": "Set Commissions",
+          "trackPerformance": "Track Performance",
+          "descriptions": {
+            "viewAffiliates": "Access affiliate member list and details",
+            "manageAffiliates": "Manage affiliate accounts and settings",
+            "approveApplications": "Review and approve affiliate applications",
+            "setCommissions": "Configure affiliate commission rates",
+            "trackPerformance": "Monitor affiliate performance metrics"
+          }
+        },
+        "userManagement": {
+          "title": "User Management",
+          "viewUsers": "View Users",
+          "createUsers": "Create Users",
+          "editUsers": "Edit Users",
+          "deleteUsers": "Delete Users",
+          "manageRoles": "Manage Roles",
+          "resetPasswords": "Reset Passwords",
+          "descriptions": {
+            "viewUsers": "Access user list and account details",
+            "createUsers": "Create new user accounts",
+            "editUsers": "Modify user account information",
+            "deleteUsers": "Remove user accounts from system",
+            "manageRoles": "Assign and manage user roles",
+            "resetPasswords": "Reset user passwords"
+          }
+        },
+        "invitations": {
+          "title": "Invitations",
+          "viewInvitations": "View Invitations",
+          "sendInvitations": "Send Invitations",
+          "manageInvitations": "Manage Invitations",
+          "trackStatus": "Track Status",
+          "resendInvitations": "Resend Invitations",
+          "descriptions": {
+            "viewInvitations": "View sent and pending invitations",
+            "sendInvitations": "Send new user invitations",
+            "manageInvitations": "Manage invitation settings",
+            "trackStatus": "Track invitation delivery status",
+            "resendInvitations": "Resend failed or expired invitations"
+          }
+        },
+        "settings": {
+          "title": "Settings",
+          "viewSettings": "View Settings",
+          "editSettings": "Edit Settings",
+          "manageIntegrations": "Manage Integrations",
+          "configureSystem": "Configure System",
+          "backupRestore": "Backup & Restore",
+          "descriptions": {
+            "viewSettings": "Access system configuration settings",
+            "editSettings": "Modify system and application settings",
+            "manageIntegrations": "Configure third-party integrations",
+            "configureSystem": "Configure core system parameters",
+            "backupRestore": "Manage system backups and restoration"
+          }
+        },
+        "customers": {
+          "title": "Customers",
+          "viewCustomers": "View Customers",
+          "addCustomers": "Add Customers",
+          "editCustomers": "Edit Customers",
+          "deleteCustomers": "Delete Customers",
+          "manageOrders": "Manage Orders",
+          "viewHistory": "View History",
+          "descriptions": {
+            "viewCustomers": "Access customer list and profiles",
+            "addCustomers": "Create new customer accounts",
+            "editCustomers": "Modify customer information",
+            "deleteCustomers": "Remove customer accounts",
+            "manageOrders": "Manage customer orders and transactions",
+            "viewHistory": "View customer purchase history"
+          }
+        },
+        "products": {
+          "title": "Products",
+          "viewProducts": "View Products",
+          "addProducts": "Add Products",
+          "editProducts": "Edit Products",
+          "deleteProducts": "Delete Products",
+          "manageInventory": "Manage Inventory",
+          "setPricing": "Set Pricing",
+          "descriptions": {
+            "viewProducts": "Access product catalog and details",
+            "addProducts": "Create new product listings",
+            "editProducts": "Modify product information",
+            "deleteProducts": "Remove products from catalog",
+            "manageInventory": "Manage product inventory levels",
+            "setPricing": "Configure product pricing and discounts"
+          }
+        },
+        "orders": {
+          "title": "Orders",
+          "viewOrders": "View Orders",
+          "processOrders": "Process Orders",
+          "editOrders": "Edit Orders",
+          "cancelOrders": "Cancel Orders",
+          "trackShipping": "Track Shipping",
+          "generateInvoices": "Generate Invoices",
+          "descriptions": {
+            "viewOrders": "Access order list and details",
+            "processOrders": "Process and fulfill orders",
+            "editOrders": "Modify order information",
+            "cancelOrders": "Cancel and refund orders",
+            "trackShipping": "Track order shipping status",
+            "generateInvoices": "Generate order invoices and receipts"
+          }
+        },
+        "payments": {
+          "title": "Payments",
+          "viewPayments": "View Payments",
+          "processPayments": "Process Payments",
+          "refundPayments": "Refund Payments",
+          "manageGateways": "Manage Gateways",
+          "viewTransactions": "View Transactions",
+          "generateReports": "Generate Reports",
+          "descriptions": {
+            "viewPayments": "Access payment history and details",
+            "processPayments": "Process customer payments",
+            "refundPayments": "Issue payment refunds",
+            "manageGateways": "Configure payment gateways",
+            "viewTransactions": "View transaction logs",
+            "generateReports": "Generate payment reports"
+          }
+        },
+        "wallet": {
+          "title": "Wallet",
+          "viewWallet": "View Wallet",
+          "manageBalance": "Manage Balance",
+          "transferFunds": "Transfer Funds",
+          "viewTransactions": "View Transactions",
+          "withdrawFunds": "Withdraw Funds",
+          "addFunds": "Add Funds",
+          "descriptions": {
+            "viewWallet": "Access wallet balance and overview",
+            "manageBalance": "Manage wallet balance and credits",
+            "transferFunds": "Transfer funds between wallets",
+            "viewTransactions": "View wallet transaction history",
+            "withdrawFunds": "Withdraw funds to external accounts",
+            "addFunds": "Add funds to wallet balance"
+          }
+        },
+        "marketing": {
+          "title": "Marketing",
+          "viewCampaigns": "View Campaigns",
+          "createCampaigns": "Create Campaigns",
+          "manageCampaigns": "Manage Campaigns",
+          "viewAnalytics": "View Analytics",
+          "manageContent": "Manage Content",
+          "trackPerformance": "Track Performance",
+          "descriptions": {
+            "viewCampaigns": "Access marketing campaigns and materials",
+            "createCampaigns": "Create new marketing campaigns",
+            "manageCampaigns": "Manage existing marketing campaigns",
+            "viewAnalytics": "View marketing analytics and insights",
+            "manageContent": "Manage marketing content and assets",
+            "trackPerformance": "Track campaign performance metrics"
+          }
+        },
+        "reports": {
+          "title": "Reports",
+          "viewReports": "View Reports",
+          "generateReports": "Generate Reports",
+          "scheduleReports": "Schedule Reports",
+          "exportReports": "Export Reports",
+          "customReports": "Custom Reports",
+          "shareReports": "Share Reports",
+          "descriptions": {
+            "viewReports": "Access existing reports and dashboards",
+            "generateReports": "Generate new reports and analytics",
+            "scheduleReports": "Schedule automated report generation",
+            "exportReports": "Export reports to various formats",
+            "customReports": "Create custom report templates",
+            "shareReports": "Share reports with team members"
+          }
+        },
+        "training": {
+          "title": "Training",
+          "viewTraining": "View Training",
+          "createContent": "Create Content",
+          "manageContent": "Manage Content",
+          "trackProgress": "Track Progress",
+          "assignTraining": "Assign Training",
+          "viewCertificates": "View Certificates",
+          "descriptions": {
+            "viewTraining": "Access training materials and courses",
+            "createContent": "Create new training content",
+            "manageContent": "Manage existing training materials",
+            "trackProgress": "Track training progress and completion",
+            "assignTraining": "Assign training to team members",
+            "viewCertificates": "View and manage training certificates"
+          }
+        },
+        "support": {
+          "title": "Support",
+          "viewTickets": "View Tickets",
+          "createTickets": "Create Tickets",
+          "manageTickets": "Manage Tickets",
+          "respondTickets": "Respond Tickets",
+          "escalateTickets": "Escalate Tickets",
+          "viewKnowledgeBase": "View Knowledge Base",
+          "descriptions": {
+            "viewTickets": "Access support tickets and requests",
+            "createTickets": "Create new support tickets",
+            "manageTickets": "Manage and organize support tickets",
+            "respondTickets": "Respond to customer support requests",
+            "escalateTickets": "Escalate tickets to higher support levels",
+            "viewKnowledgeBase": "Access support knowledge base"
+          }
+        },
+        "communication": {
+          "title": "Communication",
+          "viewMessages": "View Messages",
+          "sendMessages": "Send Messages",
+          "manageNotifications": "Manage Notifications",
+          "viewAnnouncements": "View Announcements",
+          "createAnnouncements": "Create Announcements",
+          "manageChannels": "Manage Channels",
+          "descriptions": {
+            "viewMessages": "Access internal messages and communications",
+            "sendMessages": "Send messages to team members",
+            "manageNotifications": "Configure notification settings",
+            "viewAnnouncements": "View system announcements",
+            "createAnnouncements": "Create new announcements",
+            "manageChannels": "Manage communication channels"
+          }
+        },
+        "common": {
+          "featuresAndModules": "features and modules",
+          "enabled": "Enabled",
+          "disabled": "Disabled"
+        }
+      },
       "managingRole": {
         "title": "Managing Role",
         "superAdmin": "Super Admin",

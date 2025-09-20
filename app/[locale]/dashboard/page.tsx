@@ -43,7 +43,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext"
 import { SuperAdminDashboard } from "@/components/super-admin-dashboard"
 import { SimpleGroupPermissions } from "@/components/simple-group-permissions"
-import { CompactReferralSection } from "@/components/compact-referral-section"
+import { ReferralDashboardSection } from "@/components/referral-dashboard-section"
 import { usePermissions } from "@/contexts/PermissionContext-simple"
 
 // Business Analytics Data
@@ -232,6 +232,15 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
 
         {/* Overview Tab Content */}
         <TabsContent value="overview" className="space-y-6">
+          {/* Referral Dashboard Section - Prominent Position */}
+          {permissions.hasModuleAccess('referrals') && (
+            <ReferralDashboardSection 
+              userId={user?.id || 'user_123'} 
+              userEmail={user?.email || 'user@example.com'}
+              userRole={user?.role}
+            />
+          )}
+
           {/* Quick Stats Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -334,15 +343,6 @@ export default function Dashboard({ params }: { params: { locale: string } }) {
               </CardContent>
             </Card>
           </div>
-
-          {/* Referral Dashboard Section - Permission-based instead of role-based */}
-          {permissions.hasModuleAccess('referrals') && (
-            <CompactReferralSection 
-              userId={user?.id || 'user_123'} 
-              userEmail={user?.email || 'user@example.com'}
-              userRole={user?.role}
-            />
-          )}
         </TabsContent>
 
         {/* Business Tab Content */}

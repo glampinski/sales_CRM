@@ -47,7 +47,8 @@ import {
   Edit,
   Trash2,
   Upload,
-  Download
+  Download,
+  Share2
 } from "lucide-react"
 
 export function SimpleGroupPermissions() {
@@ -236,6 +237,13 @@ export function SimpleGroupPermissions() {
         canView: role === 'super_admin' || role === 'admin' || role === 'manager' || role === 'affiliate' || role === 'customer',
         canEdit: role === 'super_admin' || role === 'admin' || role === 'manager' || role === 'affiliate',
         canManageSystem: role === 'super_admin' || role === 'admin'
+      },
+      referrals: {
+        canView: role === 'super_admin' || role === 'admin' || role === 'manager' || role === 'affiliate',
+        canGenerate: role === 'super_admin' || role === 'admin' || role === 'affiliate',
+        canManage: role === 'super_admin' || role === 'admin',
+        canAnalyze: role === 'super_admin' || role === 'admin' || role === 'manager',
+        canSetPermissions: role === 'super_admin' || role === 'admin'
       }
     }
   }
@@ -245,7 +253,7 @@ export function SimpleGroupPermissions() {
     main: {
       name: "Main Workflow",
       icon: Home,
-      count: 4,
+      count: 5,
       links: [
         {
           id: 'dashboard',
@@ -256,6 +264,18 @@ export function SimpleGroupPermissions() {
             { id: 'canViewStats', name: 'View Statistics', description: 'View dashboard statistics widgets' },
             { id: 'canViewCharts', name: 'View Charts', description: 'Access analytics charts and graphs' },
             { id: 'canExportData', name: 'Export Data', description: 'Export dashboard data to files' }
+          ]
+        },
+        {
+          id: 'referrals',
+          name: "Referral System",
+          icon: Share2,
+          modules: [
+            { id: 'canView', name: 'View Referrals', description: 'Access referral dashboard and statistics' },
+            { id: 'canGenerate', name: 'Generate Links', description: 'Create new referral links and codes' },
+            { id: 'canManage', name: 'Manage System', description: 'Configure referral system settings' },
+            { id: 'canAnalyze', name: 'View Analytics', description: 'Access detailed referral performance data' },
+            { id: 'canSetPermissions', name: 'Set Permissions', description: 'Control who can access referral features' }
           ]
         },
         {
@@ -737,9 +757,9 @@ export function SimpleGroupPermissions() {
                         onClick={() => toggleLink(link.id)}
                       >
                         <div className="flex items-center space-x-3">
-                          <link.icon className="h-4 w-4 text-gray-600" />
+                          <link.icon className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <h4 className="font-medium">{link.name}</h4>
+                            <h4 className="font-medium text-foreground">{link.name}</h4>
                             <p className="text-sm text-muted-foreground">
                               {link.modules.length} features and modules
                             </p>
@@ -771,13 +791,13 @@ export function SimpleGroupPermissions() {
                                 module.description.toLowerCase().includes(searchTerm.toLowerCase())
                               )
                               .map((module) => (
-                              <div key={module.id} className="flex items-center justify-between p-3 bg-white rounded border">
+                              <div key={module.id} className="flex items-center justify-between p-3 bg-card rounded border">
                                 <div className="flex items-center space-x-3">
                                   <div className={`w-2 h-2 rounded-full ${
-                                    getPermissionValue(link.id, module.id) ? 'bg-green-500' : 'bg-gray-300'
+                                    getPermissionValue(link.id, module.id) ? 'bg-green-500' : 'bg-muted-foreground'
                                   }`} />
                                   <div>
-                                    <p className="font-medium text-sm">{module.name}</p>
+                                    <p className="font-medium text-sm text-foreground">{module.name}</p>
                                     <p className="text-xs text-muted-foreground">{module.description}</p>
                                   </div>
                                 </div>
@@ -795,7 +815,7 @@ export function SimpleGroupPermissions() {
                                       {getPermissionValue(link.id, module.id) ? (
                                         <CheckCircle className="h-4 w-4 text-green-500" />
                                       ) : (
-                                        <X className="h-4 w-4 text-gray-400" />
+                                        <X className="h-4 w-4 text-muted-foreground" />
                                       )}
                                     </>
                                   )}

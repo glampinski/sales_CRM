@@ -124,6 +124,14 @@ interface Permission {
     canEdit: boolean
     canManageSystem: boolean
   }
+  // Referral system permissions
+  referrals: {
+    canView: boolean
+    canGenerate: boolean
+    canManage: boolean
+    canAnalyze: boolean
+    canSetPermissions: boolean
+  }
   // UI permissions
   ui: {
     canSearchAdvanced: boolean
@@ -274,6 +282,14 @@ export function PermissionProvider({ children }: { children: React.ReactNode }) 
       canEdit: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
       canManageSystem: user?.role === 'super_admin' || user?.role === 'admin'
     },
+    // Referral system permissions
+    referrals: {
+      canView: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager' || user?.role === 'affiliate',
+      canGenerate: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'affiliate',
+      canManage: user?.role === 'super_admin' || user?.role === 'admin',
+      canAnalyze: user?.role === 'super_admin' || user?.role === 'admin' || user?.role === 'manager',
+      canSetPermissions: user?.role === 'super_admin' || user?.role === 'admin'
+    },
     ui: {
       canSearchAdvanced: user?.role !== 'customer',
       canImpersonate: user?.role === 'super_admin' || user?.role === 'admin',
@@ -308,22 +324,22 @@ export function PermissionProvider({ children }: { children: React.ReactNode }) 
         'overview', 'contacts', 'tasks', 'pipeline', 'network', 'commission', 
         'ranks', 'affiliates', 'customers', 'products', 'orders', 'payments', 
         'wallet', 'marketing', 'reports', 'training', 'support', 'communication', 
-        'admin', 'settings'
+        'admin', 'settings', 'referrals'
       ],
       'admin': [
         'overview', 'contacts', 'tasks', 'pipeline', 'network', 'commission', 
         'ranks', 'affiliates', 'customers', 'products', 'orders', 'payments', 
         'wallet', 'marketing', 'reports', 'training', 'support', 'communication', 
-        'admin', 'settings'
+        'admin', 'settings', 'referrals'
       ],
       'manager': [
         'overview', 'contacts', 'tasks', 'pipeline', 'customers', 'products', 
         'orders', 'payments', 'marketing', 'reports', 'training', 'support', 
-        'communication', 'settings'
+        'communication', 'settings', 'referrals'
       ],
       'affiliate': [
         'overview', 'network', 'commission', 'customers', 'products', 'orders', 
-        'payments', 'wallet', 'marketing', 'training', 'support', 'communication', 'settings'
+        'payments', 'wallet', 'marketing', 'training', 'support', 'communication', 'settings', 'referrals'
       ],
       'customer': [
         'overview', 'products', 'orders', 'payments', 'support', 'settings'

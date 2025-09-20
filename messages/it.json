@@ -27,6 +27,7 @@
       "commission": "Commissioni",
       "ranks": "Gradi",
       "affiliates": "Affiliati",
+      "referrals": "Sistema di Referral",
       "customers": "Clienti",
       "products": "Prodotti",
       "orders": "Ordini",
@@ -278,6 +279,85 @@
           "recurringRevenue": "Ricavi Ricorrenti",
           "ofTotalRevenue": "del totale ricavi"
         }
+      }
+    }
+  },
+  "referrals": {
+    "title": "Centro Referral",
+    "description": "Fai crescere la tua rete e guadagna commissioni riferendo nuovi membri",
+    "premiumAccess": "Accesso Premium",
+    "metrics": {
+      "totalReferrals": "Referral Totali",
+      "totalEarnings": "Guadagni Totali",
+      "conversionRate": "Tasso di Conversione",
+      "thisMonth": "Questo Mese",
+      "pending": "In Attesa"
+    },
+    "tabs": {
+      "quickLinks": "Link Veloci",
+      "performance": "Performance", 
+      "tools": "Strumenti"
+    },
+    "tools": {
+      "quickLinks": "Link Veloci",
+      "performance": "Performance",
+      "tools": "Strumenti",
+      "shareOnSocial": "Condividi sui Social Media",
+      "viewFullDashboard": "Visualizza Dashboard Completa",
+      "advancedAnalytics": "Analisi Avanzate"
+    },
+    "linkTypes": {
+      "landing": "Link Pagina di Destinazione",
+      "onboarding": "Link Onboarding",
+      "signup": "Link Registrazione"
+    },
+    "links": {
+      "customerOnboarding": "Link Iscrizione Clienti",
+      "affiliateEnrollment": "Link Iscrizione Affiliati", 
+      "customers": "Clienti",
+      "affiliates": "Affiliati",
+      "landingPage": "Pagina di Destinazione",
+      "signup": "Link di Registrazione",
+      "onboarding": "Onboarding"
+    },
+    "performance": {
+      "clickCount": "Conteggio Click",
+      "completedReferrals": "Referral Completati",
+      "clickThroughRate": "Tasso di Click",
+      "activeReferrals": "Referral Attivi",
+      "pendingCommissions": "Commissioni in Attesa"
+    },
+    "actions": {
+      "copyCode": "Copia Codice",
+      "copyLink": "Copia Link",
+      "createLanding": "Pagina di Destinazione",
+      "createOnboarding": "Onboarding",
+      "shareOnSocial": "Condividi sui Social Media",
+      "viewFullDashboard": "Visualizza Dashboard Completa",
+      "advancedAnalytics": "Analisi Avanzate",
+      "startEarning": "Inizia a Guadagnare Oggi!",
+      "shareCode": "Condividi il tuo codice referral:"
+    },
+    "messages": {
+      "copied": "Copiato!",
+      "copiedToClipboard": "{type} copiato negli appunti",
+      "error": "Errore",
+      "failedToCopy": "Impossibile copiare negli appunti",
+      "linkReady": "Link Pronto",
+      "linkReadyDesc": "I tuoi link referral sono già disponibili sopra"
+    },
+    "permissions": {
+      "viewReferrals": "Visualizza Referral",
+      "generateLinks": "Genera Link",
+      "manageSystem": "Gestisci Sistema",
+      "viewAnalytics": "Visualizza Analisi",
+      "setPermissions": "Imposta Permessi",
+      "descriptions": {
+        "viewReferrals": "Accedi al dashboard referral e alle statistiche",
+        "generateLinks": "Crea nuovi link e codici referral",
+        "manageSystem": "Configura le impostazioni del sistema referral",
+        "viewAnalytics": "Accedi ai dati dettagliati delle performance referral",
+        "setPermissions": "Controlla chi può accedere alle funzioni referral"
       }
     }
   }

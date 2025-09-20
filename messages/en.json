@@ -27,6 +27,7 @@
       "commission": "Commission",
       "ranks": "Ranks",
       "affiliates": "Affiliates",
+      "referrals": "Referral System",
       "customers": "Customers",
       "products": "Products",
       "orders": "Orders",
@@ -278,6 +279,85 @@
           "recurringRevenue": "Recurring Revenue",
           "ofTotalRevenue": "of total revenue"
         }
+      }
+    }
+  },
+  "referrals": {
+    "title": "Referral Center",
+    "description": "Grow your network and earn commissions by referring new members",
+    "premiumAccess": "Premium Access",
+    "metrics": {
+      "totalReferrals": "Total Referrals",
+      "totalEarnings": "Total Earnings",
+      "conversionRate": "Conversion Rate",
+      "thisMonth": "This Month",
+      "pending": "Pending"
+    },
+    "tabs": {
+      "quickLinks": "Quick Links",
+      "performance": "Performance",
+      "tools": "Tools"
+    },
+    "tools": {
+      "quickLinks": "Quick Links",
+      "performance": "Performance",
+      "tools": "Tools",
+      "shareOnSocial": "Share on Social Media",
+      "viewFullDashboard": "View Full Dashboard",
+      "advancedAnalytics": "Advanced Analytics"
+    },
+    "linkTypes": {
+      "landing": "Landing Page Link",
+      "onboarding": "Onboarding Link",
+      "signup": "Signup Link"
+    },
+    "links": {
+      "customerOnboarding": "Customer Signup Link",
+      "affiliateEnrollment": "Affiliate Enrollment Link",
+      "customers": "Customers",
+      "affiliates": "Affiliates",
+      "landingPage": "Landing Page",
+      "signup": "Signup Link",
+      "onboarding": "Onboarding"
+    },
+    "performance": {
+      "clickCount": "Click Count",
+      "completedReferrals": "Completed Referrals",
+      "clickThroughRate": "Click-through Rate",
+      "activeReferrals": "Active Referrals",
+      "pendingCommissions": "Pending Commissions"
+    },
+    "actions": {
+      "copyCode": "Copy Code",
+      "copyLink": "Copy Link",
+      "createLanding": "Landing Page",
+      "createOnboarding": "Onboarding",
+      "shareOnSocial": "Share on Social Media",
+      "viewFullDashboard": "View Full Dashboard",
+      "advancedAnalytics": "Advanced Analytics",
+      "startEarning": "Start Earning Today!",
+      "shareCode": "Share your referral code:"
+    },
+    "messages": {
+      "copied": "Copied!",
+      "copiedToClipboard": "{type} copied to clipboard",
+      "error": "Error",
+      "failedToCopy": "Failed to copy to clipboard",
+      "linkReady": "Link Ready",
+      "linkReadyDesc": "Your referral links are already available above"
+    },
+    "permissions": {
+      "viewReferrals": "View Referrals",
+      "generateLinks": "Generate Links",
+      "manageSystem": "Manage System",
+      "viewAnalytics": "View Analytics", 
+      "setPermissions": "Set Permissions",
+      "descriptions": {
+        "viewReferrals": "Access referral dashboard and statistics",
+        "generateLinks": "Create new referral links and codes",
+        "manageSystem": "Configure referral system settings",
+        "viewAnalytics": "Access detailed referral performance data",
+        "setPermissions": "Control who can access referral features"
       }
     }
   }

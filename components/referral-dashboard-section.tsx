@@ -132,42 +132,42 @@ export function ReferralDashboardSection({ userId, userEmail, userRole }: Referr
       <CardContent className="space-y-6">
         {/* Key Metrics Row */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border">
-            <Users className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-blue-700">{stats?.total_referrals || 0}</div>
-            <div className="text-sm text-blue-600">{t('metrics.totalReferrals')}</div>
+          <div className="text-center p-4 bg-card rounded-lg border">
+            <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <div className="text-2xl font-bold text-foreground">{stats?.total_referrals || 0}</div>
+            <div className="text-sm text-muted-foreground">{t('metrics.totalReferrals')}</div>
           </div>
-          <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border">
-            <DollarSign className="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-green-700">${stats?.total_earnings?.toFixed(2) || '0.00'}</div>
-            <div className="text-sm text-green-600">{t('metrics.totalEarnings')}</div>
+          <div className="text-center p-4 bg-card rounded-lg border">
+            <DollarSign className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <div className="text-2xl font-bold text-foreground">${stats?.total_earnings?.toFixed(2) || '0.00'}</div>
+            <div className="text-sm text-muted-foreground">{t('metrics.totalEarnings')}</div>
           </div>
-          <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border">
-            <Target className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-purple-700">{stats?.conversion_rate?.toFixed(1) || '0.0'}%</div>
-            <div className="text-sm text-purple-600">{t('metrics.conversionRate')}</div>
+          <div className="text-center p-4 bg-card rounded-lg border">
+            <Target className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <div className="text-2xl font-bold text-foreground">{stats?.conversion_rate?.toFixed(1) || '0.0'}%</div>
+            <div className="text-sm text-muted-foreground">{t('metrics.conversionRate')}</div>
           </div>
-          <div className="text-center p-4 bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg border">
-            <TrendingUp className="h-8 w-8 text-amber-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-amber-700">{stats?.pending_referrals || 0}</div>
-            <div className="text-sm text-amber-600">{t('metrics.pending')}</div>
+          <div className="text-center p-4 bg-card rounded-lg border">
+            <TrendingUp className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <div className="text-2xl font-bold text-foreground">{stats?.pending_referrals || 0}</div>
+            <div className="text-sm text-muted-foreground">{t('metrics.pending')}</div>
           </div>
         </div>
 
         {/* Simplified Referral Links */}
         <div className="grid gap-4">
           {/* Customer Onboarding Link */}
-          <div className="p-4 bg-gradient-to-br from-blue-50/70 to-blue-100/70 dark:from-blue-950/30 dark:to-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="p-4 bg-card rounded-lg border">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100">{t('links.customerOnboarding')}</h3>
+                <Users className="h-5 w-5 text-muted-foreground" />
+                <h3 className="font-semibold text-foreground">{t('links.customerOnboarding')}</h3>
               </div>
-              <Badge variant="outline" className="bg-blue-100/70 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700">
+              <Badge variant="secondary">
                 {t('links.customers')}
               </Badge>
             </div>
-            <div className="bg-card p-3 rounded border font-mono text-sm break-all mb-3 text-foreground">
+            <div className="bg-muted p-3 rounded border font-mono text-sm break-all mb-3 text-foreground">
               {referralLinks[0]?.base_url || 'https://example.com/customer-signup?ref=YOUR_CODE'}
             </div>
             <Button 
@@ -184,17 +184,17 @@ export function ReferralDashboardSection({ userId, userEmail, userRole }: Referr
           </div>
 
           {/* Affiliate Enrollment Link */}
-          <div className="p-4 bg-gradient-to-br from-purple-50/70 to-purple-100/70 dark:from-purple-950/30 dark:to-purple-900/30 rounded-lg border border-purple-200 dark:border-purple-800">
+          <div className="p-4 bg-card rounded-lg border">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <UserPlus className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                <h3 className="font-semibold text-purple-900 dark:text-purple-100">{t('links.affiliateEnrollment')}</h3>
+                <UserPlus className="h-5 w-5 text-muted-foreground" />
+                <h3 className="font-semibold text-foreground">{t('links.affiliateEnrollment')}</h3>
               </div>
-              <Badge variant="outline" className="bg-purple-100/70 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700">
+              <Badge variant="secondary">
                 {t('links.affiliates')}
               </Badge>
             </div>
-            <div className="bg-card p-3 rounded border font-mono text-sm break-all mb-3 text-foreground">
+            <div className="bg-muted p-3 rounded border font-mono text-sm break-all mb-3 text-foreground">
               {referralLinks[1]?.base_url || 'https://example.com/affiliate-signup?ref=YOUR_CODE'}
             </div>
             <Button 

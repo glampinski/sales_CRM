@@ -580,6 +580,17 @@ export function SimpleGroupPermissions() {
     return (rolePermissions as any)[module]?.[permission]
   }
 
+  // Translate category names
+  const getCategoryName = (categoryKey: string) => {
+    const categoryNames: Record<string, string> = {
+      'Main Workflow': t('categories.mainWorkflow'),
+      'Network & MLM': t('categories.networkMLM'),
+      'Business Operations': t('categories.businessOperations'),
+      'System Administration': t('categories.systemAdministration')
+    }
+    return categoryNames[categoryKey] || categoryKey
+  }
+
   // Calculate totals
   const totalLinks = Object.values(navigationStructure).reduce((sum, category) => sum + category.links.length, 0)
   const totalModules = Object.values(navigationStructure).reduce(
@@ -672,7 +683,7 @@ export function SimpleGroupPermissions() {
         <Card>
           <CardContent className="flex items-center p-6">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Managing Role</p>
+              <p className="text-sm font-medium text-muted-foreground">{t('managingRole.title')}</p>
               <p className="text-2xl font-bold">{availableRoles.find(r => r.value === selectedRole)?.label || 'Unknown'}</p>
             </div>
           </CardContent>
@@ -680,7 +691,7 @@ export function SimpleGroupPermissions() {
         <Card>
           <CardContent className="flex items-center p-6">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Navigation Links</p>
+              <p className="text-sm font-medium text-muted-foreground">{t('managingRole.navigationLinks')}</p>
               <p className="text-2xl font-bold">{totalLinks}</p>
             </div>
           </CardContent>
@@ -688,7 +699,7 @@ export function SimpleGroupPermissions() {
         <Card>
           <CardContent className="flex items-center p-6">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Enabled Features</p>
+              <p className="text-sm font-medium text-muted-foreground">{t('managingRole.enabledFeatures')}</p>
               <p className="text-2xl font-bold text-green-600">{enabledModules}</p>
             </div>
           </CardContent>
@@ -696,7 +707,7 @@ export function SimpleGroupPermissions() {
         <Card>
           <CardContent className="flex items-center p-6">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Access Level</p>
+              <p className="text-sm font-medium text-muted-foreground">{t('managingRole.accessLevel')}</p>
               <p className="text-2xl font-bold">{Math.round((enabledModules / totalModules) * 100)}%</p>
             </div>
           </CardContent>
@@ -709,7 +720,7 @@ export function SimpleGroupPermissions() {
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search navigation links and features..."
+              placeholder={t('search.placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
@@ -730,8 +741,8 @@ export function SimpleGroupPermissions() {
                 <div className="flex items-center space-x-3">
                   <category.icon className="h-5 w-5 text-blue-500" />
                   <div>
-                    <CardTitle className="text-lg">{category.name}</CardTitle>
-                    <CardDescription>{category.count} navigation links</CardDescription>
+                    <CardTitle className="text-lg">{getCategoryName(category.name)}</CardTitle>
+                    <CardDescription>{category.count} {t('categories.navigationLinks')}</CardDescription>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -839,29 +850,29 @@ export function SimpleGroupPermissions() {
       {/* Summary Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Permission Summary</CardTitle>
+          <CardTitle>{t('permissionSummary.title')}</CardTitle>
           <CardDescription>
-            Overview of navigation structure and permission distribution
+            {t('permissionSummary.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <h4 className="font-semibold">Navigation Structure</h4>
+              <h4 className="font-semibold">{t('permissionSummary.navigationStructure.title')}</h4>
               <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>• <strong>4 Main Categories:</strong> Main, Network, Business, System</li>
-                <li>• <strong>{totalLinks} Navigation Links:</strong> Individual pages and features</li>
-                <li>• <strong>{totalModules} Total Features:</strong> Granular permissions and modules</li>
-                <li>• <strong>3-Level Hierarchy:</strong> Category → Link → Feature</li>
+                <li>• <strong>{t('permissionSummary.navigationStructure.categoriesDescription')}</strong></li>
+                <li>• <strong>{totalLinks} {t('permissionSummary.navigationStructure.navigationLinks')}:</strong> {t('permissionSummary.navigationStructure.linksDescription')}</li>
+                <li>• <strong>{totalModules} {t('permissionSummary.navigationStructure.totalFeatures')}:</strong> {t('permissionSummary.navigationStructure.featuresDescription')}</li>
+                <li>• <strong>{t('permissionSummary.navigationStructure.hierarchy')}:</strong> {t('permissionSummary.navigationStructure.hierarchyDescription')}</li>
               </ul>
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold">Current Role Access</h4>
+              <h4 className="font-semibold">{t('permissionSummary.currentRoleAccess.title')}</h4>
               <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>• <strong>Role:</strong> {availableRoles.find(r => r.value === selectedRole)?.label}</li>
-                <li>• <strong>Enabled Features:</strong> {enabledModules} of {totalModules}</li>
-                <li>• <strong>Access Level:</strong> {Math.round((enabledModules / totalModules) * 100)}%</li>
-                <li>• <strong>Status:</strong> {editMode ? 'Editing Mode Active' : 'View Only Mode'}</li>
+                <li>• <strong>{t('permissionSummary.currentRoleAccess.role')}:</strong> {availableRoles.find(r => r.value === selectedRole)?.label}</li>
+                <li>• <strong>{t('permissionSummary.currentRoleAccess.enabledFeatures')}:</strong> {enabledModules} {t('permissionSummary.currentRoleAccess.of')} {totalModules}</li>
+                <li>• <strong>{t('permissionSummary.currentRoleAccess.accessLevel')}:</strong> {Math.round((enabledModules / totalModules) * 100)}%</li>
+                <li>• <strong>{t('permissionSummary.currentRoleAccess.status')}:</strong> {editMode ? 'Editing Mode Active' : t('permissionSummary.currentRoleAccess.viewOnlyMode')}</li>
               </ul>
             </div>
           </div>

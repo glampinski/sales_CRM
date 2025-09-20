@@ -317,6 +317,49 @@
       "roleSelector": {
         "title": "Select Role to Manage",
         "description": "Choose which role's permissions to view and edit"
+      },
+      "search": {
+        "placeholder": "Search navigation links and features..."
+      },
+      "managingRole": {
+        "title": "Managing Role",
+        "superAdmin": "Super Admin",
+        "fullSystemAccess": "Full system access",
+        "navigationLinks": "Navigation Links",
+        "enabledFeatures": "Enabled Features",
+        "accessLevel": "Access Level"
+      },
+      "categories": {
+        "mainWorkflow": "Main Workflow",
+        "networkMLM": "Network & MLM",
+        "businessOperations": "Business Operations",
+        "systemAdministration": "System Administration",
+        "navigationLinks": "navigation links",
+        "enabled": "enabled"
+      },
+      "permissionSummary": {
+        "title": "Permission Summary",
+        "description": "Overview of navigation structure and permission distribution",
+        "navigationStructure": {
+          "title": "Navigation Structure",
+          "mainCategories": "Main Categories",
+          "navigationLinks": "Navigation Links",
+          "totalFeatures": "Total Features",
+          "hierarchy": "3-Level Hierarchy",
+          "hierarchyDescription": "Category → Link → Feature",
+          "categoriesDescription": "4 Main Categories: Main, Network, Business, System",
+          "linksDescription": "Individual pages and features",
+          "featuresDescription": "Granular permissions and modules"
+        },
+        "currentRoleAccess": {
+          "title": "Current Role Access",
+          "role": "Role",
+          "enabledFeatures": "Enabled Features",
+          "accessLevel": "Access Level",
+          "status": "Status",
+          "viewOnlyMode": "View Only Mode",
+          "of": "of"
+        }
       }
     }
   },

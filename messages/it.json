@@ -317,6 +317,49 @@
       "roleSelector": {
         "title": "Seleziona Ruolo da Gestire",
         "description": "Scegli quale ruolo visualizzare e modificare i permessi"
+      },
+      "search": {
+        "placeholder": "Cerca link di navigazione e funzionalità..."
+      },
+      "managingRole": {
+        "title": "Gestione Ruolo",
+        "superAdmin": "Super Admin",
+        "fullSystemAccess": "Accesso completo al sistema",
+        "navigationLinks": "Link di Navigazione",
+        "enabledFeatures": "Funzionalità Abilitate",
+        "accessLevel": "Livello di Accesso"
+      },
+      "categories": {
+        "mainWorkflow": "Flusso di Lavoro Principale",
+        "networkMLM": "Rete & MLM",
+        "businessOperations": "Operazioni Business",
+        "systemAdministration": "Amministrazione Sistema",
+        "navigationLinks": "link di navigazione",
+        "enabled": "abilitati"
+      },
+      "permissionSummary": {
+        "title": "Riepilogo Permessi",
+        "description": "Panoramica della struttura di navigazione e distribuzione dei permessi",
+        "navigationStructure": {
+          "title": "Struttura di Navigazione",
+          "mainCategories": "Categorie Principali",
+          "navigationLinks": "Link di Navigazione", 
+          "totalFeatures": "Funzionalità Totali",
+          "hierarchy": "Gerarchia a 3 livelli",
+          "hierarchyDescription": "Categoria → Link → Funzionalità",
+          "categoriesDescription": "4 Categorie Principali: Principale, Rete, Business, Sistema",
+          "linksDescription": "Pagine e funzionalità individuali",
+          "featuresDescription": "Permessi granulari e moduli"
+        },
+        "currentRoleAccess": {
+          "title": "Accesso Ruolo Attuale",
+          "role": "Ruolo",
+          "enabledFeatures": "Funzionalità Abilitate",
+          "accessLevel": "Livello di Accesso",
+          "status": "Stato",
+          "viewOnlyMode": "Modalità Solo Visualizzazione",
+          "of": "di"
+        }
       }
     }
   },

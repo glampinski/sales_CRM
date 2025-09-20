@@ -304,6 +304,22 @@
       }
     }
   },
+  "permissions": {
+    "navigationCenter": {
+      "title": "Navigation Permissions Center",
+      "description": "Comprehensive permission management mirroring your navigation structure with expandable categories, links, and detailed features",
+      "buttons": {
+        "saveChanges": "Save Changes",
+        "editPermissions": "Edit Permissions",
+        "cancel": "Cancel",
+        "resetToDefaults": "Reset to Defaults"
+      },
+      "roleSelector": {
+        "title": "Select Role to Manage",
+        "description": "Choose which role's permissions to view and edit"
+      }
+    }
+  },
   "referrals": {
     "title": "Referral Center",
     "description": "Grow your network and earn commissions by referring new members",

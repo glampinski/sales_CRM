@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -54,6 +55,7 @@ import {
 export function SimpleGroupPermissions() {
   const { user } = useAuth()
   const { permissions } = usePermissions()
+  const t = useTranslations('permissions.navigationCenter')
   const [searchTerm, setSearchTerm] = useState('')
   const [editMode, setEditMode] = useState(false)
   const [selectedRole, setSelectedRole] = useState(user?.role || 'affiliate')
@@ -601,10 +603,10 @@ export function SimpleGroupPermissions() {
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center space-x-3">
           <Shield className="h-8 w-8 text-blue-500" />
-          <h2 className="text-3xl font-bold">Navigation Permissions Center</h2>
+          <h2 className="text-3xl font-bold">{t('title')}</h2>
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Comprehensive permission management mirroring your navigation structure with expandable categories, links, and detailed features
+          {t('description')}
         </p>
         <div className="flex justify-center space-x-2">
           <Button
@@ -615,19 +617,19 @@ export function SimpleGroupPermissions() {
             {editMode ? (
               <>
                 <Save className="h-4 w-4" />
-                <span>Save Changes</span>
+                <span>{t('buttons.saveChanges')}</span>
               </>
             ) : (
               <>
                 <Edit3 className="h-4 w-4" />
-                <span>Edit Permissions</span>
+                <span>{t('buttons.editPermissions')}</span>
               </>
             )}
           </Button>
           {editMode && (
             <Button variant="outline" onClick={cancelChanges}>
               <RotateCcw className="h-4 w-4 mr-2" />
-              Cancel
+              {t('buttons.cancel')}
             </Button>
           )}
         </div>
@@ -640,8 +642,8 @@ export function SimpleGroupPermissions() {
             <div className="flex items-center space-x-3">
               <Users className="h-5 w-5 text-blue-500" />
               <div>
-                <h3 className="font-semibold">Select Role to Manage</h3>
-                <p className="text-sm text-muted-foreground">Choose which role's permissions to view and edit</p>
+                <h3 className="font-semibold">{t('roleSelector.title')}</h3>
+                <p className="text-sm text-muted-foreground">{t('roleSelector.description')}</p>
               </div>
             </div>
             <div className="w-64">

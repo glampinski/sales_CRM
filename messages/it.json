@@ -304,6 +304,22 @@
       }
     }
   },
+  "permissions": {
+    "navigationCenter": {
+      "title": "Centro Permessi di Navigazione",
+      "description": "Gestione completa dei permessi che rispecchia la struttura di navigazione con categorie espandibili, link e funzionalità dettagliate",
+      "buttons": {
+        "saveChanges": "Salva Modifiche",
+        "editPermissions": "Modifica Permessi",
+        "cancel": "Annulla",
+        "resetToDefaults": "Ripristina Predefiniti"
+      },
+      "roleSelector": {
+        "title": "Seleziona Ruolo da Gestire",
+        "description": "Scegli quale ruolo visualizzare e modificare i permessi"
+      }
+    }
+  },
   "referrals": {
     "title": "Centro Referral",
     "description": "Fai crescere la tua rete e guadagna commissioni riferendo nuovi membri",
